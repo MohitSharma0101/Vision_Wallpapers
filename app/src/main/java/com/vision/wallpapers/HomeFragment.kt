@@ -17,7 +17,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
 
-        gridLayoutManager = GridLayoutManager(context, 2)
+        gridLayoutManager = object : GridLayoutManager(context, 2) {
+            override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
+                lp?.height = (height / 2.5).toInt()
+                return true
+            }
+        }
         adapter = Adapter()
 
         setupRecyclerView(binding.homeRecyclerView, gridLayoutManager, adapter)
