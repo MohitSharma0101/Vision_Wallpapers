@@ -1,11 +1,14 @@
-package com.vision.wallpapers
+package com.vision.wallpapers.ui
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.vision.wallpapers.Adapter
+import com.vision.wallpapers.R
 import com.vision.wallpapers.databinding.FragmentHomeBinding
+import com.vision.wallpapers.repository.WallpaperRepo
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -23,6 +26,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 return true
             }
         }
+
+        val wallpaperRepo = WallpaperRepo()
+        
         adapter = Adapter()
 
         setupRecyclerView(binding.homeRecyclerView, gridLayoutManager, adapter)
