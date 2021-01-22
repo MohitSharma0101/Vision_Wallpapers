@@ -1,23 +1,39 @@
 package com.vision.wallpapers
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.vision.wallpapers.databinding.PictureCardBinding
 import com.vision.wallpapers.model.Wallpaper
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    lateinit var binding: PictureCardBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.picture_card, parent, false)
-    )
+    inner class ViewHolder(binding: PictureCardBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        Log.d("URL", "acda")
+        binding = PictureCardBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val wallpaper = differ.currentList[position]
+        holder.itemView.apply {
+            loadImage(context, wallpaper.src.original, binding.wallpaperIv)
 
+        }
     }
 
     private val differCallback: DiffUtil.ItemCallback<Wallpaper> = object : DiffUtil.ItemCallback<Wallpaper>() {
@@ -29,6 +45,12 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
     val differ = AsyncListDiffer(this, differCallback)
 
 
+    override fun getItemCount(): Int = differ.currentList.size
 
-    override fun getItemCount(): Int = 10
+    private fun loadImage(context: Context, url: String, image: ImageView) {
+        Glide.with(context)
+                .load(url)
+                .fitCenter()
+                .into(image)
+    }
 }

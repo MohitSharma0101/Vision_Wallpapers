@@ -26,7 +26,7 @@
                 android:text="Vision"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="28sp" />
+                android:textSize="28dp" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"

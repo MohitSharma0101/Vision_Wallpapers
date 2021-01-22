@@ -17,7 +17,7 @@ class RetrofitInstance {
                 .build()
 
             Retrofit.Builder()
-                .baseUrl("https://api.pexels.com/")
+                    .baseUrl("https://api.pexels.com/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
