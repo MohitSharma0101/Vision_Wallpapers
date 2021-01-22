@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/categoriesFragment"
-        android:name="com.vision.wallpapers.CategoriesFragment"
+        android:name="com.vision.wallpapers.ui.CategoriesFragment"
         android:label="CategoriesFragment" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.vision.wallpapers.HomeFragment"
+        android:name="com.vision.wallpapers.ui.HomeFragment"
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.vision.wallpapers.SettingsFragment"
+        android:name="com.vision.wallpapers.ui.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/favFragment"
-        android:name="com.vision.wallpapers.FavFragment"
+        android:name="com.vision.wallpapers.ui.FavFragment"
         android:label="FavFragment" />
 </navigation>

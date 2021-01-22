@@ -1,10 +1,10 @@
-package com.vision.wallpapers
+package com.vision.wallpapers.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.vision.wallpapers.R
 import com.vision.wallpapers.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val navController = findNavController(R.id.nav_host_fragment)
         binding.bottomBar.setupWithNavController(navController)
+
+
 
 
     }
