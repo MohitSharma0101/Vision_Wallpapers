@@ -30,5 +30,5 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
 
 
-    override fun getItemCount(): Int = differ.currentList.size
+    override fun getItemCount(): Int = 10
 }

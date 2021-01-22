@@ -28,20 +28,28 @@
                 android:textColor="@color/black"
                 android:textSize="28sp" />
 
-            <com.google.android.material.card.MaterialCardView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
                 android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="7dp"
+                android:hint="Search"
+                android:imeOptions="actionSearch"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
-                android:foreground="#00000000"
-                app:cardBackgroundColor="#D3d3d3"
-                app:cardCornerRadius="5dp">
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@null"
+                android:textSize="15sp">
 
 
-            </com.google.android.material.card.MaterialCardView>
-
+            </androidx.appcompat.widget.AppCompatEditText>
 
         </LinearLayout>
 
