@@ -1,4 +1,4 @@
-package com.vision.wallpapers.api
+package com.vision.wallpapers.api.pexels
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

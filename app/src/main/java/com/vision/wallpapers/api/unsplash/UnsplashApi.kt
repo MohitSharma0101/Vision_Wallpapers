@@ -10,11 +10,11 @@ interface UnsplashApi {
     @GET("photos")
     suspend fun getPhotosList(
             @Query("page")
-            page:Int = 1,
+            page: Int = 1,
             @Query("per_page")
-            per_page:Int = 20,
+            per_page: Int = 30,
             @Query("order_by")
-            order_by:String = "popular"
+            order_by: String = "latest"
     ):Response<UnsplashResponse>
 
     @GET("search/photos")

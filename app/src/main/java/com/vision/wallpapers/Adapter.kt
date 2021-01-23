@@ -3,7 +3,6 @@ package com.vision.wallpapers
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.vision.wallpapers.databinding.PictureCardBinding
-import com.vision.wallpapers.model.pexels.Wallpaper
+import com.vision.wallpapers.model.unsplash.UnsplashResponseItem
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
     lateinit var binding: PictureCardBinding
@@ -30,17 +29,18 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val wallpaper = differ.currentList[position]
+        val photo = differ.currentList[position]
         holder.itemView.apply {
-            loadImage(context, wallpaper.src.original, binding.wallpaperIv)
+            loadImage(context, photo.urls.regular, binding.wallpaperIv)
 
         }
     }
 
-    private val differCallback: DiffUtil.ItemCallback<Wallpaper> = object : DiffUtil.ItemCallback<Wallpaper>() {
-        override fun areItemsTheSame(oldItem: Wallpaper, newItem: Wallpaper): Boolean = oldItem.url == newItem.url
+    private val differCallback: DiffUtil.ItemCallback<UnsplashResponseItem> = object : DiffUtil.ItemCallback<UnsplashResponseItem>() {
+        override fun areItemsTheSame(oldItem: UnsplashResponseItem, newItem: UnsplashResponseItem): Boolean = oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: Wallpaper, newItem: Wallpaper): Boolean = oldItem.url == newItem.url
+        override fun areContentsTheSame(oldItem: UnsplashResponseItem, newItem: UnsplashResponseItem): Boolean = oldItem.id == newItem.id
+
 
     }
     val differ = AsyncListDiffer(this, differCallback)
