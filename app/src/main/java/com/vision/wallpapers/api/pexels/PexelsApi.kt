@@ -1,6 +1,6 @@
-package com.vision.wallpapers.api
+package com.vision.wallpapers.api.pexels
 
-import com.vision.wallpapers.api.Api.KEY
+import com.vision.wallpapers.api.pexels.Api.KEY
 import com.vision.wallpapers.model.pexels.WallpaperResponse
 import retrofit2.Response
 import retrofit2.http.GET

@@ -1,6 +1,5 @@
 package com.vision.wallpapers.api.unsplash
 
-import com.vision.wallpapers.api.PexelsApi
 import com.vision.wallpapers.api.unsplash.api.ACCESS_KEY
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

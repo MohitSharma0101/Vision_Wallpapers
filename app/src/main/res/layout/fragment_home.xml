@@ -29,6 +29,7 @@
                 android:textSize="28dp" />
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/search_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
