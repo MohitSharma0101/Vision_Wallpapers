@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vision.wallpapers.model.pexels.WallpaperResponse
 import com.vision.wallpapers.model.unsplash.UnsplashResponse
+import com.vision.wallpapers.model.unsplash.UnsplashSearch
 import com.vision.wallpapers.repository.WallpaperRepo
 import com.vision.wallpapers.util.Resources
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
 
     val unsplashPhotos: MutableLiveData<Resources<UnsplashResponse>> = MutableLiveData()
 
-    val unsplashSearchPhotos: MutableLiveData<Resources<UnsplashResponse>> = MutableLiveData()
+    val unsplashSearchPhotos: MutableLiveData<Resources<UnsplashSearch>> = MutableLiveData()
 
 
     fun getCuratedWallpapers() = viewModelScope.launch {
@@ -55,7 +56,7 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         unsplashSearchPhotos.postValue(handleUnsplashPhotosSearchResponse(response))
     }
 
-    private fun handleUnsplashPhotosSearchResponse(response: Response<UnsplashResponse>): Resources<UnsplashResponse> {
+    private fun handleUnsplashPhotosSearchResponse(response: Response<UnsplashSearch>): Resources<UnsplashSearch> {
         if (response.isSuccessful) {
             response.body()?.let {
                 return Resources.Success(it)

@@ -36,7 +36,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         adapter = Adapter()
         setupRecyclerView(binding.homeRecyclerView, gridLayoutManager, adapter)
 
-        getUnsplashPhotos()
+//        getUnsplashPhotos()
 
         binding.searchEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -57,20 +57,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         recyclerView.adapter = adapter
     }
 
-    private fun getUnsplashPhotos() {
-
-        viewModel.getUnsplashPhotos()
-
-        viewModel.unsplashPhotos.observe(viewLifecycleOwner, Observer { photos ->
-            when (photos) {
-                is Resources.Success -> {
-                    photos.data?.let {
-                        adapter.differ.submitList(it)
-                    }
-                }
-            }
-        })
-    }
+//    private fun getUnsplashPhotos() {
+//
+//        viewModel.getUnsplashPhotos()
+//
+//        viewModel.unsplashPhotos.observe(viewLifecycleOwner, Observer { photos ->
+//            when (photos) {
+//                is Resources.Success -> {
+//                    photos.data?.let {
+//                        adapter.differ.submitList(it)
+//                    }
+//                }
+//            }
+//        })
+//    }
 
     private fun searchUnsplash(query: String) {
 
@@ -80,8 +80,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when (searchResults) {
                 is Resources.Success -> {
                     searchResults.data?.let {
-                        adapter.differ.submitList(it)
+                        adapter.differ.submitList(it.results)
                     }
+                }
+                is Resources.Loading -> {
                 }
             }
         })

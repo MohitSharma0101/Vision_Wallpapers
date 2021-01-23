@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.vision.wallpapers.databinding.PictureCardBinding
-import com.vision.wallpapers.model.unsplash.UnsplashResponseItem
+import com.vision.wallpapers.model.unsplash.Result
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
     lateinit var binding: PictureCardBinding
@@ -36,11 +36,14 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
         }
     }
 
-    private val differCallback: DiffUtil.ItemCallback<UnsplashResponseItem> = object : DiffUtil.ItemCallback<UnsplashResponseItem>() {
-        override fun areItemsTheSame(oldItem: UnsplashResponseItem, newItem: UnsplashResponseItem): Boolean = oldItem.id == newItem.id
+    private val differCallback: DiffUtil.ItemCallback<Result> = object : DiffUtil.ItemCallback<Result>() {
+        override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
+            return oldItem.urls.full == newItem.urls.full
+        }
 
-        override fun areContentsTheSame(oldItem: UnsplashResponseItem, newItem: UnsplashResponseItem): Boolean = oldItem.id == newItem.id
-
+        override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
+            return oldItem.urls.full == newItem.urls.full
+        }
 
     }
     val differ = AsyncListDiffer(this, differCallback)
