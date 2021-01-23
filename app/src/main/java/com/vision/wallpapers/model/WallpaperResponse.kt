@@ -1,6 +1,7 @@
 package com.vision.wallpapers.model
 
 data class WallpaperResponse(
+        val total_results: Int,
         val page: Int,
         val per_page: Int,
         val photos: MutableList<Wallpaper>,
