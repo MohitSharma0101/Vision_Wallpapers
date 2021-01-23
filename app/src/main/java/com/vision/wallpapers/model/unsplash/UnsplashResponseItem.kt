@@ -1,6 +1,6 @@
 package com.vision.wallpapers.model.unsplash
 
-data class unsplash_responseItem(
+data class UnsplashResponseItem(
         val blur_hash: String,
         val color: String,
         val created_at: String,

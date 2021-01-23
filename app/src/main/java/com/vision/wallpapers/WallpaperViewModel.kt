@@ -13,9 +13,6 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
 
     val curatedWallpapers: MutableLiveData<Resources<WallpaperResponse>> = MutableLiveData()
 
-//    init {
-//        getCuratedWallpapers()
-//    }
 
     fun getCuratedWallpapers() = viewModelScope.launch {
         curatedWallpapers.postValue(Resources.Loading())
