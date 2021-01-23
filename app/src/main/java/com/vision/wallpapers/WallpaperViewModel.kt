@@ -3,7 +3,7 @@ package com.vision.wallpapers
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vision.wallpapers.model.WallpaperResponse
+import com.vision.wallpapers.model.pexels.WallpaperResponse
 import com.vision.wallpapers.repository.WallpaperRepo
 import com.vision.wallpapers.util.Resources
 import kotlinx.coroutines.launch

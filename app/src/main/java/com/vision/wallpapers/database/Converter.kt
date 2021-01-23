@@ -1,13 +1,13 @@
 package com.vision.wallpapers.database
 
 import androidx.room.TypeConverter
-import com.vision.wallpapers.model.Src
+import com.vision.wallpapers.model.pexels.Src
 
 class Converter {
 
     @TypeConverter
-    fun fromSource(s:Src):String = s.landscape
+    fun fromSource(s: Src): String = s.landscape
 
     @TypeConverter
-    fun toSource(l:String):Src = Src(l,l,l,l,l,l,l,l)
+    fun toSource(l: String): Src = Src(l, l, l, l, l, l, l, l)
 }

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.vision.wallpapers.databinding.PictureCardBinding
-import com.vision.wallpapers.model.Wallpaper
+import com.vision.wallpapers.model.pexels.Wallpaper
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
     lateinit var binding: PictureCardBinding

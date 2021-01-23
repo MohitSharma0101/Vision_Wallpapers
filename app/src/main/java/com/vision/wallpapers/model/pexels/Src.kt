@@ -1,4 +1,4 @@
-package com.vision.wallpapers.model
+package com.vision.wallpapers.model.pexels
 
 data class Src(
     val landscape: String,

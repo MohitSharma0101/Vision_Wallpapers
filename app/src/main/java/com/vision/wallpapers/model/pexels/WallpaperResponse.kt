@@ -1,4 +1,4 @@
-package com.vision.wallpapers.model
+package com.vision.wallpapers.model.pexels
 
 data class WallpaperResponse(
         val total_results: Int,
