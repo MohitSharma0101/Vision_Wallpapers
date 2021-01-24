@@ -1,6 +1,6 @@
 package com.vision.wallpapers.api.alphaCoder
 
-import com.vision.wallpapers.api.PexelsApi
+
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

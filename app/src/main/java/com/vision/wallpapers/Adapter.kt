@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.vision.wallpapers.databinding.PictureCardBinding
 import com.vision.wallpapers.model.unsplash.Result
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
-    lateinit var binding: PictureCardBinding
 
-    inner class ViewHolder(binding: PictureCardBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(var binding: PictureCardBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun getItemViewType(position: Int): Int {
         return position
@@ -23,16 +23,16 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         Log.d("URL", "acda")
-        binding = PictureCardBinding
+        val binding = PictureCardBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val photo = differ.currentList[position]
-        holder.itemView.apply {
-            loadImage(context, photo.urls.regular, binding.wallpaperIv)
-
+        val photo = differ.currentList.get(position)
+        val itemViewHolder = holder
+        itemViewHolder.binding.apply {
+            loadImage(itemViewHolder.itemView.context, photo.urls.full, wallpaperIv)
         }
     }
 
@@ -48,13 +48,13 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
     }
     val differ = AsyncListDiffer(this, differCallback)
 
-
     override fun getItemCount(): Int = differ.currentList.size
 
     private fun loadImage(context: Context, url: String, image: ImageView) {
         Glide.with(context)
                 .load(url)
                 .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(image)
     }
 }
