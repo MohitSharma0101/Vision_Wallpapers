@@ -8,38 +8,35 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="10dp"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut">
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:strokeColor="#d3d3d3"
+        app:strokeWidth="0.5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/trade_winds"
-                android:text="Vision"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="28dp" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginVertical="5dp"
+                app:srcCompat="@drawable/ic_vision" />
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:layout_marginStart="10dp"
                 android:id="@+id/search_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="7dp"
                 android:hint="Search"
                 android:imeOptions="actionSearch"
-                android:layout_marginTop="12dp"
+                android:visibility="gone"
                 android:layout_marginBottom="12dp"
                 android:inputType="text"
                 android:maxLines="1"

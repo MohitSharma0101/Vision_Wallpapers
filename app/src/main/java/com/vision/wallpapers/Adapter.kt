@@ -30,9 +30,8 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo = differ.currentList.get(position)
-        val itemViewHolder = holder
-        itemViewHolder.binding.apply {
-            loadImage(itemViewHolder.itemView.context, photo.urls.full, wallpaperIv)
+        holder.apply {
+            loadImage(itemView.context, photo.urls.full, binding.wallpaperIv)
         }
     }
 
@@ -46,6 +45,7 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
         }
 
     }
+
     val differ = AsyncListDiffer(this, differCallback)
 
     override fun getItemCount(): Int = differ.currentList.size

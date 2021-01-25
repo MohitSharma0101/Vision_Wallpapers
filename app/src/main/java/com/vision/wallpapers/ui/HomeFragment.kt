@@ -2,7 +2,6 @@ package com.vision.wallpapers.ui
 
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -36,15 +35,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         adapter = Adapter()
         setupRecyclerView(binding.homeRecyclerView, gridLayoutManager, adapter)
 
-//        getUnsplashPhotos()
+        searchUnsplash("Nature")
 
-        binding.searchEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                searchUnsplash(binding.searchEditText.text.toString())
-                return@setOnEditorActionListener true
-            }
-            return@setOnEditorActionListener false
-        }
+//        binding.searchEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
+//            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                searchUnsplash(binding.searchEditText.text.toString())
+//                return@setOnEditorActionListener true
+//            }
+//            return@setOnEditorActionListener false
+//        }
 
     }
 
@@ -57,20 +56,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         recyclerView.adapter = adapter
     }
 
-//    private fun getUnsplashPhotos() {
-//
-//        viewModel.getUnsplashPhotos()
-//
-//        viewModel.unsplashPhotos.observe(viewLifecycleOwner, Observer { photos ->
-//            when (photos) {
-//                is Resources.Success -> {
-//                    photos.data?.let {
-//                        adapter.differ.submitList(it)
-//                    }
-//                }
-//            }
-//        })
-//    }
+    private fun getUnsplashPhotos() {
+
+        viewModel.getUnsplashPhotos()
+
+        viewModel.unsplashPhotos.observe(viewLifecycleOwner, Observer { photos ->
+            when (photos) {
+                is Resources.Success -> {
+                    photos.data?.let {
+
+                    }
+                }
+            }
+        })
+    }
 
     private fun searchUnsplash(query: String) {
 

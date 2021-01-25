@@ -9,13 +9,14 @@ import com.vision.wallpapers.model.pexels.Wallpaper
 
 
 @Database(
-    entities = [Wallpaper::class],
-    version = 1
+        entities = [Wallpaper::class],
+        version = 1
 )
 @TypeConverters(Converter::class)
-abstract class WallpaperDatabase: RoomDatabase() {
+abstract class WallpaperDatabase : RoomDatabase() {
 
     abstract fun getWallpaperDao(): WallpaperDao
+
     companion object {
         @Volatile
         private var instance: WallpaperDatabase? = null
@@ -28,9 +29,9 @@ abstract class WallpaperDatabase: RoomDatabase() {
         }
 
         private fun createDatabase(context: Context) = Room.databaseBuilder(
-            context.applicationContext,
-            WallpaperDatabase::class.java,
-            "wallpaper_db.db"
+                context.applicationContext,
+                WallpaperDatabase::class.java,
+                "wallpaper_db.db"
         ).build()
-      }
     }
+}
