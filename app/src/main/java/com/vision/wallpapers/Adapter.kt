@@ -1,7 +1,6 @@
 package com.vision.wallpapers
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -22,7 +21,6 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.d("URL", "acda")
         val binding = PictureCardBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
