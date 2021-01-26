@@ -1,6 +1,6 @@
 package com.vision.wallpapers.api.pexels
 
-import com.vision.wallpapers.api.pexels.Api.KEY
+
 import com.vision.wallpapers.model.pexels.WallpaperResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface PexelsApi {
 
-    @Headers("Authorization: $KEY")
+   // @Headers("Authorization: $KEY")
     @GET("search")
     suspend fun getImages(
             @Query("query")

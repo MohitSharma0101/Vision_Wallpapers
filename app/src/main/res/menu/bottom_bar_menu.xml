@@ -4,24 +4,23 @@
     <item
         android:id="@+id/homeFragment"
         android:checked="true"
-        android:title="Home"
-        android:icon="@drawable/image" />
+        android:title="Featured"
+        android:icon="@drawable/home_drawable" />
     <item
         android:id="@+id/categoriesFragment"
         android:title="Categories"
-        android:checked="false"
-        android:icon="@drawable/ic_baseline_category_24" />
+        android:icon="@drawable/categories_drawable" />
 
     <item android:id="@+id/favFragment"
         android:title="Favourite"
         android:checked="false"
-        android:icon="@drawable/ic_heart"
+        android:icon="@drawable/favourite_drawable"
         />
 
     <item android:id="@+id/settingsFragment"
         android:title="Settings"
         android:checked="false"
-        android:icon="@drawable/ic_settings"
+        android:icon="@drawable/settings_drawable"
         />
 
 </menu>
