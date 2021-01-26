@@ -3,6 +3,7 @@ package com.vision.wallpapers
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vision.wallpapers.api.alphaCoder.AlphaApi
 import com.vision.wallpapers.model.pexels.WallpaperResponse
 import com.vision.wallpapers.model.unsplash.UnsplashResponse
 import com.vision.wallpapers.model.unsplash.UnsplashSearch
@@ -16,6 +17,7 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
     val curatedWallpapers: MutableLiveData<Resources<WallpaperResponse>> = MutableLiveData()
 
     val unsplashPhotos: MutableLiveData<Resources<UnsplashResponse>> = MutableLiveData()
+    val alphaPhoto: MutableLiveData<Resources<AlphaApi>> = MutableLiveData()
 
     val unsplashSearchPhotos: MutableLiveData<Resources<UnsplashSearch>> = MutableLiveData()
 
@@ -49,6 +51,15 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         }
         return Resources.Error(response.message())
     }
+
+    fun getAlphaPhotos() = viewModelScope.launch {
+        alphaPhoto.postValue(Resources.Loading())
+        val response = wallpaperRepo.getAlphaImages()
+       // alphaPhoto.postValue(handleAlphaPhotosResponse(response))
+
+    }
+
+
 
     fun searchUnsplashPhotos(query: String) = viewModelScope.launch {
         unsplashSearchPhotos.postValue(Resources.Loading())

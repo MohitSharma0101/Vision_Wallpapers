@@ -1,11 +1,14 @@
 package com.vision.wallpapers.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.R
 import com.vision.wallpapers.WallpaperViewModel
@@ -86,5 +89,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         })
+    }
+
+    private fun handelChips() {
+        binding.apply {
+            chipGroup.setOnCheckedChangeListener { group, checkedId ->
+                if(lChip.isChecked){
+                    lChip.setChipBackgroundColorResource(R.color.black)
+                    lChip.setTextColor(resources.getColor(R.color.white))
+                }
+                if(pChip.isChecked){
+                    pChip.setChipBackgroundColorResource(R.color.black)
+                    pChip.setTextColor(resources.getColor(R.color.white))
+                }
+                if(fChip.isChecked){
+                    fChip.setChipBackgroundColorResource(R.color.black)
+                    fChip.setTextColor(resources.getColor(R.color.white))
+                }
+            }
+        }
     }
 }

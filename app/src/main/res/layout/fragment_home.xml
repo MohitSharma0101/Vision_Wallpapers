@@ -108,6 +108,7 @@
                 app:layout_constraintTop_toBottomOf="@id/cons1">
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
@@ -117,37 +118,43 @@
                     app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/f_chip"
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Featured"
-                        android:textSize="15sp"
-                        app:chipBackgroundColor="#fff"
-                        app:chipCornerRadius="8dp"
-                        app:chipStrokeColor="@color/black"
-                        app:chipStrokeWidth="0.8dp" />
+                        app:checkedIconTint="@color/white"
+                        android:textColor="@color/chip_text"
+                        app:chipBackgroundColor="@color/chip_bg"
+                        app:chipCornerRadius="18dp"
+
+                        />
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/p_chip"
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Popular"
                         android:textSize="12sp"
-                        app:chipBackgroundColor="#fff"
-                        app:chipCornerRadius="8dp"
-                        app:chipStrokeColor="@color/black"
-                        app:chipStrokeWidth="0.5dp" />
+                        app:checkedIconTint="@color/white"
+                        android:textColor="@color/chip_text"
+                        app:chipBackgroundColor="@color/chip_bg"
+                        app:chipCornerRadius="18dp"
+                      />
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/l_chip"
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Latest"
                         android:textSize="12sp"
-                        app:chipBackgroundColor="#fff"
-                        app:chipCornerRadius="8dp"
-                        app:chipStrokeColor="@color/black"
-                        app:chipStrokeWidth="0.5dp" />
+                        app:checkedIconTint="@color/white"
+                        android:textColor="@color/chip_text"
+                        app:chipBackgroundColor="@color/chip_bg"
+                        app:chipCornerRadius="18dp"
+                        />
 
                 </com.google.android.material.chip.ChipGroup>
 
