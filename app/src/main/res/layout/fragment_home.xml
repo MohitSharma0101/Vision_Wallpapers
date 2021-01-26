@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="0dp"
@@ -13,45 +14,176 @@
         app:strokeColor="#d3d3d3"
         app:strokeWidth="0.5dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_marginVertical="5dp"
-                app:srcCompat="@drawable/ic_vision" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:layout_marginStart="10dp"
-                android:id="@+id/search_edit_text"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cons1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/edit_text"
-                android:drawableStart="@drawable/ic_search"
-                android:drawablePadding="7dp"
-                android:hint="Search"
-                android:imeOptions="actionSearch"
-                android:visibility="gone"
-                android:layout_marginBottom="12dp"
-                android:inputType="text"
-                android:maxLines="1"
-                android:paddingStart="15dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/black"
-                android:textCursorDrawable="@null"
-                android:textSize="15sp">
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
 
-            </androidx.appcompat.widget.AppCompatEditText>
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="30dp"
+                        android:layout_height="26dp"
+                        android:layout_marginStart="15dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_vision_svg" />
 
-        </LinearLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="-2dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:letterSpacing="0.05"
+                        android:paddingTop="5dp"
+                        android:text="ISION"
+                        android:textColor="#808080"
+                        android:textSize="15dp" />
 
 
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/search_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/edit_text"
+                        android:drawableStart="@drawable/ic_search"
+                        android:drawablePadding="7dp"
+                        android:hint="Search"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="10dp"
+                        android:textColor="@color/black"
+                        android:textCursorDrawable="@null"
+                        android:textSize="15sp"
+                        android:visibility="gone">
+
+
+                    </androidx.appcompat.widget.AppCompatEditText>
+
+                </LinearLayout>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/sort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginEnd="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_sort_descending" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:scrollbars="none"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cons1">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:nestedScrollingEnabled="true"
+                    app:chipSpacingHorizontal="8dp"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nature"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#fff"
+                        app:chipCornerRadius="8dp"
+                        app:chipStrokeColor="@color/black"
+                        app:chipStrokeWidth="0.8dp" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nature"
+                        android:textSize="12sp"
+                        app:chipBackgroundColor="#fff"
+                        app:chipCornerRadius="8dp"
+                        app:chipStrokeColor="@color/black"
+                        app:chipStrokeWidth="0.5dp" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nature"
+                        android:textSize="12sp"
+                        app:chipBackgroundColor="#fff"
+                        app:chipCornerRadius="8dp"
+                        app:chipStrokeColor="@color/black"
+                        app:chipStrokeWidth="0.5dp" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nature"
+                        android:textSize="12sp"
+                        app:chipBackgroundColor="#fff"
+                        app:chipCornerRadius="8dp"
+                        app:chipStrokeColor="@color/black"
+                        app:chipStrokeWidth="0.5dp" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nature"
+                        android:textSize="12sp"
+                        app:chipBackgroundColor="#fff"
+                        app:chipCornerRadius="8dp"
+                        app:chipStrokeColor="@color/black"
+                        app:chipStrokeWidth="0.5dp" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nature"
+                        android:textSize="12sp"
+                        app:chipBackgroundColor="#fff"
+                        app:chipCornerRadius="8dp"
+                        app:chipStrokeColor="@color/black"
+                        app:chipStrokeWidth="0.5dp" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
