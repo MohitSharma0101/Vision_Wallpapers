@@ -15,20 +15,21 @@
         app:strokeWidth="0.5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:id="@+id/cons1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <LinearLayout
                     android:id="@+id/linear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="0dp"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -85,13 +86,15 @@
                     android:id="@+id/sort"
                     android:layout_width="wrap_content"
                     android:layout_height="18dp"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginEnd="15dp"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_sort_descending" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -105,11 +108,11 @@
                 app:layout_constraintTop_toBottomOf="@id/cons1">
 
                 <com.google.android.material.chip.ChipGroup
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:nestedScrollingEnabled="true"
-                    app:chipSpacingHorizontal="8dp"
+                    app:chipSpacingHorizontal="12dp"
                     app:singleLine="true"
                     app:singleSelection="true">
 
@@ -117,7 +120,7 @@
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Nature"
+                        android:text="Featured"
                         android:textSize="15sp"
                         app:chipBackgroundColor="#fff"
                         app:chipCornerRadius="8dp"
@@ -128,7 +131,7 @@
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Nature"
+                        android:text="Popular"
                         android:textSize="12sp"
                         app:chipBackgroundColor="#fff"
                         app:chipCornerRadius="8dp"
@@ -139,40 +142,7 @@
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Nature"
-                        android:textSize="12sp"
-                        app:chipBackgroundColor="#fff"
-                        app:chipCornerRadius="8dp"
-                        app:chipStrokeColor="@color/black"
-                        app:chipStrokeWidth="0.5dp" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Nature"
-                        android:textSize="12sp"
-                        app:chipBackgroundColor="#fff"
-                        app:chipCornerRadius="8dp"
-                        app:chipStrokeColor="@color/black"
-                        app:chipStrokeWidth="0.5dp" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Nature"
-                        android:textSize="12sp"
-                        app:chipBackgroundColor="#fff"
-                        app:chipCornerRadius="8dp"
-                        app:chipStrokeColor="@color/black"
-                        app:chipStrokeWidth="0.5dp" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Nature"
+                        android:text="Latest"
                         android:textSize="12sp"
                         app:chipBackgroundColor="#fff"
                         app:chipCornerRadius="8dp"
