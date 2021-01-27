@@ -1,73 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true">
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:fitsSystemWindows="true"
-      >
+        android:background="@color/white"
+        android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+
+        <TextView
+            android:id="@+id/expandedImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:text="Search"
+            android:textColor="@color/white"
+            android:textSize="80sp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed" />
 
-           <com.google.android.material.textview.MaterialTextView
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:text="Search"
-               android:textColor="#fff"
-               android:textSize="45sp"
-               android:background="#000"
-               android:gravity="center"
-               app:layout_collapseMode="none"
-               />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/search_edit_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                app:boxBackgroundColor="#000000"
-                app:boxBackgroundMode="filled"
-                android:layout_gravity="bottom"
-                app:boxCollapsedPaddingTop="0dp"
-                app:boxStrokeWidth="2dp"
-                app:endIconMode="clear_text"
-                android:hint="Search News"
-                app:startIconDrawable="@drawable/ic_search"
-                app:layout_collapseMode="pin"
-                android:layout_margin="15dp"
-                app:startIconTint="#fff">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/search_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:textSize="25sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:autofillHints="Search"
+            android:hint="Search"
+            android:textColorHint="@color/white"
+            android:textSize="20sp"
+            app:layout_scrollFlags="enterAlways" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        
-    </ScrollView>
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Bears are carnivoran mammals of the family Ursidae. They are classified as caniforms, or doglike carnivorans. Although only eight species of bears are extant, they are widespread, appearing in a wide variety of habitats throughout the Northern Hemisphere and partially in the Southern Hemisphere. Bears are found on the continents of North America, South America, Europe, and Asia. Common characteristics of modern bears include large bodies with stocky legs, long snouts, small rounded ears, shaggy hair, plantigrade paws with five nonretractile claws, and short tails.
+
+While the polar bear is mostly carnivorous, and the giant panda feeds almost entirely on bamboo, the remaining six species are omnivorous with varied diets. With the exception of courting individuals and mothers with their young, bears are typically solitary animals. They may be diurnal or nocturnal and have an excellent sense of smell. Despite their heavy build and awkward gait, they are adept runners, climbers, and swimmers. Bears use shelters, such as caves and logs, as their dens; most species occupy their dens during the winter for a long period of hibernation, up to 100 days.
+
+Bears have been hunted since prehistoric times for their meat and fur; they have been used for bear-baiting and other forms of entertainment, such as being made to dance. With their powerful physical presence, they play a prominent role in the arts, mythology, and other cultural aspects of various human societies. In modern times, bears have come under pressure through encroachment on their habitats and illegal trade in bear parts, including the Asian bile bear market. The IUCN lists six bear species as vulnerable or endangered, and even least concern species, such as the brown bear, are at risk of extirpation in certain countries. The poaching and international trade of these most threatened populations are prohibited, but still ongoing."
+            android:textSize="20sp" />
+
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
