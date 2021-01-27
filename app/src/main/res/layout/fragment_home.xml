@@ -114,6 +114,7 @@
                     android:layout_marginStart="10dp"
                     android:nestedScrollingEnabled="true"
                     app:chipSpacingHorizontal="12dp"
+                    app:selectionRequired="true"
                     app:singleLine="true"
                     app:singleSelection="true">
 

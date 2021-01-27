@@ -13,11 +13,9 @@ interface AlphaApi {
             @Query("auth")
             auth:String = KEY,
             @Query("method")
-            method:String = "popular",
+            method:String = "highest_rated",
             @Query("page")
-            page:Int = 1,
-            @Query("operator")
-            res:String = ">=min"
+            page:Int = 1
     ):Response<AlphaPhotoResponse>
 
 

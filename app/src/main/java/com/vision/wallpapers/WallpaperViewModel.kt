@@ -53,9 +53,9 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         return Resources.Error(response.message())
     }
 
-    fun getAlphaPhotos() = viewModelScope.launch {
+    fun getAlphaPhotos(method:String = "highest_rated") = viewModelScope.launch {
         alphaPhoto.postValue(Resources.Loading())
-        val response = wallpaperRepo.getAlphaImages()
+        val response = wallpaperRepo.getAlphaImages(method)
         alphaPhoto.postValue(handleAlphaPhotosResponse(response))
     }
 

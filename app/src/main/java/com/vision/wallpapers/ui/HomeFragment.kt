@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.R
 import com.vision.wallpapers.WallpaperViewModel
 import com.vision.wallpapers.databinding.FragmentHomeBinding
 import com.vision.wallpapers.util.Resources
+import java.util.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -37,10 +39,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         adapter = Adapter()
         setupRecyclerView(binding.homeRecyclerView, gridLayoutManager, adapter)
 
-      //  searchUnsplash("Nature")
 
         getAlphaImages()
 
+        handelChips()
     }
 
     private fun setupRecyclerView(
@@ -52,10 +54,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         recyclerView.adapter = adapter
     }
 
-    private fun getUnsplashPhotos() {
-
+    private fun getUnSplashPhotos() {
         viewModel.getUnsplashPhotos()
-
         viewModel.unsplashPhotos.observe(viewLifecycleOwner, Observer { photos ->
             when (photos) {
                 is Resources.Success -> {
@@ -73,7 +73,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when(it){
                 is Resources.Success ->{
                     it.data?.let {list ->
-                        Log.d("Check",list.wallpapers.toString())
                        adapter.differ.submitList(list.wallpapers)
                     }
                 }
@@ -85,10 +84,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
 
-    private fun searchUnsplash(query: String) {
-
+    private fun searchUnSplash(query: String) {
         viewModel.searchUnsplashPhotos(query)
-
         viewModel.unsplashSearchPhotos.observe(viewLifecycleOwner, Observer { searchResults ->
             when (searchResults) {
                 is Resources.Success -> {
@@ -105,17 +102,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun handelChips() {
         binding.apply {
             chipGroup.setOnCheckedChangeListener { group, checkedId ->
-                if(lChip.isChecked){
-                    lChip.setChipBackgroundColorResource(R.color.black)
-                    lChip.setTextColor(resources.getColor(R.color.white))
-                }
-                if(pChip.isChecked){
-                    pChip.setChipBackgroundColorResource(R.color.black)
-                    pChip.setTextColor(resources.getColor(R.color.white))
-                }
-                if(fChip.isChecked){
-                    fChip.setChipBackgroundColorResource(R.color.black)
-                    fChip.setTextColor(resources.getColor(R.color.white))
+               val chip = chipGroup.findViewById<Chip>(checkedId)
+                chip?.let {
+                    val s =  chip.text.toString().toLowerCase(Locale.ROOT)
+                    viewModel.getAlphaPhotos(s)
                 }
             }
         }

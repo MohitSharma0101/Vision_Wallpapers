@@ -33,7 +33,6 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo = differ.currentList[position]
-        Log.d("Check","True")
         holder.apply {
             photo?.let {
                 loadImage(itemView.context,photo.urlImage, binding.wallpaperIv,photo.urlThumb)
@@ -57,11 +56,10 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     private fun loadImage(context: Context, url: String, image: ImageView , thumb:String) {
         Glide.with(context)
-                .load(url)
-                .dontTransform()
+                .load(thumb)
                 .thumbnail(0.01f)
                 .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(image)
     }
     private fun removeBackSlash(s:String):String{
