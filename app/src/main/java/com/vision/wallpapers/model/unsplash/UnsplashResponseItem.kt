@@ -1,5 +1,7 @@
 package com.vision.wallpapers.model.unsplash
 
+import com.vision.wallpapers.model.Response
+
 data class UnsplashResponseItem(
         val blur_hash: String,
         val color: String,
@@ -15,4 +17,12 @@ data class UnsplashResponseItem(
         val urls: Urls,
         val user: User,
         val width: Int
-)
+):Response{
+    override val idR: Int
+        get() = id.toInt()
+    override val urlImage: String
+        get() = urls.full
+    override val urlThumb: String
+        get() = blur_hash
+
+}

@@ -1,14 +1,13 @@
 package com.vision.wallpapers.ui
 
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.core.view.get
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
 import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.R
 import com.vision.wallpapers.WallpaperViewModel
@@ -38,15 +37,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         adapter = Adapter()
         setupRecyclerView(binding.homeRecyclerView, gridLayoutManager, adapter)
 
-        searchUnsplash("Nature")
+      //  searchUnsplash("Nature")
 
-//        binding.searchEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
-//            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                searchUnsplash(binding.searchEditText.text.toString())
-//                return@setOnEditorActionListener true
-//            }
-//            return@setOnEditorActionListener false
-//        }
+        getAlphaImages()
 
     }
 
@@ -67,12 +60,30 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when (photos) {
                 is Resources.Success -> {
                     photos.data?.let {
-
+                      //  adapter.differ.submitList(it)
                     }
                 }
             }
         })
     }
+
+    private fun getAlphaImages(){
+        viewModel.getAlphaPhotos()
+        viewModel.alphaPhoto.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resources.Success ->{
+                    it.data?.let {list ->
+                        Log.d("Check",list.wallpapers.toString())
+                       adapter.differ.submitList(list.wallpapers)
+                    }
+                }
+                else -> {
+                    Toast.makeText(requireContext(),"Loading",Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
 
     private fun searchUnsplash(query: String) {
 

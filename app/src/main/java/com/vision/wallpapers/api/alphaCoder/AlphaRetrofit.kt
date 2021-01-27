@@ -17,7 +17,7 @@ class AlphaRetrofit {
                     .build()
 
             Retrofit.Builder()
-                    .baseUrl("https://wall.alphacoders.com/api2.0/get.php")
+                    .baseUrl("https://wall.alphacoders.com/api2.0/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build()

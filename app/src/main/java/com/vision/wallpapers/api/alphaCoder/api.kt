@@ -1,5 +1,5 @@
 package com.vision.wallpapers.api.alphaCoder
 
 object api {
-    const val KEY = "ea42d07ffba704536e627e290267d3bbs"
+    const val KEY = "afb26cdd819a496154c545147acfcf30"
 }
