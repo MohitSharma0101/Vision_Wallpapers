@@ -13,6 +13,7 @@ import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.R
 import com.vision.wallpapers.WallpaperViewModel
 import com.vision.wallpapers.databinding.FragmentHomeBinding
+import com.vision.wallpapers.util.Constants
 import com.vision.wallpapers.util.Resources
 import java.util.*
 
@@ -35,24 +36,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 return true
             }
         }
-
         adapter = Adapter()
-        setupRecyclerView(binding.homeRecyclerView, gridLayoutManager, adapter)
+        binding.homeRecyclerView.layoutManager = gridLayoutManager
+        binding.homeRecyclerView.adapter = adapter
 
+        if(viewModel.method != Constants.HIGH_RATED){
+           val s = viewModel.method
+            if(s == Constants.NEWEST){
+                binding.lChip.isChecked = true
+            }else if(s == Constants.POPULAR){
+                binding.pChip.isChecked = true
+            }else{
+                binding.fChip.isChecked = true
+            }
+        }
+        handelChips()
 
         getAlphaImages()
-
-        handelChips()
     }
 
-    private fun setupRecyclerView(
-            recyclerView: RecyclerView,
-            gridLayoutManager: GridLayoutManager,
-            adapter: Adapter
-    ) {
-        recyclerView.layoutManager = gridLayoutManager
-        recyclerView.adapter = adapter
-    }
 
     private fun getUnSplashPhotos() {
         viewModel.getUnsplashPhotos()
@@ -60,7 +62,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when (photos) {
                 is Resources.Success -> {
                     photos.data?.let {
-                      //  adapter.differ.submitList(it)
+                        adapter.differ.submitList(it.list)
                     }
                 }
             }
@@ -68,7 +70,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun getAlphaImages(){
-        viewModel.getAlphaPhotos()
         viewModel.alphaPhoto.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resources.Success ->{
@@ -105,6 +106,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                val chip = chipGroup.findViewById<Chip>(checkedId)
                 chip?.let {
                     val s =  chip.text.toString().toLowerCase(Locale.ROOT)
+                    viewModel.method = s
                     viewModel.getAlphaPhotos(s)
                 }
             }

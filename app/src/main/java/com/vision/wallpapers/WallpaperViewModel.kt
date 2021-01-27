@@ -9,6 +9,7 @@ import com.vision.wallpapers.model.pexels.WallpaperResponse
 import com.vision.wallpapers.model.unsplash.UnsplashResponse
 import com.vision.wallpapers.model.unsplash.UnsplashSearch
 import com.vision.wallpapers.repository.WallpaperRepo
+import com.vision.wallpapers.util.Constants
 import com.vision.wallpapers.util.Resources
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -22,6 +23,10 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
 
     val unsplashSearchPhotos: MutableLiveData<Resources<UnsplashSearch>> = MutableLiveData()
 
+    var method = Constants.HIGH_RATED
+    init {
+        getAlphaPhotos()
+    }
 
     fun getCuratedWallpapers() = viewModelScope.launch {
         curatedWallpapers.postValue(Resources.Loading())
