@@ -1,3 +1,5 @@
 package com.vision.wallpapers.model.unsplash
 
-class UnsplashResponse : ArrayList<UnsplashResponseItem>()
+data class UnsplashResponse(
+  val list:List<UnsplashResponseItem>
+)

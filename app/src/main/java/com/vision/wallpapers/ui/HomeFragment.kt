@@ -1,9 +1,9 @@
 package com.vision.wallpapers.ui
 
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.core.view.get
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,7 +13,9 @@ import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.R
 import com.vision.wallpapers.WallpaperViewModel
 import com.vision.wallpapers.databinding.FragmentHomeBinding
+import com.vision.wallpapers.util.Constants
 import com.vision.wallpapers.util.Resources
+import java.util.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -34,50 +36,57 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 return true
             }
         }
-
         adapter = Adapter()
-        setupRecyclerView(binding.homeRecyclerView, gridLayoutManager, adapter)
+        binding.homeRecyclerView.layoutManager = gridLayoutManager
+        binding.homeRecyclerView.adapter = adapter
 
-        searchUnsplash("Nature")
+        if(viewModel.method != Constants.HIGH_RATED){
+           val s = viewModel.method
+            if(s == Constants.NEWEST){
+                binding.lChip.isChecked = true
+            }else if(s == Constants.POPULAR){
+                binding.pChip.isChecked = true
+            }else{
+                binding.fChip.isChecked = true
+            }
+        }
+        handelChips()
 
-//        binding.searchEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
-//            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                searchUnsplash(binding.searchEditText.text.toString())
-//                return@setOnEditorActionListener true
-//            }
-//            return@setOnEditorActionListener false
-//        }
-
+        getAlphaImages()
     }
 
-    private fun setupRecyclerView(
-            recyclerView: RecyclerView,
-            gridLayoutManager: GridLayoutManager,
-            adapter: Adapter
-    ) {
-        recyclerView.layoutManager = gridLayoutManager
-        recyclerView.adapter = adapter
-    }
 
-    private fun getUnsplashPhotos() {
-
+    private fun getUnSplashPhotos() {
         viewModel.getUnsplashPhotos()
-
         viewModel.unsplashPhotos.observe(viewLifecycleOwner, Observer { photos ->
             when (photos) {
                 is Resources.Success -> {
                     photos.data?.let {
-
+                        adapter.differ.submitList(it.list)
                     }
                 }
             }
         })
     }
 
-    private fun searchUnsplash(query: String) {
+    private fun getAlphaImages(){
+        viewModel.alphaPhoto.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resources.Success ->{
+                    it.data?.let {list ->
+                       adapter.differ.submitList(list.wallpapers)
+                    }
+                }
+                else -> {
+                    Toast.makeText(requireContext(),"Loading",Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
 
+
+    private fun searchUnSplash(query: String) {
         viewModel.searchUnsplashPhotos(query)
-
         viewModel.unsplashSearchPhotos.observe(viewLifecycleOwner, Observer { searchResults ->
             when (searchResults) {
                 is Resources.Success -> {
@@ -94,17 +103,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun handelChips() {
         binding.apply {
             chipGroup.setOnCheckedChangeListener { group, checkedId ->
-                if(lChip.isChecked){
-                    lChip.setChipBackgroundColorResource(R.color.black)
-                    lChip.setTextColor(resources.getColor(R.color.white))
-                }
-                if(pChip.isChecked){
-                    pChip.setChipBackgroundColorResource(R.color.black)
-                    pChip.setTextColor(resources.getColor(R.color.white))
-                }
-                if(fChip.isChecked){
-                    fChip.setChipBackgroundColorResource(R.color.black)
-                    fChip.setTextColor(resources.getColor(R.color.white))
+               val chip = chipGroup.findViewById<Chip>(checkedId)
+                chip?.let {
+                    val s =  chip.text.toString().toLowerCase(Locale.ROOT)
+                    viewModel.method = s
+                    viewModel.getAlphaPhotos(s)
                 }
             }
         }

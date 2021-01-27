@@ -1,6 +1,8 @@
 package com.vision.wallpapers
 
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.vision.wallpapers.databinding.PictureCardBinding
-import com.vision.wallpapers.model.unsplash.Result
+import com.vision.wallpapers.model.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
@@ -27,32 +32,37 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val photo = differ.currentList.get(position)
+        val photo = differ.currentList[position]
         holder.apply {
-            loadImage(itemView.context, photo.urls.full, binding.wallpaperIv)
+            photo?.let {
+                loadImage(itemView.context,photo.urlImage, binding.wallpaperIv,photo.urlThumb)
+            }
         }
     }
 
-    private val differCallback: DiffUtil.ItemCallback<Result> = object : DiffUtil.ItemCallback<Result>() {
-        override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
-            return oldItem.urls.full == newItem.urls.full
+    private val differCallback: DiffUtil.ItemCallback<Response> = object : DiffUtil.ItemCallback<Response>() {
+        override fun areItemsTheSame(oldItem: Response, newItem: Response): Boolean {
+            return oldItem.idR == newItem.idR
         }
 
-        override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
-            return oldItem.urls.full == newItem.urls.full
+        override fun areContentsTheSame(oldItem: Response, newItem: Response): Boolean {
+            return oldItem.idR == newItem.idR
         }
-
     }
 
     val differ = AsyncListDiffer(this, differCallback)
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    private fun loadImage(context: Context, url: String, image: ImageView) {
+    private fun loadImage(context: Context, url: String, image: ImageView , thumb:String) {
         Glide.with(context)
-                .load(url)
-                .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .load(thumb)
+                .thumbnail(0.01f)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(image)
+    }
+    private fun removeBackSlash(s:String):String{
+        return s.replace("\\/","\\")
     }
 }
