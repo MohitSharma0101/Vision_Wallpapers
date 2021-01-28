@@ -1,21 +1,22 @@
 package com.vision.wallpapers
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.util.Log
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.vision.wallpapers.databinding.PictureCardBinding
 import com.vision.wallpapers.model.Response
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.vision.wallpapers.util.Palette
+import java.util.*
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
@@ -34,8 +35,10 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo = differ.currentList[position]
         holder.apply {
-            photo?.let {
-                loadImage(itemView.context,photo.urlImage, binding.wallpaperIv,photo.urlThumb)
+            binding.wallpaperIv.load(photo.urlImage){
+                crossfade(true)
+                allowHardware(true)
+                placeholder(Color.parseColor( Palette.LIGHT.random()).toDrawable())
             }
         }
     }
@@ -54,7 +57,7 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    private fun loadImage(context: Context, url: String, image: ImageView , thumb:String) {
+    private fun loadImage(context: Context, url: String, image: ImageView, thumb: String) {
         Glide.with(context)
                 .load(thumb)
                 .thumbnail(0.01f)
@@ -62,7 +65,7 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(image)
     }
-    private fun removeBackSlash(s:String):String{
-        return s.replace("\\/","\\")
+    private fun removeBackSlash(s: String):String{
+        return s.replace("\\/", "\\")
     }
 }

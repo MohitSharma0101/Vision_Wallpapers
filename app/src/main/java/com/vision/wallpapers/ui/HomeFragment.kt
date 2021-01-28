@@ -74,7 +74,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when(it){
                 is Resources.Success ->{
                     it.data?.let {list ->
-                       adapter.differ.submitList(list.wallpapers)
+                       adapter.differ.submitList(list.wallpapers.shuffled())
                     }
                 }
                 else -> {
