@@ -14,6 +14,6 @@ class WallpaperRepo {
 
     suspend fun getAlphaImages(m:String = "highest_rated") = AlphaRetrofit.api.getPhotos(method = m)
 
-    suspend fun getAlphaCategoryList() = AlphaRetrofit.api.getCategoryList()
+    suspend  fun getAlphaCategoryList() = AlphaRetrofit.api.getCategoryList()
 
 }

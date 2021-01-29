@@ -1,20 +1,32 @@
 package com.vision.wallpapers
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.vision.wallpapers.databinding.PictureCardBinding
 import com.vision.wallpapers.model.Response
+import com.vision.wallpapers.ui.FullImageActivity
 import com.vision.wallpapers.util.Palette
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     class ViewHolder(var binding: PictureCardBinding) : RecyclerView.ViewHolder(binding.root)
+    private var onItemClickListener:( (View,String) -> Unit )? = null
+
+    fun setOnItemClickListener(listener: (View,String) -> Unit){
+        onItemClickListener = listener
+    }
 
     override fun getItemViewType(position: Int): Int {
         return position
@@ -34,6 +46,11 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
                 allowHardware(true)
                 placeholder(Color.parseColor( Palette.LIGHT[position % Palette.LIGHT.size] ).toDrawable())
             }
+            binding.wallpaperIv.setOnClickListener {
+                onItemClickListener?.let {
+                    it(binding.wallpaperIv,photo.urlImage)
+                }
+            }
         }
     }
 
@@ -51,4 +68,12 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     override fun getItemCount(): Int = differ.currentList.size
 
+    private fun loadImage(context: Context, url: String, image: ImageView, thumb: String) {
+        Glide.with(context)
+                .load(thumb)
+                .thumbnail(0.01f)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(image)
+    }
 }

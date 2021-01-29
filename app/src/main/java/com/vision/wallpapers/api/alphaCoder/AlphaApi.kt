@@ -20,12 +20,12 @@ interface AlphaApi {
     ):Response<AlphaPhotoResponse>
 
     @GET("get.php")
-    suspend fun getCategoryList(
-        @Query("auth")
-        auth: String = KEY,
-        @Query("method")
-        method: String = "category_list"
-    ): Response<AlphaCategoryResponse>
+     suspend fun getCategoryList(
+            @Query("auth")
+            auth:String = KEY,
+            @Query("method")
+            method:String = "category_list"
+    ):Response<AlphaCategoryResponse>
 
 
 }
