@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.google.android.material.imageview.ShapeableImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/wallpaperIv"
         android:transitionName="photo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:background="@drawable/image_back"
         />
     <com.google.android.material.card.MaterialCardView

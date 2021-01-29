@@ -91,11 +91,11 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         return Resources.Error(response.message())
     }
 
-    fun getAlphaCategoryList() {
+    fun getAlphaCategoryList() = viewModelScope.launch {
         val response = wallpaperRepo.getAlphaCategoryList()
         if(response.isSuccessful){
            response.body()?.let {
-              for(c in it.list){
+              for(c in it.categories){
                   Log.d(c.count.toString(),c.name)
               }
            }

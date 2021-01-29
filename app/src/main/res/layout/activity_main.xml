@@ -26,7 +26,6 @@
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         android:layout_gravity="bottom"
         app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
         app:menu="@menu/bottom_bar_menu"

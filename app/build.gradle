@@ -80,4 +80,7 @@ dependencies {
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
 
     implementation "io.coil-kt:coil:0.9.1"
+
+    //zoomable Phot viewer
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }

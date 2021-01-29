@@ -1,8 +1,10 @@
 package com.vision.wallpapers
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.graphics.drawable.toDrawable
@@ -14,11 +16,17 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.vision.wallpapers.databinding.PictureCardBinding
 import com.vision.wallpapers.model.Response
+import com.vision.wallpapers.ui.FullImageActivity
 import com.vision.wallpapers.util.Palette
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     class ViewHolder(var binding: PictureCardBinding) : RecyclerView.ViewHolder(binding.root)
+    private var onItemClickListener:( (View,String) -> Unit )? = null
+
+    fun setOnItemClickListener(listener: (View,String) -> Unit){
+        onItemClickListener = listener
+    }
 
     override fun getItemViewType(position: Int): Int {
         return position
@@ -37,6 +45,11 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
                 crossfade(true)
                 allowHardware(true)
                 placeholder(Color.parseColor( Palette.LIGHT[position % Palette.LIGHT.size] ).toDrawable())
+            }
+            binding.wallpaperIv.setOnClickListener {
+                onItemClickListener?.let {
+                    it(binding.wallpaperIv,photo.urlImage)
+                }
             }
         }
     }

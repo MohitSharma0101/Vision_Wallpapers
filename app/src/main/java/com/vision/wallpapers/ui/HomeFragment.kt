@@ -1,9 +1,11 @@
 package com.vision.wallpapers.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -39,6 +41,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         adapter = Adapter()
         binding.homeRecyclerView.layoutManager = gridLayoutManager
         binding.homeRecyclerView.adapter = adapter
+
+        adapter.setOnItemClickListener {image,url ->
+            val intent = Intent(context,FullImageActivity::class.java)
+            intent.putExtra("url",url)
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation( (activity as MainActivity),image,"photo")
+            startActivity(intent,options.toBundle())
+        }
 
         if(viewModel.method != Constants.HIGH_RATED){
            val s = viewModel.method
