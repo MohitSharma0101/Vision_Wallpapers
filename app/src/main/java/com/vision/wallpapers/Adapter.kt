@@ -2,7 +2,6 @@ package com.vision.wallpapers
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,7 +15,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.vision.wallpapers.databinding.PictureCardBinding
 import com.vision.wallpapers.model.Response
 import com.vision.wallpapers.util.Palette
-import java.util.*
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
@@ -38,7 +36,7 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
             binding.wallpaperIv.load(photo.urlImage){
                 crossfade(true)
                 allowHardware(true)
-                placeholder(Color.parseColor( Palette.LIGHT.random()).toDrawable())
+                placeholder(Color.parseColor( Palette.LIGHT[position % Palette.LIGHT.size] ).toDrawable())
             }
         }
     }
@@ -64,8 +62,5 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(image)
-    }
-    private fun removeBackSlash(s: String):String{
-        return s.replace("\\/", "\\")
     }
 }

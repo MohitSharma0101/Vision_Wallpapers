@@ -1,6 +1,7 @@
 package com.vision.wallpapers.api.alphaCoder
 
 import com.vision.wallpapers.api.alphaCoder.api.KEY
+import com.vision.wallpapers.model.alphaCoder.AlphaCategoryResponse
 import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -17,6 +18,14 @@ interface AlphaApi {
             @Query("page")
             page:Int = 1
     ):Response<AlphaPhotoResponse>
+
+    @GET("get.php")
+     fun getCategoryList(
+            @Query("auth")
+            auth:String = KEY,
+            @Query("method")
+            method:String = "category_list"
+    ):Response<AlphaCategoryResponse>
 
 
 }

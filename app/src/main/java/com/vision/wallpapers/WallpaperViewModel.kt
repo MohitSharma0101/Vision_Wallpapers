@@ -1,5 +1,6 @@
 package com.vision.wallpapers
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,6 +27,7 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
     var method = Constants.HIGH_RATED
     init {
         getAlphaPhotos()
+
     }
 
     fun getCuratedWallpapers() = viewModelScope.launch {
@@ -88,5 +90,18 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         }
         return Resources.Error(response.message())
     }
+
+    fun getAlphaCategoryList() {
+        val response = wallpaperRepo.getAlphaCategoryList()
+        if(response.isSuccessful){
+           response.body()?.let {
+              for(c in it.list){
+                  Log.d(c.count.toString(),c.name)
+              }
+           }
+        }
+    }
+
+
 
 }
