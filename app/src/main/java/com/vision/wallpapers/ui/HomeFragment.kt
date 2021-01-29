@@ -46,7 +46,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val intent = Intent(context,FullImageActivity::class.java)
             intent.putExtra("url",url)
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation( (activity as MainActivity),image,"photo")
-            startActivity(intent,options.toBundle())
+            startActivity(intent)
         }
 
         if(viewModel.method != Constants.HIGH_RATED){
