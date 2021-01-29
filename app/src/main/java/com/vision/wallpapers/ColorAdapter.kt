@@ -6,27 +6,40 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.vision.wallpapers.databinding.CategoryCardBinding
+import com.vision.wallpapers.databinding.ColorCardBinding
 import com.vision.wallpapers.model.alphaCoder.AlphaCategoryResponseItem
 
-class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+class ColorAdapter : RecyclerView.Adapter<ColorAdapter.ViewHolder>() {
 
-    class ViewHolder(var binding: CategoryCardBinding) : RecyclerView.ViewHolder(binding.root)
+    private var onItemClickListener: ((String) -> Unit)? = null
+
+
+    class ViewHolder(var binding: ColorCardBinding) : RecyclerView.ViewHolder(binding.root)
+
+    fun setOnItemClickListener(listener: (String) -> Unit) {
+        onItemClickListener = listener
+    }
 
     override fun getItemViewType(position: Int): Int {
         return position
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = CategoryCardBinding
+        val binding = ColorCardBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val category = differ.currentList[position]
+        val color = differ.currentList[position]
         holder.apply {
-            binding.categoryIv.load(category.url)
+            binding.colorIv.load(color.url)
+
+            binding.colorIv.setOnClickListener {
+                onItemClickListener?.let {
+                    it(color.name)
+                }
+            }
         }
     }
 

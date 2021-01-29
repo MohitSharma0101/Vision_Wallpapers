@@ -2,14 +2,12 @@ package com.vision.wallpapers.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.R
@@ -32,20 +30,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewModel = (activity as MainActivity).viewModel
 
-        gridLayoutManager = object : GridLayoutManager(context, 2) {
-            override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
-                lp?.height = (height / 2.5).toInt()
-                return true
-            }
-        }
+        gridLayoutManager = GridLayoutManager(context, 2)
+
         adapter = Adapter()
         binding.homeRecyclerView.layoutManager = gridLayoutManager
         binding.homeRecyclerView.adapter = adapter
 
-        adapter.setOnItemClickListener {image,url ->
-            val intent = Intent(context,FullImageActivity::class.java)
-            intent.putExtra("url",url)
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation( (activity as MainActivity),image,"photo")
+        adapter.setOnItemClickListener { image, url ->
+            val intent = Intent(context, FullImageActivity::class.java)
+            intent.putExtra("url", url)
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                (activity as MainActivity),
+                image,
+                "photo"
+            )
             startActivity(intent)
         }
 
@@ -59,7 +57,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 binding.fChip.isChecked = true
             }
         }
-        handelChips()
+        handleChips()
 
         getAlphaImages()
     }
@@ -109,12 +107,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
     }
 
-    private fun handelChips() {
+    private fun handleChips() {
         binding.apply {
             chipGroup.setOnCheckedChangeListener { group, checkedId ->
-               val chip = chipGroup.findViewById<Chip>(checkedId)
+                val chip = chipGroup.findViewById<Chip>(checkedId)
                 chip?.let {
-                    val s =  chip.text.toString().toLowerCase(Locale.ROOT)
+                    val s = chip.text.toString().toLowerCase(Locale.ROOT)
                     viewModel.method = s
                     viewModel.getAlphaPhotos(s)
                 }

@@ -11,8 +11,18 @@ object Constants {
     const val BY_VIEWS = "by_views"
     const val BY_FAVORTIES = "by_favorites"
 
+    val Colors = mutableListOf<AlphaCategoryResponseItem>(
+        AlphaCategoryResponseItem(1, "White", 1, "https://images2.alphacoders.com/312/31270.jpg"),
+        AlphaCategoryResponseItem(2, "Green", 1, "https://images4.alphacoders.com/160/160814.jpg"),
+        AlphaCategoryResponseItem(3, "Golden", 1, "https://images6.alphacoders.com/699/699387.jpg"),
+        AlphaCategoryResponseItem(4, "Pink", 1, "https://images4.alphacoders.com/272/272706.jpg"),
+        AlphaCategoryResponseItem(5, "Blue", 1, "https://images4.alphacoders.com/387/38776.jpg"),
+        AlphaCategoryResponseItem(6, "Red", 1, "https://images3.alphacoders.com/238/238685.jpg"),
+        AlphaCategoryResponseItem(7, "Black", 1, "https://images4.alphacoders.com/740/74054.jpg")
+    )
+
     val Categories = mutableListOf<AlphaCategoryResponseItem>(
-        AlphaCategoryResponseItem(1, "Anime", 1, "https://images8.alphacoders.com/595/595382.jpg"),
+        AlphaCategoryResponseItem(1, "Anime", 1, "https://images.alphacoders.com/598/598846.jpg"),
         AlphaCategoryResponseItem(
             2,
             "Abstract",
