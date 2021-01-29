@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vision.wallpapers.api.alphaCoder.AlphaApi
 import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponse
 import com.vision.wallpapers.model.pexels.WallpaperResponse
 import com.vision.wallpapers.model.unsplash.UnsplashResponse
@@ -92,13 +91,15 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
     }
 
     fun getAlphaCategoryList() {
-        val response = wallpaperRepo.getAlphaCategoryList()
-        if(response.isSuccessful){
-           response.body()?.let {
-              for(c in it.list){
-                  Log.d(c.count.toString(),c.name)
-              }
-           }
+        viewModelScope.launch {
+            val response = wallpaperRepo.getAlphaCategoryList()
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    for (c in it.categories) {
+                        Log.d(c.count.toString(), c.name)
+                    }
+                }
+            }
         }
     }
 

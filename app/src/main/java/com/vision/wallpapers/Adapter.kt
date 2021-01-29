@@ -1,17 +1,13 @@
 package com.vision.wallpapers
 
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.vision.wallpapers.databinding.PictureCardBinding
 import com.vision.wallpapers.model.Response
 import com.vision.wallpapers.util.Palette
@@ -55,12 +51,4 @@ class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    private fun loadImage(context: Context, url: String, image: ImageView, thumb: String) {
-        Glide.with(context)
-                .load(thumb)
-                .thumbnail(0.01f)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(image)
-    }
 }

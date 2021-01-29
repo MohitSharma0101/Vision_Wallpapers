@@ -28,15 +28,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewModel = (activity as MainActivity).viewModel
 
-        gridLayoutManager = GridLayoutManager(context, 2)
-//            override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
-//                lp?.height = (height / 2.5).toInt()
-//                return true
-//            }
-//        }
-        adapter = Adapter()
-        binding.homeRecyclerView.layoutManager = gridLayoutManager
-        binding.homeRecyclerView.adapter = adapter
+       setupRecycler()
 
         if (viewModel.method != Constants.HIGH_RATED) {
             val s = viewModel.method
@@ -98,12 +90,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
     }
 
+    private fun setupRecycler() {
+        gridLayoutManager = GridLayoutManager(context, 2)
+        adapter = Adapter()
+        binding.homeRecyclerView.layoutManager = gridLayoutManager
+        binding.homeRecyclerView.adapter = adapter
+    }
+
     private fun handelChips() {
         binding.apply {
             chipGroup.setOnCheckedChangeListener { group, checkedId ->
-               val chip = chipGroup.findViewById<Chip>(checkedId)
+                val chip = chipGroup.findViewById<Chip>(checkedId)
                 chip?.let {
-                    val s =  chip.text.toString().toLowerCase(Locale.ROOT)
+                    val s = chip.text.toString().toLowerCase(Locale.ROOT)
                     viewModel.method = s
                     viewModel.getAlphaPhotos(s)
                 }

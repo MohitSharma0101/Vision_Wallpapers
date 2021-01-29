@@ -24,7 +24,8 @@
             android:text="Discover"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="@dimen/_40ssp"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="@dimen/_35ssp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed" />
 
         <com.google.android.material.card.MaterialCardView
@@ -55,162 +56,195 @@
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <HorizontalScrollView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
+
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Colors"
+                android:textColor="@color/white" />
 
-                <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginHorizontal="7dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="#00000000"
-                    android:backgroundTint="#00000000"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp">
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/white"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
-                        app:strokeColor="@color/white"
-                        app:strokeWidth="0dp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+                    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginHorizontal="7dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#00000000"
+                        android:backgroundTint="#00000000"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
 
-                <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginHorizontal="7dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="#00000000"
-                    android:backgroundTint="#00000000"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/white"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
+                            app:strokeColor="@color/white"
+                            app:strokeWidth="0dp" />
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/pink"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
-                        app:strokeColor="@color/white"
-                        app:strokeWidth="0dp" />
+                    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
-                </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+                    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginHorizontal="7dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#00000000"
+                        android:backgroundTint="#00000000"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
 
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/pink"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
+                            app:strokeColor="@color/white"
+                            app:strokeWidth="0dp" />
 
-                <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginHorizontal="7dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="#00000000"
-                    android:backgroundTint="#00000000"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/green"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
-                        app:strokeColor="@color/white"
-                        app:strokeWidth="0dp" />
-
-                </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
-
-                <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginHorizontal="7dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="#00000000"
-                    android:backgroundTint="#00000000"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/gold"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
-                        app:strokeColor="@color/white"
-                        app:strokeWidth="0dp" />
-
-                </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
-
-                <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginHorizontal="7dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="#00000000"
-                    android:backgroundTint="#00000000"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/blue"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
-                        app:strokeColor="@color/white"
-                        app:strokeWidth="0dp" />
-
-                </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
-
-                <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginHorizontal="7dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="#00000000"
-                    android:backgroundTint="#00000000"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/red"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
-                        app:strokeColor="@color/white"
-                        app:strokeWidth="0dp" />
-
-                </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
-
-                <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginHorizontal="7dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="#00000000"
-                    android:backgroundTint="#00000000"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/dark"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
-                        app:strokeColor="@color/white"
-                        app:strokeWidth="0dp" />
-
-                </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+                    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
 
-            </LinearLayout>
+                    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginHorizontal="7dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#00000000"
+                        android:backgroundTint="#00000000"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
 
-        </HorizontalScrollView>
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/green"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
+                            app:strokeColor="@color/white"
+                            app:strokeWidth="0dp" />
 
+                    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+                    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginHorizontal="7dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#00000000"
+                        android:backgroundTint="#00000000"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/gold"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
+                            app:strokeColor="@color/white"
+                            app:strokeWidth="0dp" />
+
+                    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+                    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginHorizontal="7dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#00000000"
+                        android:backgroundTint="#00000000"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/blue"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
+                            app:strokeColor="@color/white"
+                            app:strokeWidth="0dp" />
+
+                    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+                    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginHorizontal="7dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#00000000"
+                        android:backgroundTint="#00000000"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/red"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
+                            app:strokeColor="@color/white"
+                            app:strokeWidth="0dp" />
+
+                    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+                    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginHorizontal="7dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#00000000"
+                        android:backgroundTint="#00000000"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/dark"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView"
+                            app:strokeColor="@color/white"
+                            app:strokeWidth="0dp" />
+
+                    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Categories"
+                android:textColor="@color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categoryRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginStart="10dp" />
+
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
 
