@@ -1,13 +1,11 @@
 package com.vision.wallpapers.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.R
@@ -30,21 +28,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewModel = (activity as MainActivity).viewModel
 
-        gridLayoutManager = object : GridLayoutManager(context, 2) {
-            override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
-                lp?.height = (height / 2.5).toInt()
-                return true
-            }
-        }
+        gridLayoutManager = GridLayoutManager(context, 2)
+//            override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
+//                lp?.height = (height / 2.5).toInt()
+//                return true
+//            }
+//        }
         adapter = Adapter()
         binding.homeRecyclerView.layoutManager = gridLayoutManager
         binding.homeRecyclerView.adapter = adapter
 
-        if(viewModel.method != Constants.HIGH_RATED){
-           val s = viewModel.method
-            if(s == Constants.NEWEST){
+        if (viewModel.method != Constants.HIGH_RATED) {
+            val s = viewModel.method
+            if (s == Constants.NEWEST) {
                 binding.lChip.isChecked = true
-            }else if(s == Constants.POPULAR){
+            } else if (s == Constants.POPULAR) {
                 binding.pChip.isChecked = true
             }else{
                 binding.fChip.isChecked = true

@@ -26,4 +26,11 @@
         <item name="cornerSizeBottomLeft">10dp</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.MyApp.MaterialCardView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">30dp</item>
+        <item name="elevation">0dp</item>
+        <item name="android:shape">ring</item>
+    </style>
+
 </resources>
