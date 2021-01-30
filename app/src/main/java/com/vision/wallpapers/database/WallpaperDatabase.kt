@@ -5,11 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponseItem
 import com.vision.wallpapers.model.pexels.Wallpaper
 
 
 @Database(
-        entities = [Wallpaper::class],
+        entities = [AlphaPhotoResponseItem::class],
         version = 1
 )
 @TypeConverters(Converter::class)

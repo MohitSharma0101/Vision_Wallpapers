@@ -33,7 +33,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel = (activity as MainActivity).viewModel
 
         gridLayoutManager = GridLayoutManager(context, 2)
-        adapter = Adapter()
+        adapter = Adapter(viewModel)
         binding.homeRecyclerView.layoutManager = gridLayoutManager
         binding.homeRecyclerView.adapter = adapter
 
@@ -51,6 +51,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 android.R.anim.fade_out
             ).toBundle()
             startActivity(intent,bundle)
+        }
+        adapter.setSaveOnClickListener {
+            viewModel.saveWallpaper(it)
         }
 
         if(viewModel.method != Constants.HIGH_RATED){

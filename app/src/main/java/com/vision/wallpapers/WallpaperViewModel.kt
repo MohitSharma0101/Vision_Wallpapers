@@ -1,9 +1,11 @@
 package com.vision.wallpapers
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponse
+import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponseItem
 import com.vision.wallpapers.model.alphaCoder.AlphaSearchResponse
 import com.vision.wallpapers.model.pexels.WallpaperResponse
 import com.vision.wallpapers.model.unsplash.UnsplashResponse
@@ -11,6 +13,7 @@ import com.vision.wallpapers.model.unsplash.UnsplashSearch
 import com.vision.wallpapers.repository.WallpaperRepo
 import com.vision.wallpapers.util.Constants
 import com.vision.wallpapers.util.Resources
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -23,12 +26,32 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
     val alphaSearchPhotos: MutableLiveData<Resources<AlphaSearchResponse>> = MutableLiveData()
 
     val unsplashSearchPhotos: MutableLiveData<Resources<UnsplashSearch>> = MutableLiveData()
+    var favWallpaper : LiveData<List<AlphaPhotoResponseItem>>
 
     var method = Constants.HIGH_RATED
 
     init {
+        favWallpaper = getSavedWallpaper()
         getAlphaPhotos()
     }
+
+    fun saveWallpaper(wallpaper:AlphaPhotoResponseItem) = viewModelScope.launch {
+        wallpaperRepo.saveWallpaper(wallpaper)
+    }
+    fun deleteWallpaper(wallpaper:AlphaPhotoResponseItem) = viewModelScope.launch {
+        wallpaperRepo.deleteWallpaper(wallpaper)
+    }
+    private fun getSavedWallpaper() = wallpaperRepo.getSavedWallpaper()
+
+    suspend fun isWallpaperSaved(wallpaper: AlphaPhotoResponseItem): Boolean {
+        var a: AlphaPhotoResponseItem? = null
+        val job = viewModelScope.launch(Dispatchers.IO) {
+            a = wallpaperRepo.isWallpaperSaved(wallpaper.id)
+        }
+        job.join()
+        return a != null
+    }
+
 
     fun getCuratedWallpapers() = viewModelScope.launch {
         curatedWallpapers.postValue(Resources.Loading())

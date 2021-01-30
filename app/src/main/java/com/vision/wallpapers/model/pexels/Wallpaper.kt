@@ -1,14 +1,8 @@
 package com.vision.wallpapers.model.pexels
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 
-@Entity(
-    tableName = "wallpaper"
-)
 data class Wallpaper(
-        @PrimaryKey(autoGenerate = true)
         var id: Int? = null,
         val avg_color: String,
         val height: Int,

@@ -1,8 +1,14 @@
 package com.vision.wallpapers.model.alphaCoder
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.vision.wallpapers.model.Response
 
+@Entity(
+    tableName = "wallpaper"
+)
  data class AlphaPhotoResponseItem(
+    @PrimaryKey(autoGenerate = true)
          val id:Int,
          val width:Int,
          val height:Int,
