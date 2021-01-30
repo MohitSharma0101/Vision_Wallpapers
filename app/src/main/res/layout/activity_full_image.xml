@@ -2,7 +2,10 @@
 <FrameLayout android:id="@+id/frame"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/wallpaperIv"
@@ -11,5 +14,13 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/scaleBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_minimize"
+        android:layout_gravity="top|end"
+        android:padding="20dp"
+        />
 
 </FrameLayout>

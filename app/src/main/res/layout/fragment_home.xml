@@ -34,7 +34,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-
                     <com.google.android.material.imageview.ShapeableImageView
                         android:layout_width="30dp"
                         android:layout_height="26dp"
@@ -169,6 +168,6 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="10dp" />
+       />
 
 </LinearLayout>
