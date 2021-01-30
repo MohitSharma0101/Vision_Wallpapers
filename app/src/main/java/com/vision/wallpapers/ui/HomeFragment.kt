@@ -2,7 +2,6 @@ package com.vision.wallpapers.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
@@ -32,21 +31,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewModel = (activity as MainActivity).viewModel
 
-        gridLayoutManager = object : GridLayoutManager(context, 2) {
-            override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
-                lp?.height = (height / 2.5).toInt()
-                return true
-            }
-        }
+        gridLayoutManager = GridLayoutManager(context, 2)
         adapter = Adapter()
         binding.homeRecyclerView.layoutManager = gridLayoutManager
         binding.homeRecyclerView.adapter = adapter
 
-        adapter.setOnItemClickListener {image,url ->
-            val intent = Intent(context,FullImageActivity::class.java)
-            intent.putExtra("url",url)
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation( (activity as MainActivity),image,"photo")
-            startActivity(intent)
+        adapter.setOnItemClickListener { image, url ->
+            val intent = Intent(context, FullImageActivity::class.java)
+            intent.putExtra("url", url)
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                (activity as MainActivity),
+                image,
+                "photo"
+            )
+            val bundle = ActivityOptionsCompat.makeCustomAnimation(
+                requireContext(),
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+            ).toBundle()
+            startActivity(intent,bundle)
         }
 
         if(viewModel.method != Constants.HIGH_RATED){
@@ -80,14 +83,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun getAlphaImages(){
         viewModel.alphaPhoto.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resources.Success ->{
-                    it.data?.let {list ->
-                       adapter.differ.submitList(list.wallpapers.shuffled())
+            when (it) {
+                is Resources.Success -> {
+                    it.data?.let { list ->
+                        adapter.differ.submitList(list.wallpapers.shuffled())
                     }
                 }
                 else -> {
-                    Toast.makeText(requireContext(),"Loading",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
                 }
             }
         })

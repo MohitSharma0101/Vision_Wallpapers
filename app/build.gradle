@@ -76,8 +76,6 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
-    //heart Button
-    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
 
     //ssp and sdp
     implementation 'com.intuit.ssp:ssp-android:1.0.5'
@@ -85,6 +83,6 @@ dependencies {
 
     implementation "io.coil-kt:coil:0.9.1"
 
-    //zoomable Phot viewer
+    //zoomable Photo viewer
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }

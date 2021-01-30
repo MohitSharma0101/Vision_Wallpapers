@@ -16,10 +16,14 @@ class FullImageActivity : AppCompatActivity() {
         binding = ActivityFullImageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val url = intent.getStringExtra("url")
-       // binding.wallpaperIv.load(url)
-        Glide.with(this).load(url).fitCenter().into(binding.wallpaperIv)
-//        binding.backImage.load(url){
-//            transformations(BlurTransformation(this@FullImageActivity,5f))
-//        }
+        binding.wallpaperIv.load(url){
+            crossfade(true)
+            allowHardware(true)
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
     }
 }
