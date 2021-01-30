@@ -85,4 +85,8 @@ dependencies {
 
     //zoomable Photo viewer
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    //viewpagerSwipe
+    implementation 'com.github.jama5262:CarouselView:1.1.0'
+
 }

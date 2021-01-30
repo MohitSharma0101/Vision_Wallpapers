@@ -123,7 +123,7 @@
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Featured"
+                        android:text="High-Rated"
                         app:checkedIconTint="@color/white"
                         android:textColor="@color/chip_text"
                         app:chipBackgroundColor="@color/chip_bg"

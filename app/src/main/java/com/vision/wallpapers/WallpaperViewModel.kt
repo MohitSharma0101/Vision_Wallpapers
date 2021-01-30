@@ -1,11 +1,10 @@
 package com.vision.wallpapers
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vision.wallpapers.api.alphaCoder.AlphaApi
 import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponse
+import com.vision.wallpapers.model.alphaCoder.AlphaSearchResponse
 import com.vision.wallpapers.model.pexels.WallpaperResponse
 import com.vision.wallpapers.model.unsplash.UnsplashResponse
 import com.vision.wallpapers.model.unsplash.UnsplashSearch
@@ -21,13 +20,13 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
 
     val unsplashPhotos: MutableLiveData<Resources<UnsplashResponse>> = MutableLiveData()
     val alphaPhoto: MutableLiveData<Resources<AlphaPhotoResponse>> = MutableLiveData()
+    val alphaSearchPhotos: MutableLiveData<Resources<AlphaSearchResponse>> = MutableLiveData()
 
     val unsplashSearchPhotos: MutableLiveData<Resources<UnsplashSearch>> = MutableLiveData()
 
     var method = Constants.HIGH_RATED
     init {
         getAlphaPhotos()
-
     }
 
     fun getCuratedWallpapers() = viewModelScope.launch {
@@ -60,7 +59,7 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         return Resources.Error(response.message())
     }
 
-    fun getAlphaPhotos(method:String = "highest_rated") = viewModelScope.launch {
+    fun getAlphaPhotos(method: String = "featured") = viewModelScope.launch {
         alphaPhoto.postValue(Resources.Loading())
         val response = wallpaperRepo.getAlphaImages(method)
         alphaPhoto.postValue(handleAlphaPhotosResponse(response))
@@ -91,17 +90,20 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         return Resources.Error(response.message())
     }
 
-    fun getAlphaCategoryList() = viewModelScope.launch {
-        val response = wallpaperRepo.getAlphaCategoryList()
-        if(response.isSuccessful){
-           response.body()?.let {
-              for(c in it.categories){
-                  Log.d(c.count.toString(),c.name)
-              }
-           }
-        }
+    fun searchAlphaPhotos(query: String) = viewModelScope.launch {
+        alphaSearchPhotos.postValue(Resources.Loading())
+        val response = wallpaperRepo.searchAlphaImages(query)
+        alphaSearchPhotos.postValue(handleSearchAlphaPhotosResponse(response))
     }
 
+    private fun handleSearchAlphaPhotosResponse(response: Response<AlphaSearchResponse>): Resources<AlphaSearchResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resources.Success(it)
+            }
+        }
+        return Resources.Error(response.message())
+    }
 
 
 }

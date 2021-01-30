@@ -1,7 +1,6 @@
 package com.vision.wallpapers
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.vision.wallpapers.databinding.PictureCardBinding
 import com.vision.wallpapers.model.Response
-import com.vision.wallpapers.ui.FullImageActivity
 import com.vision.wallpapers.util.Palette
 
 class Adapter:RecyclerView.Adapter<Adapter.ViewHolder>() {

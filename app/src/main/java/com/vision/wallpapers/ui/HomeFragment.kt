@@ -2,6 +2,7 @@ package com.vision.wallpapers.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
@@ -83,14 +84,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun getAlphaImages(){
         viewModel.alphaPhoto.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Resources.Success -> {
-                    it.data?.let { list ->
-                        adapter.differ.submitList(list.wallpapers.shuffled())
+            when(it){
+                is Resources.Success ->{
+                    it.data?.let {list ->
+                       adapter.differ.submitList(list.wallpapers.shuffled())
                     }
                 }
                 else -> {
-                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"Loading",Toast.LENGTH_SHORT).show()
                 }
             }
         })
