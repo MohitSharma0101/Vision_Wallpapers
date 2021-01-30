@@ -29,6 +29,7 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
     var favWallpaper : LiveData<List<AlphaPhotoResponseItem>>
 
     var method = Constants.HIGH_RATED
+
     init {
         favWallpaper = getSavedWallpaper()
         getAlphaPhotos()
