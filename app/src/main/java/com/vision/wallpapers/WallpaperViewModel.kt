@@ -25,6 +25,7 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
     val unsplashSearchPhotos: MutableLiveData<Resources<UnsplashSearch>> = MutableLiveData()
 
     var method = Constants.HIGH_RATED
+
     init {
         getAlphaPhotos()
     }

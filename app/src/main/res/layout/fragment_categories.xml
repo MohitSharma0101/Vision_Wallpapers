@@ -14,7 +14,6 @@
         android:background="#00000000"
         android:fitsSystemWindows="true">
 
-
         <TextView
             android:id="@+id/expandedImage"
             android:layout_width="match_parent"
@@ -25,8 +24,7 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_medium"
-            android:textSize="@dimen/_35ssp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+            android:textSize="@dimen/_35ssp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
