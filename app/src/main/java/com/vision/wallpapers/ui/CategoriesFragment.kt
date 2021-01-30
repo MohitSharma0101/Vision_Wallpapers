@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
+import com.google.android.material.chip.Chip
 import com.jama.carouselview.CarouselView
 import com.jama.carouselview.enums.IndicatorAnimationType
 import com.jama.carouselview.enums.OffsetType
@@ -17,6 +18,7 @@ import com.vision.wallpapers.WallpaperViewModel
 import com.vision.wallpapers.databinding.FragmentCategoriesBinding
 import com.vision.wallpapers.util.Constants.Categories
 import com.vision.wallpapers.util.Constants.Colors
+
 
 class CategoriesFragment:Fragment(R.layout.fragment_categories) {
 
@@ -30,6 +32,8 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCategoriesBinding.bind(view)
         viewModel = (activity as MainActivity).viewModel
+
+        var isDropped = false
 
         viewPager = binding.viewPager
 
@@ -55,6 +59,41 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
             Toast.makeText(context, name, Toast.LENGTH_SHORT).show()
         }
 
+        binding.dropdown.setOnClickListener {
+            if (!isDropped) {
+                binding.dropdown.setImageResource(R.drawable.chevron_up)
+                val genres = arrayOf("Thriller", "Comedy", "Adventure")
+                for (genre in genres) {
+                    val chip = Chip(context)
+                    chip.text = genre
+                    chip.maxEms = 7
+                    binding.chipGroup2.addView(chip)
+                    isDropped = true
+                }
+            } else {
+                binding.dropdown.setImageResource(R.drawable.chevron_down)
+                binding.chipGroup2.removeAllViews()
+                val genres = arrayOf("Thriller", "Comedy", "Adventures")
+                for (genre in genres) {
+                    val chip = Chip(context)
+                    chip.text = genre
+                    chip.maxEms = 7
+                    binding.chipGroup2.addView(chip)
+                    isDropped = true
+                }
+                isDropped = false
+            }
+
+        }
+
+        val genres = arrayOf("Thriller", "Comedy", "Adventurese")
+        for (genre in genres) {
+            val chip = Chip(context)
+            chip.text = genre
+            chip.maxEms = 7
+            binding.chipGroup2.addView(chip)
+        }
+
     }
 
     private fun setupColorsRecyclerView() {
@@ -72,7 +111,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
             autoPlay = false
             scaleOnScroll = true
             enableSnapping(true)
-            hideIndicator(true)
+            hideIndicator(false)
             indicatorAnimationType = IndicatorAnimationType.SCALE
             carouselOffset = OffsetType.START
             setCarouselViewListener { view, position ->

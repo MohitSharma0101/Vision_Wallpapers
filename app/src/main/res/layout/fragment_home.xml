@@ -123,12 +123,12 @@
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/_12ssp"
                         android:text="High-Rated"
                         app:checkedIconTint="@color/white"
                         android:textColor="@color/chip_text"
                         app:chipBackgroundColor="@color/chip_bg"
                         app:chipCornerRadius="18dp"
-
                         />
 
                     <com.google.android.material.chip.Chip
@@ -137,7 +137,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Popular"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/_12ssp"
                         app:checkedIconTint="@color/white"
                         android:textColor="@color/chip_text"
                         app:chipBackgroundColor="@color/chip_bg"
@@ -150,7 +150,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Latest"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/_12ssp"
                         app:checkedIconTint="@color/white"
                         android:textColor="@color/chip_text"
                         app:chipBackgroundColor="@color/chip_bg"
