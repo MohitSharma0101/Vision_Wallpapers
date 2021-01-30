@@ -26,12 +26,14 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.imageview.ShapeableImageView
-
+        android:id="@+id/fav_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="20dp"
+        android:paddingEnd="25dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="20dp"
         android:elevation="5dp"
         app:srcCompat="@drawable/heart_white" />
 
