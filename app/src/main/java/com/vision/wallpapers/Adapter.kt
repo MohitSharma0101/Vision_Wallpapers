@@ -64,11 +64,13 @@ class Adapter(private val viewModel: WallpaperViewModel):RecyclerView.Adapter<Ad
 
             binding.favBtn.setOnClickListener {
                 if(!isSaved){
+                    binding.favBtn.setImageResource(R.drawable.ic_heart_filled)
                     viewModel.saveWallpaper(photo as AlphaPhotoResponseItem)
                 }else{
+                    binding.favBtn.setImageResource(R.drawable.heart_white)
                     viewModel.deleteWallpaper(photo as AlphaPhotoResponseItem)
                 }
-                notifyDataSetChanged()
+                //  notifyDataSetChanged()
             }
             binding.wallpaperIv.setOnClickListener {
                 onItemClickListener?.let {

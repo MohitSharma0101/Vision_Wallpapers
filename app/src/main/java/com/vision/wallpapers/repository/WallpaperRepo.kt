@@ -3,12 +3,10 @@ package com.vision.wallpapers.repository
 import com.vision.wallpapers.api.alphaCoder.AlphaRetrofit
 import com.vision.wallpapers.api.pexels.RetrofitInstance
 import com.vision.wallpapers.api.unsplash.UnsplashRetrofit
-import com.vision.wallpapers.database.WallpaperDao
 import com.vision.wallpapers.database.WallpaperDatabase
-import com.vision.wallpapers.model.alphaCoder.AlphaCategoryResponseItem
 import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponseItem
 
-class WallpaperRepo(private val db:WallpaperDatabase) {
+class WallpaperRepo(val db: WallpaperDatabase) {
 
     suspend fun getImages() = RetrofitInstance.api.getImages()
 
@@ -17,7 +15,7 @@ class WallpaperRepo(private val db:WallpaperDatabase) {
     suspend fun searchUnsplash(query: String) = UnsplashRetrofit.api.searchPhotos(query, orientation = null, color = null)
 
     suspend fun getAlphaImages(method: String = "featured") =
-        AlphaRetrofit.api.getPhotos(method = method)
+            AlphaRetrofit.api.getPhotos(method = method)
 
     suspend fun searchAlphaImages(query: String) = AlphaRetrofit.api.searchPhotos(query = query)
 

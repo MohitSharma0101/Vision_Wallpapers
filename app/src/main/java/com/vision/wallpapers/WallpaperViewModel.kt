@@ -1,5 +1,6 @@
 package com.vision.wallpapers
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,13 +36,19 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         getAlphaPhotos()
     }
 
-    fun saveWallpaper(wallpaper:AlphaPhotoResponseItem) = viewModelScope.launch {
+    fun saveWallpaper(wallpaper: AlphaPhotoResponseItem) = viewModelScope.launch {
         wallpaperRepo.saveWallpaper(wallpaper)
     }
-    fun deleteWallpaper(wallpaper:AlphaPhotoResponseItem) = viewModelScope.launch {
+
+    fun deleteWallpaper(wallpaper: AlphaPhotoResponseItem) = viewModelScope.launch {
         wallpaperRepo.deleteWallpaper(wallpaper)
     }
-    private fun getSavedWallpaper() = wallpaperRepo.getSavedWallpaper()
+
+    fun getSavedWallpaper(): LiveData<List<AlphaPhotoResponseItem>> {
+        Log.d("mohit", "called")
+        return wallpaperRepo.getSavedWallpaper()
+    }
+
 
     suspend fun isWallpaperSaved(wallpaper: AlphaPhotoResponseItem): Boolean {
         var a: AlphaPhotoResponseItem? = null
