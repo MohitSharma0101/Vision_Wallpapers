@@ -92,12 +92,4 @@ class Adapter(private val viewModel: WallpaperViewModel):RecyclerView.Adapter<Ad
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    private fun loadImage(context: Context, url: String, image: ImageView, thumb: String) {
-        Glide.with(context)
-                .load(thumb)
-                .thumbnail(0.01f)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(image)
-    }
 }
