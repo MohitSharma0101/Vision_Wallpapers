@@ -36,6 +36,9 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         getAlphaPhotos()
     }
 
+    fun deleteAllWallpaper() = viewModelScope.launch {
+        wallpaperRepo.deleteAllWallpaper()
+    }
     fun saveWallpaper(wallpaper: AlphaPhotoResponseItem) = viewModelScope.launch {
         wallpaperRepo.saveWallpaper(wallpaper)
     }

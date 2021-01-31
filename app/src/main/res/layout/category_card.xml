@@ -35,6 +35,14 @@
             android:textColor="#fff"
             android:textSize="@dimen/_15ssp" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/grey"
+            />
+
 
     </com.google.android.material.card.MaterialCardView>
 

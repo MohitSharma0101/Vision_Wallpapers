@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.app.ActivityOptionsCompat
@@ -174,7 +175,14 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
             carouselOffset = OffsetType.START
             setCarouselViewListener { view, position ->
                 val imageView = view.findViewById<ImageView>(R.id.categoryIv)
-                imageView.load(Categories[position].url)
+                val pb = view.findViewById<ProgressBar>(R.id.progress_bar)
+                imageView.load(Categories[position].url){
+                    target(
+                            onSuccess = {
+                                pb.visibility = View.GONE
+                            }
+                    )
+                }
                 val text = view.findViewById<TextView>(R.id.categoryName)
                 text.text = Categories[position].name
                 view.setOnClickListener {

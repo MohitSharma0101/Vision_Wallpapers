@@ -25,4 +25,6 @@ class WallpaperRepo(val db: WallpaperDatabase) {
     suspend fun isWallpaperSaved(id:Int) = db.getWallpaperDao().getWallpaperByTitle(id)
 
     fun getSavedWallpaper() = db.getWallpaperDao().getAllWallpaper()
+
+    suspend fun deleteAllWallpaper() = db.getWallpaperDao().deleteAllWallpaper()
 }
