@@ -22,23 +22,25 @@ object Constants {
     )
 
     val Categories = mutableListOf<AlphaCategoryResponseItem>(
-        AlphaCategoryResponseItem(1, "Anime", 1, "https://images.alphacoders.com/598/598846.jpg"),
-        AlphaCategoryResponseItem(
-            2,
-            "Abstract",
-            1,
-            "https://images4.alphacoders.com/438/43818.jpg"
-        ),
-        AlphaCategoryResponseItem(3, "Dark", 1, "https://images3.alphacoders.com/126/126995.jpg"),
-        AlphaCategoryResponseItem(4, "Game", 1, "https://images2.alphacoders.com/861/86152.jpg"),
-        AlphaCategoryResponseItem(5, "Cars", 1, "https://images4.alphacoders.com/222/222694.jpg"),
-        AlphaCategoryResponseItem(6, "Sci-Fi", 1, "https://images6.alphacoders.com/948/948308.jpg"),
-        AlphaCategoryResponseItem(7, "Nature", 1, "https://images2.alphacoders.com/521/521718.jpg"),
-        AlphaCategoryResponseItem(
-            8,
-            "Photography",
-            1,
-            "https://images3.alphacoders.com/853/85305.jpg"
-        )
+
+            AlphaCategoryResponseItem(1, "Anime", 1, "https://images3.alphacoders.com/473/47399.png"),
+            AlphaCategoryResponseItem(
+                    2,
+                    "Abstract",
+                    1,
+                    "https://images.alphacoders.com/724/724313.jpg"
+            ),
+            AlphaCategoryResponseItem(4, "Game", 1, "https://images6.alphacoders.com/846/846781.jpg"),
+            AlphaCategoryResponseItem(5, "Cars", 1, "https://images4.alphacoders.com/222/222694.jpg"),
+            AlphaCategoryResponseItem(6, "Sci-Fi", 1, "https://images6.alphacoders.com/948/948308.jpg"),
+            AlphaCategoryResponseItem(7, "Nature", 1, "https://images2.alphacoders.com/521/521718.jpg"),
+
+            AlphaCategoryResponseItem(
+                    8,
+                    "Photography",
+                    1,
+                    "https://images3.alphacoders.com/853/85305.jpg"
+            ),
+            AlphaCategoryResponseItem(3, "Horror", 1, "https://images2.alphacoders.com/557/55730.jpg")
     )
 }

@@ -1,17 +1,22 @@
 package com.vision.wallpapers.ui
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
 import com.google.android.material.chip.Chip
 import com.jama.carouselview.CarouselView
 import com.jama.carouselview.enums.IndicatorAnimationType
 import com.jama.carouselview.enums.OffsetType
+import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.ColorAdapter
 import com.vision.wallpapers.R
 import com.vision.wallpapers.WallpaperViewModel
@@ -25,6 +30,8 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
     lateinit var viewModel: WallpaperViewModel
     lateinit var viewPager: CarouselView
     lateinit var adapter: ColorAdapter
+    lateinit var showAdapter: Adapter
+    lateinit var gridLayout: GridLayoutManager
     lateinit var layoutManager: LinearLayoutManager
     lateinit var binding: FragmentCategoriesBinding
 
@@ -45,6 +52,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
 
         binding.searchBar.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                hideKeyboard()
                 viewModel.searchAlphaPhotos(binding.searchBar.text.toString())
                 Toast.makeText(context, binding.searchBar.text.toString(), Toast.LENGTH_SHORT)
                     .show()
@@ -73,7 +81,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
             } else {
                 binding.dropdown.setImageResource(R.drawable.chevron_down)
                 binding.chipGroup2.removeAllViews()
-                val genres = arrayOf("Thriller", "Comedy", "Adventures")
+                val genres = arrayOf("Thriller", "Comedy", "Adventure")
                 for (genre in genres) {
                     val chip = Chip(context)
                     chip.text = genre
@@ -86,7 +94,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
 
         }
 
-        val genres = arrayOf("Thriller", "Comedy", "Adventurese")
+        val genres = arrayOf("Thriller", "Comedy", "Adventure")
         for (genre in genres) {
             val chip = Chip(context)
             chip.text = genre
@@ -97,6 +105,11 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
     }
 
     private fun setupColorsRecyclerView() {
+        showAdapter = Adapter(viewModel)
+        gridLayout = GridLayoutManager(context, 2)
+        binding.showRecyclerView.layoutManager = gridLayout
+        binding.showRecyclerView.adapter = showAdapter
+
         adapter = ColorAdapter()
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.colorRecyclerView.adapter = adapter
@@ -117,16 +130,25 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
             setCarouselViewListener { view, position ->
                 val imageView = view.findViewById<ImageView>(R.id.categoryIv)
                 imageView.load(Categories[position].url)
+                val text = view.findViewById<TextView>(R.id.categoryName)
+                text.text = Categories[position].name
                 view.setOnClickListener {
                     viewModel.searchAlphaPhotos(Categories[position].name)
                     Toast.makeText(context, Categories[position].name, Toast.LENGTH_SHORT).show()
                 }
             }
-            // After you finish setting up, show the CarouselView
             show()
 
         }
 
+    }
+
+    private fun hideKeyboard() {
+        val view: View? = activity?.currentFocus
+        if (view != null) {
+            val imm: InputMethodManager? = context?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
 }

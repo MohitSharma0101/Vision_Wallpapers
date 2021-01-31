@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/_250sdp"
-    android:layout_height="@dimen/_220sdp"
-   >
+    android:layout_width="@dimen/_200sdp"
+    android:layout_height="@dimen/_180sdp">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -24,14 +23,17 @@
             android:transitionName="photo" />
 
         <TextView
+            android:id="@+id/categoryName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/category_back"
-            android:textColor="@color/white"
-            android:text="Anime"
-            android:textSize="@dimen/_35ssp"
+            android:elevation="5dp"
+            android:fontFamily="@font/quicksand_medium"
             android:gravity="center|bottom"
-            />
+            android:paddingBottom="10dp"
+            android:text="Anime"
+            android:textColor="#fff"
+            android:textSize="@dimen/_15ssp" />
 
 
     </com.google.android.material.card.MaterialCardView>

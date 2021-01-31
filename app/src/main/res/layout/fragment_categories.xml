@@ -15,7 +15,7 @@
         android:fitsSystemWindows="true">
 
         <TextView
-            android:id="@+id/expandedImage"
+            android:id="@+id/discoverText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
@@ -61,11 +61,13 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
+            android:id="@+id/linearAll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <FrameLayout
+                android:id="@+id/recentText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -93,6 +95,7 @@
             </FrameLayout>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/recentCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -117,6 +120,7 @@
 
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/colorText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
@@ -133,7 +137,14 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:orientation="horizontal" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/showRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/categoriesText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
