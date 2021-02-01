@@ -15,6 +15,14 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="FullImage" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
     <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
         <item name="android:textSize">10sp</item>
     </style>
@@ -41,6 +49,19 @@
         <item name="colorOnSurface">@color/black</item>
         <!-- Text Color for buttons -->
         <item name="colorPrimary">@color/red</item>
+    </style>
+
+    <style name="Theme.VisionWallpapers.Fullscreen" parent="Theme.VisionWallpapers">
+        <item name="android:actionBarStyle">
+            @style/Widget.Theme.VisionWallpapers.ActionBar.Fullscreen
+        </item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="ThemeOverlay.VisionWallpapers.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
 
 </resources>

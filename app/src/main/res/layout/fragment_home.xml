@@ -15,9 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="0dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#d3d3d3"
-            app:strokeWidth="0.5dp">
+            app:cardElevation="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -170,7 +168,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="0.7dp"
+        android:layout_height="0.5dp"
         app:cardBackgroundColor="#d3d3d3"
         app:cardElevation="0dp"
         app:cardCornerRadius="0dp" />
