@@ -41,16 +41,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
 
-        adapter.setOnItemClickListener { image, url ->
+        adapter.setOnItemClickListener { image, url, photo ->
             val intent = Intent(context, FullImageActivity::class.java)
-            intent.putExtra("url", url)
+            intent.putExtra("photo", photo)
             val bundle = ActivityOptionsCompat.makeCustomAnimation(
                 requireContext(),
                 android.R.anim.fade_in,
                 android.R.anim.fade_out
             ).toBundle()
-            startActivity(intent,bundle)
+            startActivity(intent, bundle)
         }
+
         adapter.setSaveOnClickListener {
             viewModel.saveWallpaper(it)
         }

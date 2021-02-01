@@ -4,13 +4,10 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.app.ActivityOptionsCompat
@@ -59,9 +56,9 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
 
         adapter.differ.submitList(Colors)
 
-        showAdapter.setOnItemClickListener { image, url ->
+        showAdapter.setOnItemClickListener { image, url, photo ->
             val intent = Intent(context, FullImageActivity::class.java)
-            intent.putExtra("url", url)
+            intent.putExtra("photo", photo)
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 (activity as MainActivity),
                 image,

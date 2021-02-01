@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="icons">
-        <item>@drawable/download</item>
-        <item>@drawable/info</item>
-        <item>@drawable/heart_white</item>
-        <item>@drawable/smartphone</item>
+        <item>@drawable/direct_download</item>
+        <item>@drawable/info__1_</item>
+        <item>@drawable/ic_heart_filled_white</item>
+        <item>@drawable/roller</item>
         <item>@drawable/share_2</item>
     </array>
     <array name="colors">
-        <item>@android:color/holo_blue_light</item>
-        <item>@android:color/holo_green_dark</item>
-        <item>@android:color/holo_red_light</item>
-        <item>@android:color/holo_purple</item>
-        <item>@android:color/holo_orange_light</item>
+        <item>@color/egg_blue</item>
+        <item>@color/olive_green</item>
+        <item>@color/holo_red</item>
+        <item>@color/purple</item>
+        <item>@color/orange</item>
     </array>
 </resources>

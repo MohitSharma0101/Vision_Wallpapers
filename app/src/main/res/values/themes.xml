@@ -16,11 +16,10 @@
 
     </style>
 
-    <style name="FullImage" parent="ThemeOverlay.MaterialComponents.Light">
+    <style name="FullImage" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="colorOnSecondary">@color/white</item>
         <item name="android:windowFullscreen">true</item>
 
     </style>

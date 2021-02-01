@@ -1,46 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="0dp"
-        app:strokeColor="#d3d3d3"
-        app:strokeWidth="0.5dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Favourite"
-            android:textSize="@dimen/_25ssp"
-            android:fontFamily="@font/roboto_medium"
-            android:textColor="@color/black"
-            android:layout_margin="10dp"
-            />
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/deleteBtn"
-            android:layout_width="wrap_content"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="0dp"
+            app:strokeColor="#d3d3d3"
+            app:strokeWidth="0.5dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/lato_bold"
+                android:letterSpacing="0"
+                android:text="Favourites"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_20ssp" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/deleteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_trash" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/favRecyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_trash"
-            android:layout_gravity="end|center"
-            android:padding = "10dp"
-            />
+            android:layout_marginStart="10dp" />
 
-    </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favRecyclerView"
-        android:layout_width="match_parent"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/noWallpapers"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        />
+        android:layout_gravity="center"
+        android:fontFamily="@font/lato"
+        android:text="No wallpapers"
+        android:textSize="@dimen/_12ssp"
+        android:visibility="gone" />
 
-</LinearLayout>
+</FrameLayout>

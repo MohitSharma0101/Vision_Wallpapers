@@ -9,103 +9,93 @@
     app:layout_behavior="@string/bottom_sheet_behavior"
     app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
-    android:paddingStart="5dp"
-    android:paddingEnd="5dp"
     android:layout_height="wrap_content">
 
     <ImageButton
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="5dp"
-        android:layout_margin="15dp"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="4dp"
+        android:layout_marginVertical="10dp"
         android:layout_gravity="center_horizontal"
         android:background="@color/transparent"
         android:src="@drawable/expandable_bar" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sort By:"
-        android:textStyle="bold"
-        android:textSize="16sp"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:text="Sort by"
+        android:textAllCaps="true"
         android:textColor="@color/black"
-        />
+        android:textSize="@dimen/_18ssp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:cardBackgroundColor="#d3d3d3"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/byViews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Views"
-        android:textSize="28sp"
-        android:layout_margin="10dp"
+        android:drawableStart="@drawable/eye"
+        android:drawablePadding="15dp"
+        android:fontFamily="@font/lato"
+        android:paddingLeft="15dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="12dp"
+        android:textSize="@dimen/_12ssp"
         android:textColor="@color/black"
-        app:drawableTint="@color/white"
-        android:drawableEnd="@drawable/ic_baseline_done_24"
-        />
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        app:cardBackgroundColor="#d3d3d3"
-        app:cardElevation="0dp"
-        android:layout_marginHorizontal="10dp"
-        app:cardCornerRadius="0dp" />
+        app:drawableTint="@color/blue_link" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/byFavorites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Favorites"
-        android:textSize="28sp"
-        android:layout_margin="10dp"
+        android:drawableStart="@drawable/star"
+        android:drawablePadding="15dp"
+        android:fontFamily="@font/lato"
+        android:paddingLeft="15dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="12dp"
+        android:textSize="@dimen/_12ssp"
         android:textColor="@color/black"
-        app:drawableTint="@color/white"
-        android:drawableEnd="@drawable/ic_baseline_done_24"
-        />
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        app:cardBackgroundColor="#d3d3d3"
-        app:cardElevation="0dp"
-        android:layout_marginHorizontal="10dp"
-        app:cardCornerRadius="0dp" />
+        app:drawableTint="@color/blue_link" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/byRating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Rating"
-        android:textSize="28sp"
-        android:layout_margin="10dp"
+        android:drawableStart="@drawable/activity"
+        android:drawablePadding="15dp"
+        android:fontFamily="@font/lato"
+        android:paddingLeft="15dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="12dp"
+        android:textSize="@dimen/_12ssp"
         android:textColor="@color/black"
-        app:drawableTint="#4285F4"
-        android:drawableEnd="@drawable/ic_baseline_done_24"
-        />
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        app:cardBackgroundColor="#d3d3d3"
-        app:cardElevation="0dp"
-        android:layout_marginHorizontal="10dp"
-        app:cardCornerRadius="0dp" />
+        app:drawableTint="@color/blue_link" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/byPopularity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/popularity"
+        android:drawablePadding="15dp"
+        android:fontFamily="@font/lato"
         android:text="Popularity"
-        android:textSize="28sp"
-        android:layout_margin="10dp"
+        android:paddingStart="15dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="12dp"
         android:textColor="@color/black"
-        app:drawableTint="@color/white"
-        android:drawableEnd="@drawable/ic_baseline_done_24"
-        />
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        app:cardBackgroundColor="#d3d3d3"
-        app:cardElevation="0dp"
-        android:layout_marginHorizontal="10dp"
-        app:cardCornerRadius="0dp" />
-
+        android:textSize="@dimen/_12ssp"
+        app:drawableTint="@color/blue_link" />
 
 </LinearLayout>

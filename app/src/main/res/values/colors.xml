@@ -9,6 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="red">#EA4335</color>
+    <color name="holo_red">#fe4730</color>
+    <color name="egg_blue">#00acb3</color>
+    <color name="olive_green">#669800</color>
+    <color name="orange">#fc9f02</color>
+    <color name="purple">#6845e5</color>
+    <color name="blue_link">#2476e3</color>
     <color name="grey">#706c61</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>

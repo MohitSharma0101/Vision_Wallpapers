@@ -1,7 +1,9 @@
 package com.vision.wallpapers.model
 
-interface Response {
-    val idR:Int
-    val urlImage:String
-    val urlThumb:String
+import java.io.Serializable
+
+interface Response : Serializable {
+    val idR: Int
+    val urlImage: String
+    val urlThumb: String
 }

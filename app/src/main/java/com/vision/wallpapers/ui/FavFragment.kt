@@ -28,21 +28,24 @@ class FavFragment : Fragment(R.layout.fragment_fav) {
         binding.favRecyclerView.layoutManager = gridLayoutManager
         binding.favRecyclerView.adapter = adapter
 
-        adapter.setOnItemClickListener { image, url ->
+        adapter.setOnItemClickListener { image, url, photo ->
             val intent = Intent(context, FullImageActivity::class.java)
-            intent.putExtra("url", url)
+            intent.putExtra("photo", photo)
             val bundle = ActivityOptionsCompat.makeCustomAnimation(
-                    requireContext(),
-                    android.R.anim.fade_in,
-                    android.R.anim.fade_out
+                requireContext(),
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
             ).toBundle()
-            startActivity(intent,bundle)
+            startActivity(intent, bundle)
         }
         binding.deleteBtn.setOnClickListener {
             confirmDeleteAlert()
         }
 
         viewModel.getSavedWallpaper().observe(viewLifecycleOwner, {
+            if (it.isEmpty()) {
+                binding.noWallpapers.visibility = View.VISIBLE
+            }
             adapter.differ.submitList(it)
             Log.d("mohit", it.toString())
         })
