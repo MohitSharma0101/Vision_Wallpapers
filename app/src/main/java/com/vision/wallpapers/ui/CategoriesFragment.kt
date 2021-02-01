@@ -2,14 +2,17 @@ package com.vision.wallpapers.ui
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +28,7 @@ import com.vision.wallpapers.WallpaperViewModel
 import com.vision.wallpapers.databinding.FragmentCategoriesBinding
 import com.vision.wallpapers.util.Constants.Categories
 import com.vision.wallpapers.util.Constants.Colors
+import com.vision.wallpapers.util.Palette
 import com.vision.wallpapers.util.Resources
 
 
@@ -174,7 +178,10 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
             carouselOffset = OffsetType.START
             setCarouselViewListener { view, position ->
                 val imageView = view.findViewById<ImageView>(R.id.categoryIv)
-                imageView.load(Categories[position].url){
+                imageView.load(Categories[position].count){
+                    crossfade(true)
+                    allowHardware(true)
+                    placeholder(Color.parseColor( Palette.LIGHT[position % Palette.LIGHT.size] ).toDrawable())
                 }
                 val text = view.findViewById<TextView>(R.id.categoryName)
                 text.text = Categories[position].name
