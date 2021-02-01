@@ -2,8 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
-
+    <ImageButton
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/transparent"
+        android:src="@drawable/expandable_bar" />
 
 </LinearLayout>
