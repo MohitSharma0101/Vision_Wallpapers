@@ -10,17 +10,17 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="o">false</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="o">true</item>
         <!-- Customize your theme here. -->
-        <item name="bottomBarColor">@color/white</item>
-        <item name="bottomBartextColor">@color/black</item>
     </style>
-    <style name="CategoryTheme" parent="Theme.VisionWallpapers">
-        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="o">false</item>
-        <item name="bottomBarColor">@color/black</item>
-        <item name="bottomBartextColor">@color/white</item>
+
+    <style name="FullImage" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
@@ -50,7 +50,4 @@
         <!-- Text Color for buttons -->
         <item name="colorPrimary">@color/red</item>
     </style>
-
-
-
 </resources>

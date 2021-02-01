@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
-import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import coil.api.load
@@ -20,7 +19,9 @@ class FullImageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFullImageBinding.inflate(layoutInflater)
+        setTheme(R.style.FullImage)
         setContentView(binding.root)
+
         val url = intent.getStringExtra("url")
         binding.apply {
             wallpaperIv.load(url){
@@ -28,11 +29,15 @@ class FullImageActivity : AppCompatActivity() {
                 allowHardware(true)
             }
             scaleBtn.setOnClickListener {
-               adjustZoom()
+                adjustZoom()
             }
             rotateBtn.setOnClickListener {
-               changeScreenOrientation()
+                changeScreenOrientation()
             }
+        }
+
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
         }
     }
 
@@ -43,10 +48,15 @@ class FullImageActivity : AppCompatActivity() {
         } else {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
-        if (Settings.System.getInt(contentResolver,
-                        Settings.System.ACCELEROMETER_ROTATION, 0) === 1) {
+        if (Settings.System.getInt(
+                contentResolver,
+                Settings.System.ACCELEROMETER_ROTATION, 0
+            ) === 1
+        ) {
             val handler = Handler()
-            handler.postDelayed(Runnable { requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR }, 4000)
+            handler.postDelayed(Runnable {
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
+            }, 4000)
         }
     }
     private fun adjustZoom(){
@@ -67,5 +77,6 @@ class FullImageActivity : AppCompatActivity() {
         super.onBackPressed()
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
+
 
 }

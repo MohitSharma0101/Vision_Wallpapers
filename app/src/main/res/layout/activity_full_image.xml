@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/frame"
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/frame"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@color/black"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -12,7 +13,16 @@
         android:transitionName="photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:scaleType="centerCrop" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:padding="20dp"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/scaleBtn"
@@ -31,4 +41,4 @@
         android:padding="20dp"
         app:srcCompat="@drawable/smartphone" />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
