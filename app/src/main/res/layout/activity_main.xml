@@ -34,8 +34,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="?attr/bottomBarColor"
-            app:itemTextColor="?attr/bottomBartextColor"
+            android:background="@color/white"
+            app:itemTextColor="@color/black"
             app:menu="@menu/bottom_bar_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

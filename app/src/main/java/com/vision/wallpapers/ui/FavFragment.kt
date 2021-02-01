@@ -52,8 +52,8 @@ class FavFragment : Fragment(R.layout.fragment_fav) {
     private fun confirmDeleteAlert() =
             MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
                     .setIcon(R.drawable.ic_trash)
-                    .setTitle("Delete All Articles")
-                    .setMessage("Are you sure You want to delete All saved news?")
+                    .setTitle("Delete All Wallpapers")
+                    .setMessage("Are you sure You want to delete All Wallpaper?")
                     .setPositiveButton("Yes") { _, _ ->
                         viewModel.deleteAllWallpaper()
                     }
