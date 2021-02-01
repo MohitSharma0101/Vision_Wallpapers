@@ -89,7 +89,8 @@ dependencies {
     //viewpagerSwipe
     implementation 'com.github.jama5262:CarouselView:1.1.0'
 
-    //shimmer effect
-    implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
+    //circular menu
+    implementation 'com.ramotion.circlemenu:circle-menu:0.3.2'
+
 
 }
