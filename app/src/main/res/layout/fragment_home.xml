@@ -17,7 +17,7 @@
             app:cardCornerRadius="0dp"
             app:cardElevation="0dp"
             app:strokeColor="#d3d3d3"
-            app:strokeWidth="0.5dp">
+            app:strokeWidth="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -129,7 +129,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_12ssp"
-                        android:text="High-Rated"
+                        android:text="Featured"
+                        android:checked="true"
                         app:checkedIconTint="@color/white"
                         android:textColor="@color/chip_text"
                         app:chipBackgroundColor="@color/chip_bg"
@@ -141,7 +142,7 @@
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Popular"
+                        android:text="Random"
                         android:textSize="@dimen/_12ssp"
                         app:checkedIconTint="@color/white"
                         android:textColor="@color/chip_text"
@@ -195,5 +196,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:indeterminateTint="@color/white" />
+
 
 </FrameLayout>

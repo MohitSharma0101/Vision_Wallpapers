@@ -7,6 +7,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.R
@@ -26,13 +27,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
+        val activity = (activity as MainActivity)
 
-        viewModel = (activity as MainActivity).viewModel
+        viewModel = activity.viewModel
 
         gridLayoutManager = GridLayoutManager(context, 2)
         adapter = Adapter(viewModel)
         binding.homeRecyclerView.layoutManager = gridLayoutManager
         binding.homeRecyclerView.adapter = adapter
+
+        binding.sort.setOnClickListener {
+            activity.bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
 
         adapter.setOnItemClickListener { image, url ->
             val intent = Intent(context, FullImageActivity::class.java)

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="declare_styleable">
+        <attr name="bottomBarColor" format="color"/>
+        <attr name="bottomBartextColor" format="color"/>
+    </declare-styleable>
+</resources>
