@@ -33,7 +33,7 @@ class ColorAdapter : RecyclerView.Adapter<ColorAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val color = differ.currentList[position]
         holder.apply {
-            binding.colorIv.load(color.url)
+            binding.colorIv.load(color.count)
 
             binding.colorIv.setOnClickListener {
                 onItemClickListener?.let {
