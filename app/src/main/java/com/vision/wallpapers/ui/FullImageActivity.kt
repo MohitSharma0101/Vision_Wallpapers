@@ -7,23 +7,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
 import android.provider.Settings
-import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.ramotion.circlemenu.CircleMenuView
 import com.vision.wallpapers.R
 import com.vision.wallpapers.WallpaperViewModel
@@ -34,7 +28,6 @@ import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponseItem
 import com.vision.wallpapers.repository.WallpaperRepo
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.model.AspectRatio
-import com.yalantis.ucrop.view.CropImageView
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
@@ -188,40 +181,16 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         }
     }
 
-    private fun setWallpaper(imageUrl: String) {
-        val wallpaperManager = WallpaperManager.getInstance(applicationContext)
-
-        Glide.with(applicationContext).asBitmap().load(imageUrl)
-            .into(object : CustomTarget<Bitmap?>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap?>?
-                ) {
-                    binding.fullImageProgressBar?.visibility = View.GONE
-                    wallpaperManager.setBitmap(resource)
-                    Toast.makeText(applicationContext, "set", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    TODO("Not yet implemented")
-                }
-            })
-    }
-
     private  fun cropImage(){
         val uri = Uri.parse(url)
         val option = UCrop.Options()
         option.setAspectRatioOptions(
-            3,
-            AspectRatio("2:1", 2f, 1f),
+            2,
+            AspectRatio("1:2", 1f, 2f),
+            AspectRatio("3:4", 3f, 4f),
+            AspectRatio("Default", 9f, 16f),
             AspectRatio("4:3", 4f, 3f),
-            AspectRatio("9:16", 9f, 16f),
-            AspectRatio(
-                "Default",
-                CropImageView.DEFAULT_ASPECT_RATIO,
-                CropImageView.DEFAULT_ASPECT_RATIO
-            ),
-            AspectRatio("1:1", 1f, 1f)
+            AspectRatio("2:1", 2f, 1f)
         )
         UCrop.of(uri, Uri.fromFile(File(cacheDir, "Vision")))
             .withOptions(option)
@@ -286,6 +255,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
         } else if (resultCode == UCrop.RESULT_ERROR) {
             val cropError = data?.let { UCrop.getError(it) }
+            Toast.makeText(applicationContext, "Something went wrong.", Toast.LENGTH_SHORT).show()
         }
     }
 

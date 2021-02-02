@@ -4,7 +4,6 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -43,10 +42,8 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
     lateinit var gridLayout: GridLayoutManager
     lateinit var layoutManager: LinearLayoutManager
     lateinit var binding: FragmentCategoriesBinding
-    var currentPage = 1
-    var itemCount = 20
+    lateinit var searchQuery: String
     var isLoading = false
-    var isLastPage = false
     var isScrolling = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -83,6 +80,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         binding.searchBar.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 hideKeyboard()
+                searchQuery = textView.text.toString()
                 searchAlpha(textView.text.toString())
                 binding.recentCard.visibility = View.GONE
                 binding.recentText.visibility = View.GONE
@@ -98,6 +96,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         }
 
         adapter.setOnItemClickListener { name ->
+            searchQuery = name
             searchAlpha(name)
             binding.searchBar.setText(name)
             binding.recentCard.visibility = View.GONE
@@ -159,6 +158,8 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         }
 
     }
+
+
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
@@ -172,16 +173,18 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
             val visibleItemCount: Int = gridLayout.childCount
             val totalItemCount: Int = gridLayout.itemCount
             val firstVisibleItemPosition: Int = gridLayout.findFirstVisibleItemPosition()
-            if(!isLoading ){
+            if (!isLoading && !viewModel.alphaLastPage) {
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                    && firstVisibleItemPosition >= 0 && totalItemCount >= 20 && isScrolling) {
-
-                     Log.d("search00","binding.searchBar.text.toString()")
+                    && firstVisibleItemPosition >= 0 && totalItemCount >= 30 && isScrolling
+                ) {
+                    viewModel.searchAlphaPhotos(searchQuery, viewModel.alphaSearchPage)
                     isScrolling = false
                 }
             }
+
         }
     }
+
 
     private fun setupColorsRecyclerView() {
         showAdapter = Adapter(viewModel)
@@ -217,6 +220,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
                 val text = view.findViewById<TextView>(R.id.categoryName)
                 text.text = Categories[position].name
                 view.setOnClickListener {
+                    searchQuery = Categories[position].name
                     searchAlpha(Categories[position].name)
                     binding.searchBar.setText(Categories[position].name)
                     binding.recentCard.visibility = View.GONE

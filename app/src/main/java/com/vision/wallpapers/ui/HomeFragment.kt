@@ -1,9 +1,7 @@
 package com.vision.wallpapers.ui
 
 import android.content.Intent
-import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import androidx.core.app.ActivityOptionsCompat
@@ -17,7 +15,6 @@ import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.R
 import com.vision.wallpapers.WallpaperViewModel
 import com.vision.wallpapers.databinding.FragmentHomeBinding
-import com.vision.wallpapers.model.Response
 import com.vision.wallpapers.util.Constants
 import com.vision.wallpapers.util.Resources
 import java.util.*
@@ -29,8 +26,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     lateinit var gridLayoutManager: GridLayoutManager
     lateinit var adapter: Adapter
     lateinit var viewModel: WallpaperViewModel
-    var currentPage = 1
-    var itemCount = 20
     var isLoading = false
     var isLastPage = false
     var isScrolling = false
@@ -100,8 +95,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val firstVisibleItemPosition: Int = gridLayoutManager.findFirstVisibleItemPosition()
             if(!isLoading && !viewModel.alphaLastPage){
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                        && firstVisibleItemPosition >= 0 && totalItemCount >= 20 && isScrolling) {
-                     viewModel.getAlphaPhotos(page = viewModel.alphaPage)
+                    && firstVisibleItemPosition >= 0 && totalItemCount >= 30 && isScrolling
+                ) {
+                    viewModel.getAlphaPhotos(page = viewModel.alphaPage)
                     isScrolling = false
                 }
             }

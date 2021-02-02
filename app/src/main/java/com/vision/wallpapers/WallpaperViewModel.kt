@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponse
 import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponseItem
 import com.vision.wallpapers.model.alphaCoder.AlphaSearchResponse
-import com.vision.wallpapers.model.pexels.WallpaperResponse
 import com.vision.wallpapers.model.unsplash.UnsplashResponse
 import com.vision.wallpapers.model.unsplash.UnsplashSearch
 import com.vision.wallpapers.repository.WallpaperRepo
@@ -19,8 +18,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() {
-
-    val curatedWallpapers: MutableLiveData<Resources<WallpaperResponse>> = MutableLiveData()
 
     val unsplashPhotos: MutableLiveData<Resources<UnsplashResponse>> = MutableLiveData()
     val alphaPhoto: MutableLiveData<Resources<AlphaPhotoResponse>> = MutableLiveData()
@@ -91,9 +88,9 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
     }
 
 
-    fun searchAlphaPhotos(query: String) = viewModelScope.launch {
+    fun searchAlphaPhotos(query: String, page: Int = 1) = viewModelScope.launch {
         alphaSearchPhotos.postValue(Resources.Loading())
-        val response = wallpaperRepo.searchAlphaImages(query)
+        val response = wallpaperRepo.searchAlphaImages(query, page)
         alphaSearchPhotos.postValue(handleSearchAlphaPhotosResponse(response))
     }
 
@@ -134,20 +131,6 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
     }
 
     private fun handleUnsplashPhotosSearchResponse(response: Response<UnsplashSearch>): Resources<UnsplashSearch> {
-        if (response.isSuccessful) {
-            response.body()?.let {
-                return Resources.Success(it)
-            }
-        }
-        return Resources.Error(response.message())
-    }
-    fun getCuratedWallpapers() = viewModelScope.launch {
-        curatedWallpapers.postValue(Resources.Loading())
-        val response = wallpaperRepo.getImages()
-        curatedWallpapers.postValue(handleCuratedWallpaperResponse(response))
-    }
-
-    private fun handleCuratedWallpaperResponse(response: Response<WallpaperResponse>): Resources<WallpaperResponse> {
         if (response.isSuccessful) {
             response.body()?.let {
                 return Resources.Success(it)

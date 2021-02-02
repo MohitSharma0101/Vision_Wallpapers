@@ -7,94 +7,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="false">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_gravity="top"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:elevation="0dp"
-        android:background="#00000000"
-        android:fitsSystemWindows="true">
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_15sdp">
 
-        <TextView
-            android:id="@+id/discoverText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:text="Discover"
-            android:visibility="gone"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_medium"
-            android:textSize="@dimen/_35ssp" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_15sdp">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/search_bar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:textColor="@color/black"
-                android:textCursorDrawable="@null"
-                android:layout_marginVertical="@dimen/_1sdp"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:layout_marginEnd="@dimen/_25sdp"
-                android:background="@null"
-                android:drawableStart="@drawable/ic_search"
-                android:drawablePadding="@dimen/_10sdp"
-                android:hint="Search wallpaper, categories"
-                android:textSize="@dimen/_12ssp" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-        <LinearLayout
-            android:id="@+id/linearAll"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginVertical="@dimen/_1sdp"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:background="@null"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="@dimen/_10sdp"
+            android:hint="Search wallpaper, categories"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/_12ssp" />
 
-            <FrameLayout
-                android:id="@+id/recentText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="Recent"
-                    android:textColor="@color/white" />
+    <FrameLayout
+        android:id="@+id/recentText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/dropdown"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center"
-                    android:layout_marginEnd="15dp"
-                    android:background="#00000000"
-                    android:backgroundTint="#00000000"
-                    android:elevation="0dp"
-                    app:srcCompat="@drawable/chevron_down" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Recent"
+            android:textColor="@color/white" />
 
-            </FrameLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="15dp"
+            android:background="#00000000"
+            android:backgroundTint="#00000000"
+            android:elevation="0dp"
+            app:srcCompat="@drawable/chevron_down" />
+
+    </FrameLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/recentCard"
@@ -136,7 +101,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/colorRecyclerView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:orientation="horizontal" />
 
@@ -169,10 +134,5 @@
                 app:indicatorSelectedColor="@color/white"
                 app:indicatorUnselectedColor="@color/grey"
                 app:size="8" />
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
 
 </LinearLayout>
