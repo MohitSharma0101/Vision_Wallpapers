@@ -24,12 +24,16 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
 
     val unsplashPhotos: MutableLiveData<Resources<UnsplashResponse>> = MutableLiveData()
     val alphaPhoto: MutableLiveData<Resources<AlphaPhotoResponse>> = MutableLiveData()
-
     val alphaSearchPhotos: MutableLiveData<Resources<AlphaSearchResponse>> = MutableLiveData()
-    var alphaPage = 1
+    var alphaSearchResponse:AlphaSearchResponse? = null
+    var alphaSearchPage = 1
+    var alphaSearchLastPage = false
 
     val unsplashSearchPhotos: MutableLiveData<Resources<UnsplashSearch>> = MutableLiveData()
     var favWallpaper : LiveData<List<AlphaPhotoResponseItem>>
+     var alphaPhotoResponse:AlphaPhotoResponse? = null
+    var alphaPage = 1
+    var alphaLastPage = false
 
     var method = Constants.HIGH_RATED
 
@@ -65,16 +69,44 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
     }
 
 
-    fun getCuratedWallpapers() = viewModelScope.launch {
-        curatedWallpapers.postValue(Resources.Loading())
-        val response = wallpaperRepo.getImages()
-        curatedWallpapers.postValue(handleCuratedWallpaperResponse(response))
+    fun getAlphaPhotos(method: String = "featured" , page:Int = 1) = viewModelScope.launch {
+        alphaPhoto.postValue(Resources.Loading())
+        val response = wallpaperRepo.getAlphaImages(method,page)
+        alphaPhoto.postValue(handleAlphaPhotosResponse(response))
     }
 
-    private fun handleCuratedWallpaperResponse(response: Response<WallpaperResponse>): Resources<WallpaperResponse> {
+    private fun handleAlphaPhotosResponse(response: Response<AlphaPhotoResponse>): Resources<AlphaPhotoResponse> {
         if (response.isSuccessful) {
             response.body()?.let {
-                return Resources.Success(it)
+                alphaPage++
+                if(alphaPhotoResponse==null){
+                    alphaPhotoResponse = it
+                }else{
+                    alphaPhotoResponse!!.wallpapers.addAll(it.wallpapers)
+                }
+                return Resources.Success(alphaPhotoResponse!!)
+            }
+        }
+        return Resources.Error(response.message())
+    }
+
+
+    fun searchAlphaPhotos(query: String) = viewModelScope.launch {
+        alphaSearchPhotos.postValue(Resources.Loading())
+        val response = wallpaperRepo.searchAlphaImages(query)
+        alphaSearchPhotos.postValue(handleSearchAlphaPhotosResponse(response))
+    }
+
+    private fun handleSearchAlphaPhotosResponse(response: Response<AlphaSearchResponse>): Resources<AlphaSearchResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                alphaSearchPage++
+                if(alphaSearchResponse == null){
+                    alphaSearchResponse = it
+                }else{
+                    alphaSearchResponse!!.wallpapers.addAll(it.wallpapers)
+                }
+                return Resources.Success(alphaSearchResponse!!)
             }
         }
         return Resources.Error(response.message())
@@ -95,22 +127,6 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         return Resources.Error(response.message())
     }
 
-    fun getAlphaPhotos(method: String = "featured") = viewModelScope.launch {
-        alphaPhoto.postValue(Resources.Loading())
-        val response = wallpaperRepo.getAlphaImages(method)
-        alphaPhoto.postValue(handleAlphaPhotosResponse(response))
-    }
-
-    private fun handleAlphaPhotosResponse(response: Response<AlphaPhotoResponse>): Resources<AlphaPhotoResponse> {
-        if (response.isSuccessful) {
-            response.body()?.let {
-                return Resources.Success(it)
-            }
-        }
-        return Resources.Error(response.message())
-    }
-
-
     fun searchUnsplashPhotos(query: String) = viewModelScope.launch {
         unsplashSearchPhotos.postValue(Resources.Loading())
         val response = wallpaperRepo.searchUnsplash(query)
@@ -125,14 +141,13 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         }
         return Resources.Error(response.message())
     }
-
-    fun searchAlphaPhotos(query: String) = viewModelScope.launch {
-        alphaSearchPhotos.postValue(Resources.Loading())
-        val response = wallpaperRepo.searchAlphaImages(query)
-        alphaSearchPhotos.postValue(handleSearchAlphaPhotosResponse(response))
+    fun getCuratedWallpapers() = viewModelScope.launch {
+        curatedWallpapers.postValue(Resources.Loading())
+        val response = wallpaperRepo.getImages()
+        curatedWallpapers.postValue(handleCuratedWallpaperResponse(response))
     }
 
-    private fun handleSearchAlphaPhotosResponse(response: Response<AlphaSearchResponse>): Resources<AlphaSearchResponse> {
+    private fun handleCuratedWallpaperResponse(response: Response<WallpaperResponse>): Resources<WallpaperResponse> {
         if (response.isSuccessful) {
             response.body()?.let {
                 return Resources.Success(it)
@@ -140,6 +155,5 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
         }
         return Resources.Error(response.message())
     }
-
 
 }

@@ -47,4 +47,13 @@
         app:button_colors="@array/colors"
         app:button_icons="@array/icons" />
 
+    <ProgressBar
+        android:id="@+id/fullImageProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone"
+        />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

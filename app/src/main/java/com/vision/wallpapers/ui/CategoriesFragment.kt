@@ -4,9 +4,11 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.AbsListView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.addCallback
@@ -15,6 +17,7 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.google.android.material.chip.Chip
 import com.jama.carouselview.CarouselView
@@ -40,6 +43,11 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
     lateinit var gridLayout: GridLayoutManager
     lateinit var layoutManager: LinearLayoutManager
     lateinit var binding: FragmentCategoriesBinding
+    var currentPage = 1
+    var itemCount = 20
+    var isLoading = false
+    var isLastPage = false
+    var isScrolling = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -151,12 +159,36 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         }
 
     }
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                isScrolling = true
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val visibleItemCount: Int = gridLayout.childCount
+            val totalItemCount: Int = gridLayout.itemCount
+            val firstVisibleItemPosition: Int = gridLayout.findFirstVisibleItemPosition()
+            if(!isLoading ){
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                    && firstVisibleItemPosition >= 0 && totalItemCount >= 20 && isScrolling) {
+
+                     Log.d("search00","binding.searchBar.text.toString()")
+                    isScrolling = false
+                }
+            }
+        }
+    }
 
     private fun setupColorsRecyclerView() {
         showAdapter = Adapter(viewModel)
         gridLayout = GridLayoutManager(context, 2)
         binding.showRecyclerView.layoutManager = gridLayout
         binding.showRecyclerView.adapter = showAdapter
+        binding.showRecyclerView.addOnScrollListener(recyclerViewOnScrollListener)
 
         adapter = ColorAdapter()
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -217,8 +249,12 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
             when (it) {
                 is Resources.Success -> {
                     it.data?.let { list ->
-                        showAdapter.differ.submitList(list.wallpapers)
+                        isLoading = false
+                        showAdapter.differ.submitList(list.wallpapers.toList())
                     }
+                }
+                is Resources.Loading -> {
+                    isLoading = true
                 }
             }
         })

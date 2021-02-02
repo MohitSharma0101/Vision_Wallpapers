@@ -14,8 +14,8 @@ class WallpaperRepo(val db: WallpaperDatabase) {
 
     suspend fun searchUnsplash(query: String) = UnsplashRetrofit.api.searchPhotos(query, orientation = null, color = null)
 
-    suspend fun getAlphaImages(method: String = "featured") =
-            AlphaRetrofit.api.getPhotos(method = method)
+    suspend fun getAlphaImages(method: String = "featured" , page:Int = 1) =
+            AlphaRetrofit.api.getPhotos(method = method,page = page)
 
     suspend fun searchAlphaImages(query: String) = AlphaRetrofit.api.searchPhotos(query = query)
 

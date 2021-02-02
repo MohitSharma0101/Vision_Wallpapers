@@ -11,10 +11,12 @@ import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.Settings
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -81,27 +83,23 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
         val menu = binding.circle
         menu.eventListener = object : CircleMenuView.EventListener() {
-            override fun onMenuOpenAnimationStart(view: CircleMenuView) {
+            override fun onMenuOpenAnimationStart(view: CircleMenuView) {}
 
-            }
+            override fun onMenuOpenAnimationEnd(view: CircleMenuView) {}
 
-            override fun onMenuOpenAnimationEnd(view: CircleMenuView) {
+            override fun onMenuCloseAnimationStart(view: CircleMenuView) {}
 
-            }
-
-            override fun onMenuCloseAnimationStart(view: CircleMenuView) {
-            }
-
-            override fun onMenuCloseAnimationEnd(view: CircleMenuView) {
-
-            }
+            override fun onMenuCloseAnimationEnd(view: CircleMenuView) {}
 
             override fun onButtonClickAnimationStart(view: CircleMenuView, index: Int) {
+                when(index){
+                    3 ->{
 
+                    }
+                }
             }
 
             override fun onButtonClickAnimationEnd(view: CircleMenuView, index: Int) {
-
                 when (index) {
                     0 -> {
                         requestPermission()
@@ -109,12 +107,11 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                     2 -> {
                         Toast.makeText(applicationContext, "Saved", Toast.LENGTH_SHORT).show()
                         viewModel.saveWallpaper(photo)
-
                     }
                     3 -> {
                         setWallpaper(url)
+                        binding.fullImageProgressBar?.visibility = View.VISIBLE
                     }
-
                 }
             }
         }
@@ -139,7 +136,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         }
     }
 
-    private fun adjustZoom(){
+    private fun adjustZoom() {
         binding.apply {
             if (wallpaperIv.scaleType == ImageView.ScaleType.CENTER_CROP) {
                 scaleBtn.setImageResource(R.drawable.ic_maximize)
@@ -192,13 +189,12 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                     resource: Bitmap,
                     transition: Transition<in Bitmap?>?
                 ) {
+                    binding.fullImageProgressBar?.visibility = View.GONE
                     wallpaperManager.setBitmap(resource)
                     Toast.makeText(applicationContext, "set", Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    TODO("Not yet implemented")
-                }
+                override fun onLoadCleared(placeholder: Drawable?) {}
             })
     }
 
@@ -210,7 +206,6 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         if (hasStoragePermission()) {
             downloadImageNew(downloadUrlOfImage = url)
         } else {
-            // Ask for one permission
             EasyPermissions.requestPermissions(
                 this,
                 "This app needs access to your storage so you can download wallpapers",

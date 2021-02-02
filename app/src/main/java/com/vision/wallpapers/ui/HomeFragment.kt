@@ -1,12 +1,16 @@
 package com.vision.wallpapers.ui
 
 import android.content.Intent
+import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.AbsListView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.vision.wallpapers.Adapter
@@ -18,12 +22,20 @@ import com.vision.wallpapers.util.Constants
 import com.vision.wallpapers.util.Resources
 import java.util.*
 
+
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     lateinit var binding: FragmentHomeBinding
     lateinit var gridLayoutManager: GridLayoutManager
     lateinit var adapter: Adapter
     lateinit var viewModel: WallpaperViewModel
+    var currentPage = 1
+    var itemCount = 20
+    var isLoading = false
+    var isLastPage = false
+    var isScrolling = false
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,6 +48,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         adapter = Adapter(viewModel)
         binding.homeRecyclerView.layoutManager = gridLayoutManager
         binding.homeRecyclerView.adapter = adapter
+        binding.homeRecyclerView.addOnScrollListener(recyclerViewOnScrollListener)
 
         binding.sort.setOnClickListener {
             activity.bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -46,9 +59,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val intent = Intent(context, FullImageActivity::class.java)
             intent.putExtra("photo", photo)
             val bundle = ActivityOptionsCompat.makeCustomAnimation(
-                requireContext(),
-                android.R.anim.fade_in,
-                android.R.anim.fade_out
+                    requireContext(),
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
             ).toBundle()
             startActivity(intent, bundle)
         }
@@ -72,6 +85,30 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         getAlphaImages()
     }
 
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                isScrolling = true
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val visibleItemCount: Int = gridLayoutManager.childCount
+            val totalItemCount: Int = gridLayoutManager.itemCount
+            val firstVisibleItemPosition: Int = gridLayoutManager.findFirstVisibleItemPosition()
+            if(!isLoading && !viewModel.alphaLastPage){
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                        && firstVisibleItemPosition >= 0 && totalItemCount >= 20 && isScrolling) {
+                     viewModel.getAlphaPhotos(page = viewModel.alphaPage)
+                    isScrolling = false
+                }
+            }
+
+        }
+    }
+
 
     private fun getUnSplashPhotos() {
         viewModel.getUnsplashPhotos()
@@ -90,13 +127,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel.alphaPhoto.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resources.Success -> {
+                    isLoading = false
                     binding.progressBar.visibility = View.GONE
                     binding.loading.visibility = View.GONE
                     it.data?.let { list ->
-                        adapter.differ.submitList(list.wallpapers as List<Response>?)
+                        viewModel.alphaLastPage = list.is_last?:false
+                        adapter.differ.submitList(list.wallpapers.toList())
                     }
                 }
                 is Resources.Loading -> {
+                    isLoading = true
                     binding.progressBar.visibility = View.VISIBLE
                     binding.loading.visibility = View.VISIBLE
                 }
