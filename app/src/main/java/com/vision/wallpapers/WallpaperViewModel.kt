@@ -24,7 +24,9 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
 
     val unsplashPhotos: MutableLiveData<Resources<UnsplashResponse>> = MutableLiveData()
     val alphaPhoto: MutableLiveData<Resources<AlphaPhotoResponse>> = MutableLiveData()
+
     val alphaSearchPhotos: MutableLiveData<Resources<AlphaSearchResponse>> = MutableLiveData()
+    var alphaPage = 1
 
     val unsplashSearchPhotos: MutableLiveData<Resources<UnsplashSearch>> = MutableLiveData()
     var favWallpaper : LiveData<List<AlphaPhotoResponseItem>>

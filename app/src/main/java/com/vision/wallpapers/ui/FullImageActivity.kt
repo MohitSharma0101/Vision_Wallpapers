@@ -1,8 +1,11 @@
 package com.vision.wallpapers.ui
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.app.WallpaperManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -28,13 +31,20 @@ import com.vision.wallpapers.database.WallpaperDatabase
 import com.vision.wallpapers.databinding.ActivityFullImageBinding
 import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponseItem
 import com.vision.wallpapers.repository.WallpaperRepo
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 
 
-class FullImageActivity : AppCompatActivity() {
+class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
+    EasyPermissions.RationaleCallbacks {
 
     lateinit var binding: ActivityFullImageBinding
     lateinit var viewModel: WallpaperViewModel
+    lateinit var url: String
+    lateinit var type: String
+
+    private val STRG_PERM = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +60,8 @@ class FullImageActivity : AppCompatActivity() {
 
         val photo: AlphaPhotoResponseItem =
             intent.getSerializableExtra("photo") as AlphaPhotoResponseItem
-        val url = photo.url_image
+        url = photo.url_image
+        type = photo.file_type
         binding.apply {
             wallpaperIv.load(url) {
                 crossfade(true)
@@ -93,8 +104,7 @@ class FullImageActivity : AppCompatActivity() {
 
                 when (index) {
                     0 -> {
-                        Toast.makeText(applicationContext, "pressed", Toast.LENGTH_SHORT).show()
-                        downloadImageNew("Vision_wallpaper", url)
+                        requestPermission()
                     }
                     2 -> {
                         Toast.makeText(applicationContext, "Saved", Toast.LENGTH_SHORT).show()
@@ -149,7 +159,7 @@ class FullImageActivity : AppCompatActivity() {
     }
 
 
-    private fun downloadImageNew(filename: String, downloadUrlOfImage: String) {
+    private fun downloadImageNew(filename: String = "Vision", downloadUrlOfImage: String) {
         try {
             val dm = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                 getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -161,7 +171,7 @@ class FullImageActivity : AppCompatActivity() {
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
                 .setAllowedOverRoaming(false)
                 .setTitle(filename)
-                .setMimeType("image/jpeg") // Your file type. You can use this code to download other file types also.
+                .setMimeType(type) // Your file type. You can use this code to download other file types also.
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setDestinationInExternalPublicDir(
                     Environment.DIRECTORY_PICTURES,
@@ -191,5 +201,68 @@ class FullImageActivity : AppCompatActivity() {
                 }
             })
     }
+
+    private fun hasStoragePermission(): Boolean {
+        return EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    }
+
+    fun requestPermission() {
+        if (hasStoragePermission()) {
+            downloadImageNew(downloadUrlOfImage = url)
+        } else {
+            // Ask for one permission
+            EasyPermissions.requestPermissions(
+                this,
+                "This app needs access to your storage so you can download wallpapers",
+                STRG_PERM,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        downloadImageNew("Vision", url)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        }
+        Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
+
+    }
+
+    @SuppressLint("StringFormatMatches")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+            val yes = "Permission Granted"
+            val no = "Permission Denied"
+            // Do something after user returned from app settings screen, like showing a Toast.
+            if (hasStoragePermission()) {
+                downloadImageNew(downloadUrlOfImage = url)
+            } else {
+                Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onRationaleAccepted(requestCode: Int) {
+
+    }
+
+    override fun onRationaleDenied(requestCode: Int) {
+        Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
+    }
+
 
 }

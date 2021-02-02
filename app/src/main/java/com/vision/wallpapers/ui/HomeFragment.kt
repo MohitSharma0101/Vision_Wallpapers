@@ -13,6 +13,7 @@ import com.vision.wallpapers.Adapter
 import com.vision.wallpapers.R
 import com.vision.wallpapers.WallpaperViewModel
 import com.vision.wallpapers.databinding.FragmentHomeBinding
+import com.vision.wallpapers.model.Response
 import com.vision.wallpapers.util.Constants
 import com.vision.wallpapers.util.Resources
 import java.util.*
@@ -92,7 +93,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     binding.progressBar.visibility = View.GONE
                     binding.loading.visibility = View.GONE
                     it.data?.let { list ->
-                        adapter.differ.submitList(list.wallpapers.shuffled())
+                        adapter.differ.submitList(list.wallpapers as List<Response>?)
                     }
                 }
                 is Resources.Loading -> {

@@ -92,5 +92,9 @@ dependencies {
     //circular menu
     implementation 'com.ramotion.circlemenu:circle-menu:0.3.2'
 
+    //dexter permissions
+    implementation 'com.karumi:dexter:5.0.0'
+
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
 }
