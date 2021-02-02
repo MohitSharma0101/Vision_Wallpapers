@@ -1,7 +1,6 @@
 package com.vision.wallpapers.ui
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.app.WallpaperManager
 import android.content.Context
@@ -9,14 +8,13 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
+import android.provider.MediaStore
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -34,6 +32,9 @@ import com.vision.wallpapers.database.WallpaperDatabase
 import com.vision.wallpapers.databinding.ActivityFullImageBinding
 import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponseItem
 import com.vision.wallpapers.repository.WallpaperRepo
+import com.yalantis.ucrop.UCrop
+import com.yalantis.ucrop.model.AspectRatio
+import com.yalantis.ucrop.view.CropImageView
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
@@ -115,7 +116,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
                     }
                     3 -> {
-                        setWallpaper(url)
+                        cropImage()
                     }
 
                 }
@@ -189,6 +190,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
     private fun setWallpaper(imageUrl: String) {
         val wallpaperManager = WallpaperManager.getInstance(applicationContext)
+
         Glide.with(applicationContext).asBitmap().load(imageUrl)
             .into(object : CustomTarget<Bitmap?>() {
                 override fun onResourceReady(
@@ -197,15 +199,6 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                 ) {
                     binding.fullImageProgressBar?.visibility = View.GONE
                     wallpaperManager.setBitmap(resource)
-
-                    val displayMetrics = DisplayMetrics()
-                    windowManager.defaultDisplay.getMetrics(displayMetrics)
-                    val height = displayMetrics.heightPixels
-                    val width = displayMetrics.widthPixels
-
-                    val newBitmap = getResizedBitmap(resource, height, width)
-
-                    wallpaperManager.setBitmap(newBitmap)
                     Toast.makeText(applicationContext, "set", Toast.LENGTH_SHORT).show()
                 }
 
@@ -213,6 +206,26 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                     TODO("Not yet implemented")
                 }
             })
+    }
+
+    private  fun cropImage(){
+        val uri = Uri.parse(url)
+        val option = UCrop.Options()
+        option.setAspectRatioOptions(
+            3,
+            AspectRatio("2:1", 2f, 1f),
+            AspectRatio("4:3", 4f, 3f),
+            AspectRatio("9:16", 9f, 16f),
+            AspectRatio(
+                "Default",
+                CropImageView.DEFAULT_ASPECT_RATIO,
+                CropImageView.DEFAULT_ASPECT_RATIO
+            ),
+            AspectRatio("1:1", 1f, 1f)
+        )
+        UCrop.of(uri, Uri.fromFile(File(cacheDir, "Vision")))
+            .withOptions(option)
+            .start(this)
     }
 
     private fun hasStoragePermission(): Boolean {
@@ -254,18 +267,25 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
     }
 
-    @SuppressLint("StringFormatMatches")
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
-            val yes = "Permission Granted"
-            val no = "Permission Denied"
-            // Do something after user returned from app settings screen, like showing a Toast.
             if (hasStoragePermission()) {
                 downloadImageNew(downloadUrlOfImage = url)
             } else {
                 Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
             }
+        }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            val resultUri = data?.let { UCrop.getOutput(it) }
+            val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
+            val wallpaperManager = WallpaperManager.getInstance(applicationContext)
+            wallpaperManager.setBitmap(bitmap)
+
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            val cropError = data?.let { UCrop.getError(it) }
         }
     }
 
@@ -277,19 +297,6 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
     }
 
-    private fun getResizedBitmap(bm: Bitmap, newHeight: Int, newWidth: Int): Bitmap? {
-        val width = bm.width
-        val height = bm.height
-        val scaleWidth = newWidth.toFloat() / width
-        val scaleHeight = newHeight.toFloat() / height
-        // create a matrix for the manipulation
-        val matrix = Matrix()
-        // resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight)
-
-        // recreate the new Bitmap
-        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true)
-    }
 
 
 }
