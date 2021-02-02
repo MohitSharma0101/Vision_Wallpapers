@@ -9,13 +9,14 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.Settings
+import android.util.DisplayMetrics
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -83,23 +84,27 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
         val menu = binding.circle
         menu.eventListener = object : CircleMenuView.EventListener() {
-            override fun onMenuOpenAnimationStart(view: CircleMenuView) {}
+            override fun onMenuOpenAnimationStart(view: CircleMenuView) {
 
-            override fun onMenuOpenAnimationEnd(view: CircleMenuView) {}
+            }
 
-            override fun onMenuCloseAnimationStart(view: CircleMenuView) {}
+            override fun onMenuOpenAnimationEnd(view: CircleMenuView) {
 
-            override fun onMenuCloseAnimationEnd(view: CircleMenuView) {}
+            }
+
+            override fun onMenuCloseAnimationStart(view: CircleMenuView) {
+            }
+
+            override fun onMenuCloseAnimationEnd(view: CircleMenuView) {
+
+            }
 
             override fun onButtonClickAnimationStart(view: CircleMenuView, index: Int) {
-                when(index){
-                    3 ->{
 
-                    }
-                }
             }
 
             override fun onButtonClickAnimationEnd(view: CircleMenuView, index: Int) {
+
                 when (index) {
                     0 -> {
                         requestPermission()
@@ -107,11 +112,12 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                     2 -> {
                         Toast.makeText(applicationContext, "Saved", Toast.LENGTH_SHORT).show()
                         viewModel.saveWallpaper(photo)
+
                     }
                     3 -> {
                         setWallpaper(url)
-                        binding.fullImageProgressBar?.visibility = View.VISIBLE
                     }
+
                 }
             }
         }
@@ -191,10 +197,21 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                 ) {
                     binding.fullImageProgressBar?.visibility = View.GONE
                     wallpaperManager.setBitmap(resource)
+
+                    val displayMetrics = DisplayMetrics()
+                    windowManager.defaultDisplay.getMetrics(displayMetrics)
+                    val height = displayMetrics.heightPixels
+                    val width = displayMetrics.widthPixels
+
+                    val newBitmap = getResizedBitmap(resource, height, width)
+
+                    wallpaperManager.setBitmap(newBitmap)
                     Toast.makeText(applicationContext, "set", Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onLoadCleared(placeholder: Drawable?) {}
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    TODO("Not yet implemented")
+                }
             })
     }
 
@@ -206,6 +223,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         if (hasStoragePermission()) {
             downloadImageNew(downloadUrlOfImage = url)
         } else {
+            // Ask for one permission
             EasyPermissions.requestPermissions(
                 this,
                 "This app needs access to your storage so you can download wallpapers",
@@ -257,6 +275,20 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
     override fun onRationaleDenied(requestCode: Int) {
         Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getResizedBitmap(bm: Bitmap, newHeight: Int, newWidth: Int): Bitmap? {
+        val width = bm.width
+        val height = bm.height
+        val scaleWidth = newWidth.toFloat() / width
+        val scaleHeight = newHeight.toFloat() / height
+        // create a matrix for the manipulation
+        val matrix = Matrix()
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight)
+
+        // recreate the new Bitmap
+        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true)
     }
 
 
