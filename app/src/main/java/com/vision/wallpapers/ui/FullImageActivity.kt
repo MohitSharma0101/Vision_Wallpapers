@@ -61,6 +61,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
         val bottomSheet = findViewById<LinearLayout>(R.id.bottomInfo)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        bottomSheet.setOnClickListener {  }
 
         val cancel = findViewById<MaterialTextView>(R.id.cancel)
 
