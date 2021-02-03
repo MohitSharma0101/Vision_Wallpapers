@@ -273,10 +273,12 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
                 is Resources.Success -> {
                     it.data?.let { list ->
                         isLoading = false
+                        binding.categoryProgressBar.visibility = View.GONE
                         showAdapter.differ.submitList(list.wallpapers.toList())
                     }
                 }
                 is Resources.Loading -> {
+                    binding.categoryProgressBar.visibility = View.VISIBLE
                     isLoading = true
                 }
             }

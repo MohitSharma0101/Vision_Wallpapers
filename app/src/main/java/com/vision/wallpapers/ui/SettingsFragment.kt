@@ -1,5 +1,7 @@
 package com.vision.wallpapers.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Html
 import android.view.View
@@ -21,6 +23,16 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val end =
             ". If you own any of these images and want to remove from Vision Wallpapers then please contact us."
         binding.declaration.text = Html.fromHtml(first + next + end)
+
+        binding.contactUs.setOnClickListener {
+            val emailIntent = Intent(
+                Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", "tilwanil818@gmail.com", null
+                )
+            )
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Vision Wallpapers")
+            context?.startActivity(Intent.createChooser(emailIntent, null))
+        }
 
     }
 }
