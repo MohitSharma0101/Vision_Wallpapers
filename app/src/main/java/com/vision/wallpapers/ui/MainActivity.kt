@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
 
         byViews.setOnClickListener {
+            viewModel.alphaPhotoResponse = null
             viewModel.getAlphaPhotos("by_views")
             byViews.background = resources.getDrawable(R.drawable.bottom_back)
             byViews.setTextColor(resources.getColor(R.color.blue_link))
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
 
         byFav.setOnClickListener {
+            viewModel.alphaPhotoResponse = null
             viewModel.getAlphaPhotos("by_favorites")
             byFav.background = resources.getDrawable(R.drawable.bottom_back)
             byFav.setTextColor(resources.getColor(R.color.blue_link))
@@ -82,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         byRating.setOnClickListener {
+            viewModel.alphaPhotoResponse = null
             viewModel.getAlphaPhotos("highest_rated")
             byRating.background = resources.getDrawable(R.drawable.bottom_back)
             byRating.setTextColor(resources.getColor(R.color.blue_link))
@@ -100,6 +103,7 @@ class MainActivity : AppCompatActivity() {
 
 
         byPopularity.setOnClickListener {
+            viewModel.alphaPhotoResponse = null
             viewModel.getAlphaPhotos("popular")
             byPopularity.background = resources.getDrawable(R.drawable.bottom_back)
             byPopularity.setTextColor(resources.getColor(R.color.blue_link))

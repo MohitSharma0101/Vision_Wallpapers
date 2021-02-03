@@ -266,6 +266,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
     private fun searchAlpha(query: String) {
         recentSearchList.add(query)
         saveArrayList(recentSearchList)
+        viewModel.alphaSearchResponse = null
         viewModel.searchAlphaPhotos(query)
         viewModel.alphaSearchPhotos.observe(viewLifecycleOwner, {
             when (it) {
