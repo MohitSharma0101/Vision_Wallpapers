@@ -14,10 +14,13 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.provider.Settings
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.textview.MaterialTextView
 import com.ramotion.circlemenu.CircleMenuView
 import com.vision.wallpapers.R
 import com.vision.wallpapers.WallpaperViewModel
@@ -40,6 +43,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     lateinit var viewModel: WallpaperViewModel
     lateinit var url: String
     lateinit var type: String
+    lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     private val STRG_PERM = 101
 
@@ -55,7 +59,17 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
         viewModel = ViewModelProvider(this, factory).get(WallpaperViewModel::class.java)
 
-        val photo: AlphaPhotoResponseItem = intent.getSerializableExtra("photo") as AlphaPhotoResponseItem
+        val bottomSheet = findViewById<LinearLayout>(R.id.bottomInfo)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+
+        val cancel = findViewById<MaterialTextView>(R.id.cancel)
+
+        cancel.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        val photo: AlphaPhotoResponseItem =
+            intent.getSerializableExtra("photo") as AlphaPhotoResponseItem
         url = photo.url_image
         type = photo.file_type
         binding.apply {
@@ -101,6 +115,9 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                 when (index) {
                     0 -> {
                         requestPermission()
+                    }
+                    1 -> {
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     }
                     2 -> {
                         Toast.makeText(applicationContext, "Saved", Toast.LENGTH_SHORT).show()
@@ -149,8 +166,12 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        } else {
+            super.onBackPressed()
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
     }
 
     private fun downloadImageNew(filename: String = "Vision", downloadUrlOfImage: String) {

@@ -6,7 +6,6 @@
     android:background="@color/black"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/wallpaperIv"
         android:transitionName="photo"
@@ -53,7 +52,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:indeterminateTint="@color/white"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
+
+    <include layout="@layout/bottom_info" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
