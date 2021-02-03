@@ -4,6 +4,7 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.google.android.material.chip.Chip
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.jama.carouselview.CarouselView
 import com.jama.carouselview.enums.IndicatorAnimationType
 import com.jama.carouselview.enums.OffsetType
@@ -31,6 +34,7 @@ import com.vision.wallpapers.util.Constants.Categories
 import com.vision.wallpapers.util.Constants.Colors
 import com.vision.wallpapers.util.Palette
 import com.vision.wallpapers.util.Resources
+import java.lang.reflect.Type
 
 
 class CategoriesFragment:Fragment(R.layout.fragment_categories) {
@@ -45,6 +49,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
     lateinit var searchQuery: String
     var isLoading = false
     var isScrolling = false
+    private val recentSearchList = ArrayList<String?>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,6 +63,8 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
 
         setupViewPager()
         setupColorsRecyclerView()
+        getRecentSearches()
+
 
         adapter.differ.submitList(Colors)
 
@@ -136,13 +143,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
 
         }
 
-        val genres = arrayOf("Thriller", "Comedy", "Adventure")
-        for (genre in genres) {
-            val chip = Chip(context)
-            chip.text = genre
-            chip.maxEms = 7
-            binding.chipGroup2.addView(chip)
-        }
+
 
         val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             if (binding.categoriesText.visibility == View.GONE) {
@@ -157,6 +158,19 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
             }
         }
 
+    }
+
+    private fun getRecentSearches(){
+        var recent = getArrayList()
+        if(recent == null){
+            recent = arrayListOf("Thriller", "Comedy", "Adventure")
+        }
+        for (genre in recent) {
+            val chip = Chip(context)
+            chip.text = genre
+            chip.maxEms = 7
+            binding.chipGroup2.addView(chip)
+        }
     }
 
 
@@ -215,7 +229,9 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
                 imageView.load(Categories[position].count){
                     crossfade(true)
                     allowHardware(true)
-                    placeholder(Color.parseColor( Palette.LIGHT[position % Palette.LIGHT.size] ).toDrawable())
+                    placeholder(
+                        Color.parseColor(Palette.LIGHT[position % Palette.LIGHT.size]).toDrawable()
+                    )
                 }
                 val text = view.findViewById<TextView>(R.id.categoryName)
                 text.text = Categories[position].name
@@ -248,6 +264,8 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
     }
 
     private fun searchAlpha(query: String) {
+        recentSearchList.add(query)
+        saveArrayList(recentSearchList)
         viewModel.searchAlphaPhotos(query)
         viewModel.alphaSearchPhotos.observe(viewLifecycleOwner, {
             when (it) {
@@ -262,6 +280,24 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
                 }
             }
         })
+        recentSearchList.add(query)
+        saveArrayList(recentSearchList)
+    }
+
+    private fun saveArrayList(list: ArrayList<String?>?) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        val editor = prefs.edit()
+        val gson = Gson()
+        val json = gson.toJson(list)
+        editor.putString("recent", json)
+        editor.apply()
+    }
+    private fun getArrayList(): ArrayList<String?>? {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        val gson = Gson()
+        val json = prefs.getString("recent", null)
+        val type: Type = object : TypeToken<ArrayList<String?>?>() {}.type
+        return gson.fromJson(json, type)
     }
 
 

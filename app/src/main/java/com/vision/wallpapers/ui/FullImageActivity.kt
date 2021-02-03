@@ -55,8 +55,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
         viewModel = ViewModelProvider(this, factory).get(WallpaperViewModel::class.java)
 
-        val photo: AlphaPhotoResponseItem =
-            intent.getSerializableExtra("photo") as AlphaPhotoResponseItem
+        val photo: AlphaPhotoResponseItem = intent.getSerializableExtra("photo") as AlphaPhotoResponseItem
         url = photo.url_image
         type = photo.file_type
         binding.apply {
@@ -70,11 +69,11 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             rotateBtn.setOnClickListener {
                 changeScreenOrientation()
             }
+            backBtn.setOnClickListener {
+                onBackPressed()
+            }
         }
 
-        binding.backBtn.setOnClickListener {
-            onBackPressed()
-        }
 
         val menu = binding.circle
         menu.eventListener = object : CircleMenuView.EventListener() {
@@ -149,12 +148,10 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         }
     }
 
-
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
-
 
     private fun downloadImageNew(filename: String = "Vision", downloadUrlOfImage: String) {
         try {
@@ -168,7 +165,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
                 .setAllowedOverRoaming(false)
                 .setTitle(filename)
-                .setMimeType(type) // Your file type. You can use this code to download other file types also.
+                .setMimeType(type)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setDestinationInExternalPublicDir(
                     Environment.DIRECTORY_PICTURES,
@@ -205,7 +202,6 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         if (hasStoragePermission()) {
             downloadImageNew(downloadUrlOfImage = url)
         } else {
-            // Ask for one permission
             EasyPermissions.requestPermissions(
                 this,
                 "This app needs access to your storage so you can download wallpapers",
@@ -233,7 +229,6 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             AppSettingsDialog.Builder(this).build().show()
         }
         Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
-
     }
 
 
@@ -251,8 +246,6 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
             val wallpaperManager = WallpaperManager.getInstance(applicationContext)
             wallpaperManager.setBitmap(bitmap)
-
-
         } else if (resultCode == UCrop.RESULT_ERROR) {
             val cropError = data?.let { UCrop.getError(it) }
             Toast.makeText(applicationContext, "Something went wrong.", Toast.LENGTH_SHORT).show()
