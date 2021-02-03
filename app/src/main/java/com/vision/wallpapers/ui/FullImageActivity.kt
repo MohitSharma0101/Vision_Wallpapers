@@ -7,18 +7,25 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
+import android.provider.MediaStore.Images
 import android.provider.Settings
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textview.MaterialTextView
 import com.ramotion.circlemenu.CircleMenuView
@@ -33,6 +40,7 @@ import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.model.AspectRatio
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 
@@ -118,6 +126,12 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                         requestPermission()
                     }
                     1 -> {
+                        val size = findViewById<MaterialTextView>(R.id.size)
+                        val type = findViewById<MaterialTextView>(R.id.type)
+                        val resolution = findViewById<MaterialTextView>(R.id.resolution)
+                        size.text = photo.file_size
+                        resolution.text = photo.width.toString() + " x " + photo.height.toString()
+                        type.text = photo.file_type
                         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     }
                     2 -> {
@@ -128,7 +142,9 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                     3 -> {
                         cropImage()
                     }
-                    4 ->{ shareWallpaper()}
+                    4 -> {
+                        shareImageUri()
+                    }
 
                 }
             }
@@ -283,13 +299,37 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
     }
 
-    private fun shareWallpaper(){
-        val share = Intent(Intent.ACTION_SEND)
-        share.type = "image/png"
-        share.putExtra(Intent.EXTRA_STREAM, Uri.parse(url))
-        startActivity(Intent.createChooser(share, "Share via"))
+    private fun shareImageUri() {
+
+        binding.fullImageProgressBar?.visibility = View.VISIBLE
+
+        Glide.with(applicationContext)
+            .asBitmap()
+            .load(url)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    binding.fullImageProgressBar?.visibility = View.GONE
+                    val share = Intent(Intent.ACTION_SEND)
+                    share.type = "image/*"
+                    share.putExtra(Intent.EXTRA_STREAM, getImageUri(applicationContext, resource))
+                    share.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "I got this cool wallpaper from Vision Wallpapers go to this link to find more:- \n https://github.com/lalit0111/Vision_Wallpapers"
+                    )
+                    startActivity(Intent.createChooser(share, "Share via"))
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+
+            })
     }
 
-
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
 
 }

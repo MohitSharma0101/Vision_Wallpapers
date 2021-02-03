@@ -1,6 +1,7 @@
 package com.vision.wallpapers.ui
 
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.vision.wallpapers.R
@@ -15,6 +16,11 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSettingsBinding.bind(view)
 
+        val first = "All wallpapers in this app are from "
+        val next = "<font color='#2476e3'>Wallpaper Abyss' API</font>"
+        val end =
+            ". If you own any of these images and want to remove from Vision Wallpapers then please contact us."
+        binding.declaration.text = Html.fromHtml(first + next + end)
 
     }
 }

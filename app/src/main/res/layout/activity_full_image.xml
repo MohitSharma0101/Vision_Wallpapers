@@ -17,6 +17,7 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/backBtn"
         android:layout_width="wrap_content"
+        android:layout_marginTop="15dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top|start"
         android:padding="20dp"
@@ -26,6 +27,7 @@
         android:id="@+id/scaleBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         app:srcCompat="@drawable/ic_minimize"
         android:layout_gravity="top|end"
         android:padding="20dp" />
@@ -35,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="50dp"
         android:padding="20dp"
         app:srcCompat="@drawable/rotate" />

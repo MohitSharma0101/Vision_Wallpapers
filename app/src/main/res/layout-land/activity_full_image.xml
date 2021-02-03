@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|start"
+        android:layout_marginTop="10dp"
         android:padding="20dp"
         app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
 
@@ -26,6 +27,7 @@
         android:id="@+id/scaleBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_gravity="top|end"
         android:layout_marginEnd="50dp"
         android:padding="20dp"
@@ -34,6 +36,7 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/rotateBtn"
         android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:layout_marginEnd="100dp"
@@ -47,5 +50,7 @@
         android:layout_gravity="bottom|center"
         app:button_colors="@array/colors"
         app:button_icons="@array/icons" />
+
+    <include layout="@layout/bottom_info" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

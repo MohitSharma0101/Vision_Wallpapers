@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="0dp"
-        app:cardElevation="2dp">
+        app:cardElevation="0dp">
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/notificationTv"
         android:layout_marginStart="15dp"
-        android:text="Turn on of off to notifications"
+        android:text="Turn on or off to notifications"
         android:textSize="@dimen/_10ssp" />
 
     <androidx.cardview.widget.CardView
@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="35dp"
             android:fontFamily="@font/lato_bold"
             android:text="Clear Cache"
             android:textColor="@color/black"
@@ -126,7 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/notificationTv"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:maxWidth="@dimen/_200sdp"
             android:text="Cache Size: 34.01 MB"
             android:textColor="@color/blue_link"
@@ -144,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="35dp"
             android:fontFamily="@font/lato_bold"
             android:text="Clear Search History"
             android:textColor="@color/black"
@@ -155,7 +155,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/notificationTv"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/lato"
             android:lineSpacingExtra="1dp"
             android:paddingEnd="@dimen/_30sdp"
@@ -168,7 +168,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0.7dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:layout_marginBottom="15dp"
         app:cardBackgroundColor="#d3d3d3"
         app:cardCornerRadius="0dp"
@@ -210,14 +210,15 @@
         android:textSize="@dimen/_12ssp" />
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/declaration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/notificationTv"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:fontFamily="@font/lato"
-        android:text="All wallpapers in this app are Wallpaper Abyss' API. If you own any of these images and want to remove from Vision Wallpapers then please contact us."
+        android:text="All wallpapers in this app are from Wallpaper Abyss' API. If you own any of these images and want to remove from Vision Wallpapers then please contact us."
         android:textAlignment="center"
         android:textColor="@color/grey"
         android:textSize="@dimen/_11ssp" />
@@ -243,13 +244,5 @@
 
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="0.7dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        app:cardBackgroundColor="#d3d3d3"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="0dp" />
 
 </LinearLayout>

@@ -27,7 +27,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     lateinit var adapter: Adapter
     lateinit var viewModel: WallpaperViewModel
     var isLoading = false
-    var isLastPage = false
     var isScrolling = false
 
 
