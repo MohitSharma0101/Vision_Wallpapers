@@ -128,6 +128,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                     3 -> {
                         cropImage()
                     }
+                    4 ->{ shareWallpaper()}
 
                 }
             }
@@ -280,6 +281,13 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
     override fun onRationaleDenied(requestCode: Int) {
         Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun shareWallpaper(){
+        val share = Intent(Intent.ACTION_SEND)
+        share.type = "image/png"
+        share.putExtra(Intent.EXTRA_STREAM, Uri.parse(url))
+        startActivity(Intent.createChooser(share, "Share via"))
     }
 
 
