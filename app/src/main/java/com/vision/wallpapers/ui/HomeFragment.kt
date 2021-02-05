@@ -1,6 +1,8 @@
 package com.vision.wallpapers.ui
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
@@ -37,7 +39,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val activity = (activity as MainActivity)
 
         viewModel = activity.viewModel
-
+        viewModel.getAlphaPhotos()
         gridLayoutManager = GridLayoutManager(context, 2)
         adapter = Adapter(viewModel)
         binding.homeRecyclerView.layoutManager = gridLayoutManager
@@ -47,15 +49,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.sort.setOnClickListener {
             activity.bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
+        binding.retryBtn.setOnClickListener { 
+            viewModel.getAlphaPhotos()
+        }
 
 
         adapter.setOnItemClickListener { image, url, photo ->
             val intent = Intent(context, FullImageActivity::class.java)
             intent.putExtra("photo", photo)
             val bundle = ActivityOptionsCompat.makeCustomAnimation(
-                    requireContext(),
-                    android.R.anim.fade_in,
-                    android.R.anim.fade_out
+                requireContext(),
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
             ).toBundle()
             startActivity(intent, bundle)
         }
@@ -126,7 +131,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     binding.progressBar.visibility = View.GONE
                     binding.loading.visibility = View.GONE
                     it.data?.let { list ->
-                        viewModel.alphaLastPage = list.is_last?:false
+                        viewModel.alphaLastPage = list.is_last ?: false
                         adapter.differ.submitList(list.wallpapers.toList())
                     }
                 }
@@ -134,6 +139,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     isLoading = true
                     binding.progressBar.visibility = View.VISIBLE
                     binding.loading.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.retryBtn.visibility = View.VISIBLE
+                    binding.loading.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+
                 }
             }
         })

@@ -1,5 +1,6 @@
 package com.vision.wallpapers
 
+import am.appwise.components.ni.NoInternetDialog
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -36,7 +37,6 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
 
     init {
         favWallpaper = getSavedWallpaper()
-        getAlphaPhotos()
     }
 
     fun deleteAllWallpaper() = viewModelScope.launch {
@@ -67,9 +67,14 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
 
 
     fun getAlphaPhotos(method: String = "featured" , page:Int = 1) = viewModelScope.launch {
-        alphaPhoto.postValue(Resources.Loading())
-        val response = wallpaperRepo.getAlphaImages(method,page)
-        alphaPhoto.postValue(handleAlphaPhotosResponse(response))
+        try {
+            alphaPhoto.postValue(Resources.Loading())
+            val response = wallpaperRepo.getAlphaImages(method,page)
+            alphaPhoto.postValue(handleAlphaPhotosResponse(response))
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
     }
 
     private fun handleAlphaPhotosResponse(response: Response<AlphaPhotoResponse>): Resources<AlphaPhotoResponse> {
@@ -89,9 +94,14 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
 
 
     fun searchAlphaPhotos(query: String, page: Int = 1) = viewModelScope.launch {
-        alphaSearchPhotos.postValue(Resources.Loading())
-        val response = wallpaperRepo.searchAlphaImages(query, page)
-        alphaSearchPhotos.postValue(handleSearchAlphaPhotosResponse(response))
+        try {
+            alphaSearchPhotos.postValue(Resources.Loading())
+            val response = wallpaperRepo.searchAlphaImages(query, page)
+            alphaSearchPhotos.postValue(handleSearchAlphaPhotosResponse(response))
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
     }
 
     private fun handleSearchAlphaPhotosResponse(response: Response<AlphaSearchResponse>): Resources<AlphaSearchResponse> {

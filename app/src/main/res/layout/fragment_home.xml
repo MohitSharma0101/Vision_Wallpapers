@@ -201,4 +201,13 @@
         android:layout_gravity="center"
         android:indeterminateTint="@color/white" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/retryBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Retry"
+        android:visibility="gone"
+        android:textSize="@dimen/_12ssp"
+        android:layout_gravity="center"
+        />
 </FrameLayout>

@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     lateinit var viewModel: WallpaperViewModel
+    lateinit var noInternetDialog: NoInternetDialog
     lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
 
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         binding.bottomBar.setupWithNavController(navController)
 
-        noInternetAlert()
+        noInternetDialog = noInternetAlert()
         val db = WallpaperDatabase(this)
         val repo = WallpaperRepo(db)
         val factory = WallpaperViewModelFactory(repo)
@@ -144,4 +145,10 @@ class MainActivity : AppCompatActivity() {
         .setButtonTextColor(resources.getColor(R.color.black))
         .setWifiLoaderColor(resources.getColor(R.color.light_blue))
         .build()
+
+    override fun onDestroy() {
+        noInternetDialog.onDestroy()
+        super.onDestroy()
+
+    }
     }
