@@ -1,10 +1,12 @@
 package com.vision.wallpapers.ui
 
+import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -49,7 +51,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
     lateinit var searchQuery: String
     var isLoading = false
     var isScrolling = false
-    private val recentSearchList = ArrayList<String?>()
+    private var recentSearchList = ArrayList<String?>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,6 +66,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         setupViewPager()
         setupColorsRecyclerView()
         getRecentSearches()
+        handelBackPressed()
 
 
         adapter.differ.submitList(Colors)
@@ -119,32 +122,18 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         binding.dropdown.setOnClickListener {
             if (!isDropped) {
                 binding.dropdown.setImageResource(R.drawable.chevron_up)
-                val genres = arrayOf("Thriller", "Comedy", "Adventure")
-                for (genre in genres) {
-                    val chip = Chip(context)
-                    chip.text = genre
-                    chip.maxEms = 7
-                    binding.chipGroup2.addView(chip)
-                    isDropped = true
-                }
+               getRecentSearches(true)
+                isDropped = true
             } else {
                 binding.dropdown.setImageResource(R.drawable.chevron_down)
-                binding.chipGroup2.removeAllViews()
-                val genres = arrayOf("Thriller", "Comedy", "Adventure")
-                for (genre in genres) {
-                    val chip = Chip(context)
-                    chip.text = genre
-                    chip.maxEms = 7
-                    binding.chipGroup2.addView(chip)
-                    isDropped = true
-                }
+                getRecentSearches(false)
                 isDropped = false
             }
 
         }
 
-
-
+    }
+    private fun handelBackPressed(){
         val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             if (binding.categoriesText.visibility == View.GONE) {
                 binding.searchBar.setText("")
@@ -157,22 +146,27 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
                 binding.viewPager.visibility = View.VISIBLE
             }
         }
-
     }
 
-    private fun getRecentSearches(){
-        var recent = getArrayList()
-        if(recent == null){
-            recent = arrayListOf("Thriller", "Comedy", "Adventure")
+    private fun getRecentSearches(isFull:Boolean = false){
+        recentSearchList.clear()
+         loadRecentList()
+        if(recentSearchList.isEmpty()){
+            recentSearchList = arrayListOf("Thriller", "Comedy", "Adventure")
         }
-        for (genre in recent) {
-            val chip = Chip(context)
-            chip.text = genre
-            chip.maxEms = 7
-            binding.chipGroup2.addView(chip)
+        val recent = recentSearchList.asReversed()
+        binding.chipGroup2.removeAllViews()
+        var size = recent.size
+         if(recent.size>4 && !isFull ) {
+             size = 4
+         }else if(recent.size>10 && isFull){
+             size = 10
+         }
+        for (i in 0 until size) {
+            if(!recent[i].isNullOrEmpty())
+               createChip(recent[i])
         }
     }
-
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -198,7 +192,6 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
 
         }
     }
-
 
     private fun setupColorsRecyclerView() {
         showAdapter = Adapter(viewModel)
@@ -265,7 +258,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
 
     private fun searchAlpha(query: String) {
         recentSearchList.add(query)
-        saveArrayList(recentSearchList)
+        saveRecentList()
         viewModel.alphaSearchResponse = null
         viewModel.searchAlphaPhotos(query)
         viewModel.alphaSearchPhotos.observe(viewLifecycleOwner, {
@@ -273,6 +266,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
                 is Resources.Success -> {
                     it.data?.let { list ->
                         isLoading = false
+                        getRecentSearches()
                         showAdapter.differ.submitList(list.wallpapers.toList())
                     }
                 }
@@ -280,25 +274,37 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
                     isLoading = true
                 }
             }
+
         })
-        recentSearchList.add(query)
-        saveArrayList(recentSearchList)
+
     }
 
-    private fun saveArrayList(list: ArrayList<String?>?) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-        val editor = prefs.edit()
-        val gson = Gson()
-        val json = gson.toJson(list)
-        editor.putString("recent", json)
-        editor.apply()
+
+    private fun saveRecentList():Boolean{
+        val sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val mEdit1 = sp.edit()
+       mEdit1.putInt("Status_size", recentSearchList.size)
+        for (i in 0 until recentSearchList.size) {
+            mEdit1.remove(i.toString())
+            mEdit1.putString(i.toString(), recentSearchList[i])
+        }
+        return mEdit1.commit()
     }
-    private fun getArrayList(): ArrayList<String?>? {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-        val gson = Gson()
-        val json = prefs.getString("recent", null)
-        val type: Type = object : TypeToken<ArrayList<String?>?>() {}.type
-        return gson.fromJson(json, type)
+
+    private fun loadRecentList(){
+        val mSharedPreference1 = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val size = mSharedPreference1.getInt("Status_size", 0)
+        for (i in 0 until size) {
+            recentSearchList.add(mSharedPreference1.getString(i.toString(), null))
+        }
+    }
+
+    private fun createChip(text:String?){
+        val chip = Chip(context)
+        chip.text = text
+        chip.maxEms = 7
+        binding.chipGroup2.addView(chip)
+
     }
 
 

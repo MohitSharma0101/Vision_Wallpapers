@@ -145,7 +145,6 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                     4 -> {
                         shareImageUri()
                     }
-
                 }
             }
         }
