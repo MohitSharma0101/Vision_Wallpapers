@@ -26,7 +26,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import com.ramotion.circlemenu.CircleMenuView
 import com.vision.wallpapers.R
@@ -42,6 +41,7 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.*
 
 
 class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
@@ -129,7 +129,8 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                         val size = findViewById<MaterialTextView>(R.id.size)
                         val type = findViewById<MaterialTextView>(R.id.type)
                         val resolution = findViewById<MaterialTextView>(R.id.resolution)
-                        size.text = photo.file_size
+                        val sizeMb = (photo.file_size).toInt() / 1024 / 1024
+                        size.text = sizeMb.toString() + "MB"
                         resolution.text = photo.width.toString() + " x " + photo.height.toString()
                         type.text = photo.file_type
                         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -218,7 +219,8 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             val dm = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                 getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             } else {
-                TODO("VERSION.SDK_INT < M")
+                Toast.makeText(applicationContext, "Something went wrong", Toast.LENGTH_LONG).show()
+                return
             }
             if (uri != null) {
                 val downloadUri: Uri? = Uri.parse(url)
@@ -362,7 +364,12 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        val path = Images.Media.insertImage(
+            inContext.contentResolver,
+            inImage,
+            photo.id.toString() + Calendar.getInstance().time,
+            null
+        )
         return Uri.parse(path)
     }
 

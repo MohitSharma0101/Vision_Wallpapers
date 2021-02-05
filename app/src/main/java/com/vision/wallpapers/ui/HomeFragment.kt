@@ -1,8 +1,6 @@
 package com.vision.wallpapers.ui
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
@@ -173,6 +171,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 chip?.let {
                     val s =  chip.text.toString().toLowerCase(Locale.ROOT)
                     viewModel.method = s
+                    viewModel.alphaPhotoResponse = null
                     viewModel.getAlphaPhotos(s)
                 }
             }
