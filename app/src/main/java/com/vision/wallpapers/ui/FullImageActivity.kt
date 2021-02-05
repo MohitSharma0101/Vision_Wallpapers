@@ -322,7 +322,8 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             val resultUri = data?.let { UCrop.getOutput(it) }
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
-            showWallpaperChoice(bitmap)
+            val wallpaperManager = WallpaperManager.getInstance(applicationContext)
+            wallpaperManager.setBitmap(bitmap)
         } else if (resultCode == UCrop.RESULT_ERROR) {
             val cropError = data?.let { UCrop.getError(it) }
             Toast.makeText(applicationContext, "Something went wrong.", Toast.LENGTH_SHORT).show()
@@ -365,46 +366,5 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         return Uri.parse(path)
     }
 
-    private fun showWallpaperChoice(bitmap:Bitmap){
-        val singleItems = arrayOf("Home Screen", "Lock Screen", "Both")
-        val checkedItem = 1
-        val wallpaperManager = WallpaperManager.getInstance(applicationContext)
-
-        MaterialAlertDialogBuilder(this, R.style.CustomMaterialDialog)
-            .setTitle("Select Screen")
-            .setPositiveButton("ok") { dialog, which ->
-            }
-            .setNeutralButton("cancel") { dialog, which ->
-            }
-            .setSingleChoiceItems(singleItems, checkedItem) { dialog, id ->
-
-               when(id){
-                   0 -> {
-                       wallpaperManager.setBitmap(bitmap)
-                   }
-                   1 ->{
-                       try{
-                           if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                               wallpaperManager.clear(WallpaperManager.FLAG_LOCK)
-                               wallpaperManager.setBitmap(bitmap,null,true,WallpaperManager.FLAG_LOCK)
-                               Toast.makeText(applicationContext, "lockScreen setting up", Toast.LENGTH_SHORT).show()
-
-                           }
-                       }catch (e:Exception){
-                           e.printStackTrace()
-                       }
-
-                     //  Toast.makeText(applicationContext, "lockScreen setting up", Toast.LENGTH_SHORT).show()
-                   }
-                   2->{
-                       wallpaperManager.setBitmap(bitmap)
-                       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                           wallpaperManager.setBitmap(bitmap,null,true,WallpaperManager.FLAG_LOCK)
-                       }
-                   }
-               }
-            }
-            .show()
-    }
 
 }
