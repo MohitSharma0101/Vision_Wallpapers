@@ -100,4 +100,7 @@ dependencies {
     //image cropper
     implementation 'com.github.yalantis:ucrop:2.2.6-native'
 
+    //No internet Alert
+    implementation 'am.appwise.components:NoInternetDialog:1.1.3'
+
 }

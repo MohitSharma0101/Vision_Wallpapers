@@ -1,5 +1,6 @@
 package com.vision.wallpapers.ui
 
+import am.appwise.components.ni.NoInternetDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.LinearLayout
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         val db = WallpaperDatabase(this)
         val repo = WallpaperRepo(db)
         val factory = WallpaperViewModelFactory(repo)
+        noInternetAlert()
 
         viewModel = ViewModelProvider(this, factory).get(WallpaperViewModel::class.java)
 
@@ -129,6 +131,16 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
-
     }
+    private fun noInternetAlert() = NoInternetDialog.Builder(this)
+        .setCancelable(false)
+        .setDialogRadius(50f)
+        .setBgGradientCenter(resources.getColor(R.color.light_blue))
+        .setBgGradientStart(resources.getColor(R.color.light_blue))
+        .setBgGradientEnd(resources.getColor(R.color.light_blue))
+        .setButtonColor(resources.getColor(R.color.white))
+        .setButtonIconsColor(resources.getColor(R.color.light_blue))
+        .setButtonTextColor(resources.getColor(R.color.black))
+        .setWifiLoaderColor(resources.getColor(R.color.light_blue))
+        .build()
     }

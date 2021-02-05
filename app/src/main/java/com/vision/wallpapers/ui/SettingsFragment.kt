@@ -5,11 +5,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Html
+import android.text.format.Formatter
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.vision.wallpapers.R
 import com.vision.wallpapers.databinding.FragmentSettingsBinding
+import java.io.File
 
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
@@ -28,20 +30,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         binding.clearSearch.setOnClickListener {
             if (deleteSearchHistory()){
-                Toast.makeText(requireContext(),"Cleared",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Cleared", Toast.LENGTH_LONG).show()
             }
         }
-    }
-
-    private fun deleteSearchHistory():Boolean{
-            val sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
-            val mEdit1 = sp.edit()
-            val size = sp.getInt("Status_size", 0)
-            for (i in 0 until size) {
-             mEdit1.remove(i.toString())
-        }
-
-        return mEdit1.commit()
         binding.contactUs.setOnClickListener {
             val emailIntent = Intent(
                 Intent.ACTION_SENDTO, Uri.fromParts(
@@ -51,6 +42,50 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Vision Wallpapers")
             context?.startActivity(Intent.createChooser(emailIntent, null))
         }
+        binding.clearCache.setOnClickListener {
+           if(context?.cacheDir?.deleteRecursively() == true){
+               Toast.makeText(requireContext(), "Cleared", Toast.LENGTH_LONG).show()
+           }
+        }
+        binding.tvCacheSize.text = getCacheSize()
 
+    }
+
+    private fun deleteSearchHistory():Boolean{
+            val sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
+            val mEdit1 = sp.edit()
+            val size = sp.getInt("Status_size", 0)
+            for (i in 0 until size) {
+             mEdit1.remove(i.toString())
+        }
+        return mEdit1.commit()
+    }
+    private fun getCacheSize():String{
+        var size: Long = 0
+        val files:Array<File>? = requireContext().cacheDir.listFiles()
+        if (files != null) {
+            for (f in files) {
+                size += f.length()
+            }
+        }
+        return Formatter.formatFileSize(requireContext(), size)
+    }
+    private fun initializeCache() {
+        var size: Long = 0
+        size += getDirSize(requireContext().cacheDir)
+
+        size += getDirSize(requireContext().externalCacheDir)
+    }
+
+    private fun getDirSize(dir: File?): Long {
+        var size: Long = 0
+        for (file in dir?.listFiles()!!) {
+            if (file != null && file.isDirectory) {
+                size += getDirSize(file)
+            } else if (file != null && file.isFile) {
+                size += file.length()
+            }
+        }
+        return size
     }
 }

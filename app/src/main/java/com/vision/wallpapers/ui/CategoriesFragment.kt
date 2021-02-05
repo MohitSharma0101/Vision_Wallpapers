@@ -1,12 +1,10 @@
 package com.vision.wallpapers.ui
 
-import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -22,8 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.google.android.material.chip.Chip
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.jama.carouselview.CarouselView
 import com.jama.carouselview.enums.IndicatorAnimationType
 import com.jama.carouselview.enums.OffsetType
@@ -36,10 +32,9 @@ import com.vision.wallpapers.util.Constants.Categories
 import com.vision.wallpapers.util.Constants.Colors
 import com.vision.wallpapers.util.Palette
 import com.vision.wallpapers.util.Resources
-import java.lang.reflect.Type
 
 
-class CategoriesFragment:Fragment(R.layout.fragment_categories) {
+class CategoriesFragment : Fragment(R.layout.fragment_categories) {
 
     lateinit var viewModel: WallpaperViewModel
     lateinit var viewPager: CarouselView
@@ -122,7 +117,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         binding.dropdown.setOnClickListener {
             if (!isDropped) {
                 binding.dropdown.setImageResource(R.drawable.chevron_up)
-               getRecentSearches(true)
+                getRecentSearches(true)
                 isDropped = true
             } else {
                 binding.dropdown.setImageResource(R.drawable.chevron_down)
@@ -133,7 +128,8 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         }
 
     }
-    private fun handelBackPressed(){
+
+    private fun handelBackPressed() {
         val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             if (binding.categoriesText.visibility == View.GONE) {
                 binding.searchBar.setText("")
@@ -148,50 +144,51 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         }
     }
 
-    private fun getRecentSearches(isFull:Boolean = false){
+    private fun getRecentSearches(isFull: Boolean = false) {
         recentSearchList.clear()
-         loadRecentList()
-        if(recentSearchList.isEmpty()){
+        loadRecentList()
+        if (recentSearchList.isEmpty()) {
             recentSearchList = arrayListOf("Thriller", "Comedy", "Adventure")
         }
         val recent = recentSearchList.asReversed()
         binding.chipGroup2.removeAllViews()
         var size = recent.size
-         if(recent.size>4 && !isFull ) {
-             size = 4
-         }else if(recent.size>10 && isFull){
-             size = 10
-         }
+        if (recent.size > 4 && !isFull) {
+            size = 4
+        } else if (recent.size > 10 && isFull) {
+            size = 10
+        }
         for (i in 0 until size) {
-            if(!recent[i].isNullOrEmpty())
-               createChip(recent[i])
+            if (!recent[i].isNullOrEmpty())
+                createChip(recent[i])
         }
     }
 
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-                isScrolling = true
-            }
-        }
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            val visibleItemCount: Int = gridLayout.childCount
-            val totalItemCount: Int = gridLayout.itemCount
-            val firstVisibleItemPosition: Int = gridLayout.findFirstVisibleItemPosition()
-            if (!isLoading && !viewModel.alphaLastPage) {
-                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                    && firstVisibleItemPosition >= 0 && totalItemCount >= 30 && isScrolling
-                ) {
-                    viewModel.searchAlphaPhotos(searchQuery, viewModel.alphaSearchPage)
-                    isScrolling = false
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isScrolling = true
                 }
             }
 
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount: Int = gridLayout.childCount
+                val totalItemCount: Int = gridLayout.itemCount
+                val firstVisibleItemPosition: Int = gridLayout.findFirstVisibleItemPosition()
+                if (!isLoading && !viewModel.alphaLastPage) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                        && firstVisibleItemPosition >= 0 && totalItemCount >= 30 && isScrolling
+                    ) {
+                        viewModel.searchAlphaPhotos(searchQuery, viewModel.alphaSearchPage)
+                        isScrolling = false
+                    }
+                }
+
+            }
         }
-    }
 
     private fun setupColorsRecyclerView() {
         showAdapter = Adapter(viewModel)
@@ -219,7 +216,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
             carouselOffset = OffsetType.START
             setCarouselViewListener { view, position ->
                 val imageView = view.findViewById<ImageView>(R.id.categoryIv)
-                imageView.load(Categories[position].count){
+                imageView.load(Categories[position].count) {
                     crossfade(true)
                     allowHardware(true)
                     placeholder(
@@ -282,10 +279,10 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
     }
 
 
-    private fun saveRecentList():Boolean{
+    private fun saveRecentList(): Boolean {
         val sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val mEdit1 = sp.edit()
-       mEdit1.putInt("Status_size", recentSearchList.size)
+        mEdit1.putInt("Status_size", recentSearchList.size)
         for (i in 0 until recentSearchList.size) {
             mEdit1.remove(i.toString())
             mEdit1.putString(i.toString(), recentSearchList[i])
@@ -293,7 +290,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         return mEdit1.commit()
     }
 
-    private fun loadRecentList(){
+    private fun loadRecentList() {
         val mSharedPreference1 = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val size = mSharedPreference1.getInt("Status_size", 0)
         for (i in 0 until size) {
@@ -301,7 +298,7 @@ class CategoriesFragment:Fragment(R.layout.fragment_categories) {
         }
     }
 
-    private fun createChip(text:String?){
+    private fun createChip(text: String?) {
         val chip = Chip(context)
         chip.text = text
         chip.maxEms = 7
