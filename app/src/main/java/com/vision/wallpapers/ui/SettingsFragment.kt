@@ -1,5 +1,7 @@
 package com.vision.wallpapers.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Html
@@ -40,5 +42,15 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
 
         return mEdit1.commit()
+        binding.contactUs.setOnClickListener {
+            val emailIntent = Intent(
+                Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", "tilwanil818@gmail.com", null
+                )
+            )
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Vision Wallpapers")
+            context?.startActivity(Intent.createChooser(emailIntent, null))
+        }
+
     }
 }

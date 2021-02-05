@@ -1,6 +1,7 @@
 package com.vision.wallpapers
 
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +10,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
 import com.vision.wallpapers.databinding.PictureCardBinding
 import com.vision.wallpapers.model.Response
 import com.vision.wallpapers.model.alphaCoder.AlphaPhotoResponseItem
 import com.vision.wallpapers.util.Palette
 import kotlinx.coroutines.launch
+
 
 class Adapter(private val viewModel: WallpaperViewModel):RecyclerView.Adapter<Adapter.ViewHolder>() {
 
@@ -44,16 +47,23 @@ class Adapter(private val viewModel: WallpaperViewModel):RecyclerView.Adapter<Ad
         val photo = differ.currentList[position]
         var isSaved = false
         holder.apply {
-            binding.wallpaperIv.load(photo.urlImage){
-                crossfade(true)
-                allowHardware(true)
-                placeholder(Color.parseColor( Palette.LIGHT[position % Palette.LIGHT.size] ).toDrawable())
-            }
+
+            val thumbnailRequest: RequestBuilder<Drawable> = Glide
+                .with(itemView.context)
+                .load(photo.urlThumb)
+
+            Glide.with(itemView.context)
+                .load(photo.urlImage)
+                .placeholder(
+                    Color.parseColor(Palette.LIGHT[position % Palette.LIGHT.size]).toDrawable()
+                )
+                .thumbnail(thumbnailRequest)
+                .into(binding.wallpaperIv)
             viewModel.viewModelScope.launch {
-                if(viewModel.isWallpaperSaved(photo as AlphaPhotoResponseItem)){
+                if (viewModel.isWallpaperSaved(photo as AlphaPhotoResponseItem)) {
                     binding.favBtn.setImageResource(R.drawable.ic_heart_filled)
                     isSaved = true
-                }else{
+                } else {
                     binding.favBtn.setImageResource(R.drawable.heart_white)
                     isSaved = false
                 }
@@ -67,7 +77,6 @@ class Adapter(private val viewModel: WallpaperViewModel):RecyclerView.Adapter<Ad
                     binding.favBtn.setImageResource(R.drawable.heart_white)
                     viewModel.deleteWallpaper(photo as AlphaPhotoResponseItem)
                 }
-                //  notifyDataSetChanged()
             }
             binding.wallpaperIv.setOnClickListener {
                 onItemClickListener?.let {
