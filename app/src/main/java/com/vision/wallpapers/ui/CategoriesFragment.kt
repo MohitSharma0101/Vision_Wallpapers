@@ -131,6 +131,8 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
 
     private fun handelBackPressed() {
         val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            isDropped = false
+            binding.dropdown.setImageResource(R.drawable.chevron_down)
             binding.noSearch.visibility = View.GONE
             if (binding.categoriesText.visibility == View.GONE) {
                 binding.searchBar.setText("")

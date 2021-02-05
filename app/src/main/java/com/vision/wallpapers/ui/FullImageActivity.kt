@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import com.ramotion.circlemenu.CircleMenuView
 import com.vision.wallpapers.R
@@ -321,8 +322,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             val resultUri = data?.let { UCrop.getOutput(it) }
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
-            val wallpaperManager = WallpaperManager.getInstance(applicationContext)
-            wallpaperManager.setBitmap(bitmap)
+            showWallpaperChoice(bitmap)
         } else if (resultCode == UCrop.RESULT_ERROR) {
             val cropError = data?.let { UCrop.getError(it) }
             Toast.makeText(applicationContext, "Something went wrong.", Toast.LENGTH_SHORT).show()
@@ -363,6 +363,48 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
         return Uri.parse(path)
+    }
+
+    private fun showWallpaperChoice(bitmap:Bitmap){
+        val singleItems = arrayOf("Home Screen", "Lock Screen", "Both")
+        val checkedItem = 1
+        val wallpaperManager = WallpaperManager.getInstance(applicationContext)
+
+        MaterialAlertDialogBuilder(this, R.style.CustomMaterialDialog)
+            .setTitle("Select Screen")
+            .setPositiveButton("ok") { dialog, which ->
+            }
+            .setNeutralButton("cancel") { dialog, which ->
+            }
+            .setSingleChoiceItems(singleItems, checkedItem) { dialog, id ->
+
+               when(id){
+                   0 -> {
+                       wallpaperManager.setBitmap(bitmap)
+                   }
+                   1 ->{
+                       try{
+                           if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                               wallpaperManager.clear(WallpaperManager.FLAG_LOCK)
+                               wallpaperManager.setBitmap(bitmap,null,true,WallpaperManager.FLAG_LOCK)
+                               Toast.makeText(applicationContext, "lockScreen setting up", Toast.LENGTH_SHORT).show()
+
+                           }
+                       }catch (e:Exception){
+                           e.printStackTrace()
+                       }
+
+                     //  Toast.makeText(applicationContext, "lockScreen setting up", Toast.LENGTH_SHORT).show()
+                   }
+                   2->{
+                       wallpaperManager.setBitmap(bitmap)
+                       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                           wallpaperManager.setBitmap(bitmap,null,true,WallpaperManager.FLAG_LOCK)
+                       }
+                   }
+               }
+            }
+            .show()
     }
 
 }
