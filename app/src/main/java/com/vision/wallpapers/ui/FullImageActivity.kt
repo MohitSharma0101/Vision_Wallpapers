@@ -21,10 +21,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
-import coil.api.load
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textview.MaterialTextView
@@ -52,6 +56,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     lateinit var url: String
     lateinit var type: String
     lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    lateinit var imageBitmap: Bitmap
 
     private val STRG_PERM = 101
 
@@ -82,10 +87,35 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         url = photo.url_image
         type = photo.file_type
         binding.apply {
-            wallpaperIv.load(url) {
-                crossfade(true)
-                allowHardware(true)
-            }
+            Glide.with(applicationContext)
+                .load(url)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        fullImageProgressBar.visibility = View.GONE
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        imageBitmap = resource?.toBitmap()!!
+                        fullImageProgressBar.visibility = View.GONE
+                        return false
+                    }
+
+                })
+                .into(wallpaperIv)
+
+
             scaleBtn.setOnClickListener {
                 adjustZoom()
             }
@@ -218,7 +248,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     }
 
     private  fun cropImage(){
-        val uri = Uri.parse(url)
+        val uri = getImageUri(applicationContext, imageBitmap)
         val option = UCrop.Options()
         option.setAspectRatioOptions(
             2,
@@ -228,9 +258,11 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             AspectRatio("4:3", 4f, 3f),
             AspectRatio("2:1", 2f, 1f)
         )
-        UCrop.of(uri, Uri.fromFile(File(cacheDir, "Vision")))
-            .withOptions(option)
-            .start(this)
+        if (uri != null) {
+            UCrop.of(uri, Uri.fromFile(File(cacheDir, "Vision")))
+                .withOptions(option)
+                .start(this)
+        }
     }
 
     private fun hasStoragePermission(): Boolean {
@@ -301,14 +333,14 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
     private fun shareImageUri() {
 
-        binding.fullImageProgressBar?.visibility = View.VISIBLE
+        binding.fullImageProgressBar.visibility = View.VISIBLE
 
         Glide.with(applicationContext)
             .asBitmap()
             .load(url)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    binding.fullImageProgressBar?.visibility = View.GONE
+                    binding.fullImageProgressBar.visibility = View.GONE
                     val share = Intent(Intent.ACTION_SEND)
                     share.type = "image/*"
                     share.putExtra(Intent.EXTRA_STREAM, getImageUri(applicationContext, resource))
