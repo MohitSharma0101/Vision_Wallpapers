@@ -31,10 +31,11 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         binding.bottomBar.setupWithNavController(navController)
 
+        noInternetAlert()
         val db = WallpaperDatabase(this)
         val repo = WallpaperRepo(db)
         val factory = WallpaperViewModelFactory(repo)
-        noInternetAlert()
+
 
         viewModel = ViewModelProvider(this, factory).get(WallpaperViewModel::class.java)
 

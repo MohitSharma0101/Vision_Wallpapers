@@ -310,7 +310,18 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
         val chip = Chip(context)
         chip.text = text
         chip.maxEms = 7
+        chip.setOnClickListener {
+            searchAlpha((it as Chip).text.toString())
+            binding.recentCard.visibility = View.GONE
+            binding.recentText.visibility = View.GONE
+            binding.colorText.visibility = View.GONE
+            binding.colorRecyclerView.visibility = View.GONE
+            binding.categoriesText.visibility = View.GONE
+            binding.viewPager.visibility = View.GONE
+            binding.showRecyclerView.visibility = View.VISIBLE
+        }
         binding.chipGroup2.addView(chip)
+
 
     }
 

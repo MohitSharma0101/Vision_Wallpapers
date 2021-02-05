@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VisionWallpapers"
         tools:replace="android:theme"
+        android:grantUriPermissions="true"
         tools:targetApi="n">
         <activity
             android:name=".ui.FullImageActivity"
