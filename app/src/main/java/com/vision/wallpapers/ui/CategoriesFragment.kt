@@ -47,6 +47,7 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
     lateinit var searchQuery: String
     var isLoading = false
     var isScrolling = false
+    var isDropped = false
     private var recentSearchList = ArrayList<String?>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,7 +55,7 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
         binding = FragmentCategoriesBinding.bind(view)
         viewModel = (activity as MainActivity).viewModel
 
-        var isDropped = false
+        isDropped = false
 
         viewPager = binding.viewPager
 
@@ -124,7 +125,6 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
                 getRecentSearches(false)
                 isDropped = false
             }
-
         }
 
     }

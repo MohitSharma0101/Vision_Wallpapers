@@ -82,26 +82,8 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             intent.getSerializableExtra("photo") as AlphaPhotoResponseItem
         url = photo.url_image
         type = photo.file_type
+        requestPermission()
         binding.apply {
-            Glide.with(applicationContext)
-                .asBitmap()
-                .load(url)
-                .into(object : CustomTarget<Bitmap>() {
-                    override fun onResourceReady(
-                        resource: Bitmap,
-                        transition: Transition<in Bitmap>?
-                    ) {
-                        uri = resource.let { getImageUri(applicationContext, it) }
-                        binding.wallpaperIv.setImageBitmap(resource)
-                        fullImageProgressBar.visibility = View.GONE
-                    }
-
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                        fullImageProgressBar.visibility = View.GONE
-                    }
-
-                })
-
 
             scaleBtn.setOnClickListener {
                 adjustZoom()
@@ -140,7 +122,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
                 when (index) {
                     0 -> {
-                        requestPermission()
+                       if(hasStoragePermission()) downloadImageNew()
                     }
                     1 -> {
                         val size = findViewById<MaterialTextView>(R.id.size)
@@ -165,6 +147,27 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                 }
             }
         }
+    }
+
+    private fun loadImage(){
+        Glide.with(applicationContext)
+            .asBitmap()
+            .load(url)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    uri = resource.let { getImageUri(applicationContext, it) }
+                    binding.wallpaperIv.setImageBitmap(resource)
+                    binding.fullImageProgressBar.visibility = View.GONE
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    binding.fullImageProgressBar.visibility = View.GONE
+                }
+
+            })
     }
 
     private fun changeScreenOrientation() {
@@ -217,7 +220,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                 TODO("VERSION.SDK_INT < M")
             }
             if (uri != null) {
-                val downloadUri: Uri? = uri
+                val downloadUri: Uri? = Uri.parse(url)
                 val request = DownloadManager.Request(downloadUri)
                 request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
                     .setAllowedOverRoaming(false)
@@ -239,6 +242,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             }
         } catch (e: Exception) {
             Toast.makeText(this, "Image download failed.", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
         }
     }
 
@@ -269,9 +273,9 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         return EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
 
-    fun requestPermission() {
+    private fun requestPermission() {
         if (hasStoragePermission()) {
-            downloadImageNew()
+            loadImage()
         } else {
             EasyPermissions.requestPermissions(
                 this,
@@ -292,7 +296,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        downloadImageNew()
+        loadImage()
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
@@ -300,6 +304,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             AppSettingsDialog.Builder(this).build().show()
         }
         Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
+        finish()
     }
 
 
@@ -307,9 +312,10 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
             if (hasStoragePermission()) {
-                downloadImageNew()
+                loadImage()
             } else {
                 Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
+                finish()
             }
         }
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
@@ -329,6 +335,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
     override fun onRationaleDenied(requestCode: Int) {
         Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
+        finish()
     }
 
     private fun shareImageUri() {

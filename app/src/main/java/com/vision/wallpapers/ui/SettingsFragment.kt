@@ -60,17 +60,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
         return mEdit1.commit()
     }
-    private fun getCacheSize0():String{
-        var size: Long = 0
-        val files:Array<File>? = requireContext().cacheDir.listFiles()
-        if (files != null) {
-            for (f in files) {
-                size += f.length()
-            }
-        }
-
-        return Formatter.formatFileSize(requireContext(), size)
-    }
     private fun getCacheSize():String {
         var size: Long = 0
         size += getDirSize(requireContext().cacheDir)
