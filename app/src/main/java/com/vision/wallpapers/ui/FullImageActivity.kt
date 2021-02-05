@@ -21,14 +21,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textview.MaterialTextView
@@ -56,7 +51,8 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     lateinit var url: String
     lateinit var type: String
     lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
-    lateinit var imageBitmap: Bitmap
+    lateinit var photo: AlphaPhotoResponseItem
+    var uri: Uri? = null
 
     private val STRG_PERM = 101
 
@@ -82,38 +78,29 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
-        val photo: AlphaPhotoResponseItem =
+        photo =
             intent.getSerializableExtra("photo") as AlphaPhotoResponseItem
         url = photo.url_image
         type = photo.file_type
         binding.apply {
             Glide.with(applicationContext)
+                .asBitmap()
                 .load(url)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap>?
+                    ) {
+                        uri = resource.let { getImageUri(applicationContext, it) }
+                        binding.wallpaperIv.setImageBitmap(resource)
                         fullImageProgressBar.visibility = View.GONE
-                        return false
                     }
 
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        imageBitmap = resource?.toBitmap()!!
+                    override fun onLoadCleared(placeholder: Drawable?) {
                         fullImageProgressBar.visibility = View.GONE
-                        return false
                     }
 
                 })
-                .into(wallpaperIv)
 
 
             scaleBtn.setOnClickListener {
@@ -221,33 +208,41 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         }
     }
 
-    private fun downloadImageNew(filename: String = "Vision", downloadUrlOfImage: String) {
+    private fun downloadImageNew() {
+        val filename = photo.id.toString()
         try {
             val dm = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                 getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             } else {
                 TODO("VERSION.SDK_INT < M")
             }
-            val downloadUri: Uri = Uri.parse(downloadUrlOfImage)
-            val request = DownloadManager.Request(downloadUri)
-            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-                .setAllowedOverRoaming(false)
-                .setTitle(filename)
-                .setMimeType(type)
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setDestinationInExternalPublicDir(
-                    Environment.DIRECTORY_PICTURES,
-                    File.separator.toString() + filename + ".jpg"
-                )
-            dm.enqueue(request)
-            Toast.makeText(this, "Image download started.", Toast.LENGTH_SHORT).show()
+            if (uri != null) {
+                val downloadUri: Uri? = uri
+                val request = DownloadManager.Request(downloadUri)
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                    .setAllowedOverRoaming(false)
+                    .setTitle(filename)
+                    .setMimeType(type)
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setDestinationInExternalPublicDir(
+                        Environment.DIRECTORY_PICTURES,
+                        File.separator.toString() + filename + ".jpg"
+                    )
+                dm.enqueue(request)
+                Toast.makeText(this, "Image download started.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    "Wait for loading to complete then try again.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } catch (e: Exception) {
             Toast.makeText(this, "Image download failed.", Toast.LENGTH_SHORT).show()
         }
     }
 
     private  fun cropImage(){
-        val uri = getImageUri(applicationContext, imageBitmap)
         val option = UCrop.Options()
         option.setAspectRatioOptions(
             2,
@@ -258,9 +253,15 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             AspectRatio("2:1", 2f, 1f)
         )
         if (uri != null) {
-            UCrop.of(uri, Uri.fromFile(File(cacheDir, "Vision")))
+            UCrop.of(uri!!, Uri.fromFile(File(cacheDir, "Vision")))
                 .withOptions(option)
                 .start(this)
+        } else {
+            Toast.makeText(
+                applicationContext,
+                "Wait for loading to complete then try again.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -270,7 +271,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
     fun requestPermission() {
         if (hasStoragePermission()) {
-            downloadImageNew(downloadUrlOfImage = url)
+            downloadImageNew()
         } else {
             EasyPermissions.requestPermissions(
                 this,
@@ -291,7 +292,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        downloadImageNew("Vision", url)
+        downloadImageNew()
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
@@ -306,7 +307,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
             if (hasStoragePermission()) {
-                downloadImageNew(downloadUrlOfImage = url)
+                downloadImageNew()
             } else {
                 Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
             }
@@ -332,28 +333,22 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
     private fun shareImageUri() {
 
-        binding.fullImageProgressBar.visibility = View.VISIBLE
-
-        Glide.with(applicationContext)
-            .asBitmap()
-            .load(url)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    binding.fullImageProgressBar.visibility = View.GONE
-                    val share = Intent(Intent.ACTION_SEND)
-                    share.type = "image/*"
-                    share.putExtra(Intent.EXTRA_STREAM, getImageUri(applicationContext, resource))
-                    share.putExtra(
-                        Intent.EXTRA_TEXT,
-                        "I got this cool wallpaper from Vision Wallpapers go to this link to find more:- \n https://github.com/lalit0111/Vision_Wallpapers"
-                    )
-                    startActivity(Intent.createChooser(share, "Share via"))
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                }
-
-            })
+        if (uri != null) {
+            val share = Intent(Intent.ACTION_SEND)
+            share.type = "image/*"
+            share.putExtra(Intent.EXTRA_STREAM, uri)
+            share.putExtra(
+                Intent.EXTRA_TEXT,
+                "I got this cool wallpaper from Vision Wallpapers go to this link to find more:- \n https://github.com/lalit0111/Vision_Wallpapers"
+            )
+            startActivity(Intent.createChooser(share, "Share via"))
+        } else {
+            Toast.makeText(
+                applicationContext,
+                "Wait for loading to complete then try again.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {

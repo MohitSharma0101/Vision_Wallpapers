@@ -110,6 +110,16 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:orientation="horizontal" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/noSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="No Search Found"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone" />
+
         <ProgressBar
             android:id="@+id/categoryProgressBar"
             android:layout_width="wrap_content"

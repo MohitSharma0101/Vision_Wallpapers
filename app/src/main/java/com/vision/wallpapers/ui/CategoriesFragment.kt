@@ -1,3 +1,4 @@
+
 package com.vision.wallpapers.ui
 
 import android.content.Context.INPUT_METHOD_SERVICE
@@ -84,7 +85,6 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
 
         binding.searchBar.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                hideKeyboard()
                 searchQuery = textView.text.toString()
                 searchAlpha(textView.text.toString())
                 binding.recentCard.visibility = View.GONE
@@ -131,6 +131,7 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
 
     private fun handelBackPressed() {
         val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            binding.noSearch.visibility = View.GONE
             if (binding.categoriesText.visibility == View.GONE) {
                 binding.searchBar.setText("")
                 binding.showRecyclerView.visibility = View.GONE
@@ -254,6 +255,8 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
     }
 
     private fun searchAlpha(query: String) {
+        hideKeyboard()
+        binding.noSearch.visibility = View.GONE
         recentSearchList.add(query)
         saveRecentList()
         viewModel.alphaSearchResponse = null
@@ -265,7 +268,12 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
                         isLoading = false
                         binding.categoryProgressBar.visibility = View.GONE
                         getRecentSearches()
-                        showAdapter.differ.submitList(list.wallpapers.toList())
+                        if (list.wallpapers != null) {
+                            showAdapter.differ.submitList(list.wallpapers.toList())
+                        } else {
+                            binding.noSearch.visibility = View.VISIBLE
+                            showAdapter.differ.submitList(null)
+                        }
                     }
                 }
                 is Resources.Loading -> {
