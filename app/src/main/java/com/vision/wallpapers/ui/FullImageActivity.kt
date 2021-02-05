@@ -16,6 +16,7 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.provider.MediaStore.Images
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -41,7 +42,6 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.*
 
 
 class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
@@ -54,6 +54,8 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     lateinit var photo: AlphaPhotoResponseItem
     var uri: Uri? = null
+    lateinit var newPath: String
+    lateinit var path: String
 
     private val STRG_PERM = 101
 
@@ -123,7 +125,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
                 when (index) {
                     0 -> {
-                       if(hasStoragePermission()) downloadImageNew()
+                        if (hasStoragePermission()) downloadImageNew()
                     }
                     1 -> {
                         val size = findViewById<MaterialTextView>(R.id.size)
@@ -209,6 +211,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         } else {
             super.onBackPressed()
+            delete()
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
@@ -364,14 +367,27 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = Images.Media.insertImage(
+        newPath = photo.id.toString()
+        path = Images.Media.insertImage(
             inContext.contentResolver,
             inImage,
-            photo.id.toString() + Calendar.getInstance().time,
+            newPath,
             null
         )
         return Uri.parse(path)
     }
 
-
+    private fun delete() {
+        val root =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
+        Log.d("see", root)
+        val file: File = File(root, newPath + ".jpg")
+        file.delete()
+        if (file.exists()) {
+            file.canonicalFile.delete()
+            if (file.exists()) {
+                applicationContext.deleteFile(file.name)
+            }
+        }
+    }
 }

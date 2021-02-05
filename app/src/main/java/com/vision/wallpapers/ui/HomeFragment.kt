@@ -37,7 +37,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val activity = (activity as MainActivity)
 
         viewModel = activity.viewModel
-        viewModel.getAlphaPhotos()
         gridLayoutManager = GridLayoutManager(context, 2)
         adapter = Adapter(viewModel)
         binding.homeRecyclerView.layoutManager = gridLayoutManager

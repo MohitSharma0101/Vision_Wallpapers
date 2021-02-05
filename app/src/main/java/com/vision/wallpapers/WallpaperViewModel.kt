@@ -1,6 +1,5 @@
 package com.vision.wallpapers
 
-import am.appwise.components.ni.NoInternetDialog
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -36,6 +35,7 @@ class WallpaperViewModel(private val wallpaperRepo: WallpaperRepo): ViewModel() 
     var method = Constants.HIGH_RATED
 
     init {
+        getAlphaPhotos()
         favWallpaper = getSavedWallpaper()
     }
 
