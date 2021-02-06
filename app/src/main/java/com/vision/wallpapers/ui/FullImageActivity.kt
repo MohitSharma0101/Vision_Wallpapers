@@ -174,7 +174,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
         InterstitialAd.load(
             activity,
-            "ca-app-pub-3940256099942544/1033173712",
+            getString(R.string.InterstitialAd),
             adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {

@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.graphics.drawable.toDrawable
@@ -278,6 +279,10 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
                 is Resources.Loading -> {
                     binding.categoryProgressBar.visibility = View.VISIBLE
                     isLoading = true
+                }
+                is Resources.Error -> {
+                    Toast.makeText(context, "something went wrong", Toast.LENGTH_SHORT).show()
+                    binding.noSearch.visibility = View.VISIBLE
                 }
             }
 
