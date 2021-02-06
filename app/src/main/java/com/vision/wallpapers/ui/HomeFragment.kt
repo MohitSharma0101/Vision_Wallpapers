@@ -1,5 +1,6 @@
 package com.vision.wallpapers.ui
 
+import am.appwise.components.ni.NoInternetDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -17,6 +18,7 @@ import com.vision.wallpapers.WallpaperViewModel
 import com.vision.wallpapers.databinding.FragmentHomeBinding
 import com.vision.wallpapers.util.Constants
 import com.vision.wallpapers.util.Resources
+import java.io.IOException
 import java.util.*
 
 
@@ -26,6 +28,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     lateinit var gridLayoutManager: GridLayoutManager
     lateinit var adapter: Adapter
     lateinit var viewModel: WallpaperViewModel
+    lateinit var noInternetDialog: NoInternetDialog
     var isLoading = false
     var isScrolling = false
 
@@ -37,6 +40,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val activity = (activity as MainActivity)
 
         viewModel = activity.viewModel
+        noInternetDialog = activity.noInternetDialog
+
         gridLayoutManager = GridLayoutManager(context, 2)
         adapter = Adapter(viewModel)
         binding.homeRecyclerView.layoutManager = gridLayoutManager
@@ -46,7 +51,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.sort.setOnClickListener {
             activity.bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
-        binding.retryBtn.setOnClickListener { 
+        binding.retryBtn.setOnClickListener {
+            binding.retryBtn.visibility = View.GONE
             viewModel.getAlphaPhotos()
         }
 
@@ -70,36 +76,45 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
            val s = viewModel.method
             if(s == Constants.NEWEST){
                 binding.lChip.isChecked = true
-            }else if(s == Constants.POPULAR){
+            }else if (s == Constants.POPULAR) {
                 binding.pChip.isChecked = true
-            }else{
+            } else {
                 binding.fChip.isChecked = true
             }
         }
         handelChips()
 
         getAlphaImages()
+
+
     }
 
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-                isScrolling = true
-            }
-        }
+    @Throws(InterruptedException::class, IOException::class)
+    fun isConnected(): Boolean {
+        val command = "ping -c 1 google.com"
+        return Runtime.getRuntime().exec(command).waitFor() == 0
+    }
 
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            val visibleItemCount: Int = gridLayoutManager.childCount
-            val totalItemCount: Int = gridLayoutManager.itemCount
-            val firstVisibleItemPosition: Int = gridLayoutManager.findFirstVisibleItemPosition()
-            if(!isLoading && !viewModel.alphaLastPage){
-                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                    && firstVisibleItemPosition >= 0 && totalItemCount >= 30 && isScrolling
-                ) {
-                    viewModel.getAlphaPhotos(page = viewModel.alphaPage)
-                    isScrolling = false
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isScrolling = true
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount: Int = gridLayoutManager.childCount
+                val totalItemCount: Int = gridLayoutManager.itemCount
+                val firstVisibleItemPosition: Int = gridLayoutManager.findFirstVisibleItemPosition()
+                if (!isLoading && !viewModel.alphaLastPage) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                        && firstVisibleItemPosition >= 0 && totalItemCount >= 30 && isScrolling
+                    ) {
+                        viewModel.getAlphaPhotos(page = viewModel.alphaPage)
+                        isScrolling = false
                 }
             }
 
@@ -127,17 +142,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     isLoading = false
                     binding.progressBar.visibility = View.GONE
                     binding.loading.visibility = View.GONE
+                    binding.retryBtn.visibility = View.GONE
                     it.data?.let { list ->
                         viewModel.alphaLastPage = list.is_last ?: false
                         adapter.differ.submitList(list.wallpapers.toList())
                     }
                 }
                 is Resources.Loading -> {
-                    isLoading = true
-                    binding.progressBar.visibility = View.VISIBLE
                     binding.loading.visibility = View.VISIBLE
+                    if (!isConnected()) {
+                        binding.retryBtn.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.GONE
+                    } else {
+                        isLoading = true
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
                 }
-                else -> {
+                is Resources.Error -> {
                     binding.retryBtn.visibility = View.VISIBLE
                     binding.loading.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
