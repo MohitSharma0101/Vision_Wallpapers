@@ -29,10 +29,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.FullScreenContentCallback
-import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -110,6 +107,8 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             }
         }
 
+        MobileAds.initialize(this)
+
         loadInterstitial(this)
 
         val menu = binding.circle
@@ -138,7 +137,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                 when (index) {
                     0 -> {
                         if (hasStoragePermission()) {
-                            loadInterstitial(this@FullImageActivity)
+                            mInterstitialAd?.show(this@FullImageActivity)
                             downloadImageNew()
                         }
                     }
@@ -179,6 +178,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     mInterstitialAd = null
+                    Toast.makeText(applicationContext, adError.message, Toast.LENGTH_LONG).show()
                 }
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
@@ -186,10 +186,9 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                 }
             })
 
-        mInterstitialAd?.show(activity)
-
         mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
+                loadInterstitial(this@FullImageActivity)
             }
 
             override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
@@ -380,7 +379,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
             val wallpaperManager = WallpaperManager.getInstance(applicationContext)
             wallpaperManager.setBitmap(bitmap)
-            loadInterstitial(this)
+            mInterstitialAd?.show(this@FullImageActivity)
             Toast.makeText(applicationContext, "Wallpaper set successfully", Toast.LENGTH_SHORT)
                 .show()
         } else if (resultCode == UCrop.RESULT_ERROR) {

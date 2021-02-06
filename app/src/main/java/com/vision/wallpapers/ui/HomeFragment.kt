@@ -70,7 +70,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         adapter.setOnItemClickListener { image, url, photo ->
             if (viewModel.counter == 5) {
                 viewModel.counter = 0
-                loadInterstitial(activity)
+                mInterstitialAd?.show(activity)
                 Log.d("Add", "entered${mInterstitialAd.toString()}")
             }
             val intent = Intent(context, FullImageActivity::class.java)
@@ -129,10 +129,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             })
 
-        mInterstitialAd?.show(activity)
 
         mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
+                loadInterstitial(activity)
             }
 
             override fun onAdFailedToShowFullScreenContent(adError: AdError?) {

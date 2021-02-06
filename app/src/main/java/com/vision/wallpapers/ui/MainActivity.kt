@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textview.MaterialTextView
 import com.vision.wallpapers.R
@@ -42,6 +43,9 @@ class MainActivity : AppCompatActivity() {
 
         val bottomSheet = findViewById<LinearLayout>(R.id.bottomSheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+
+        MobileAds.initialize(this) {
+        }
 
 
         val byViews = findViewById<MaterialTextView>(R.id.byViews)
