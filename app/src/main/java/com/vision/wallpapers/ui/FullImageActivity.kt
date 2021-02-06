@@ -16,6 +16,7 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.provider.MediaStore.Images
 import android.provider.Settings
+import android.text.format.Formatter
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -131,8 +132,8 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
                         val size = findViewById<MaterialTextView>(R.id.size)
                         val type = findViewById<MaterialTextView>(R.id.type)
                         val resolution = findViewById<MaterialTextView>(R.id.resolution)
-                        val sizeMb = (photo.file_size).toInt() / 1024 / 1024
-                        size.text = sizeMb.toString() + "MB"
+                        size.text =
+                            Formatter.formatFileSize(applicationContext, photo.file_size.toLong())
                         resolution.text = photo.width.toString() + " x " + photo.height.toString()
                         type.text = photo.file_type
                         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
