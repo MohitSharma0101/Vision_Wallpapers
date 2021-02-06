@@ -25,6 +25,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -43,6 +44,7 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.*
 
 
 class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
@@ -82,8 +84,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
-        photo =
-            intent.getSerializableExtra("photo") as AlphaPhotoResponseItem
+        photo = intent.getSerializableExtra("photo") as AlphaPhotoResponseItem
         url = photo.url_image
         type = photo.file_type
         requestPermission()
@@ -155,9 +156,11 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     }
 
     private fun loadImage(){
+        Log.d("seen", url)
         Glide.with(applicationContext)
             .asBitmap()
             .load(url)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(
                     resource: Bitmap,
@@ -211,8 +214,9 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         } else {
-            super.onBackPressed()
             delete()
+            finish()
+            super.onBackPressed()
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
@@ -368,7 +372,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        newPath = photo.id.toString()
+        newPath = photo.id.toString() + Calendar.getInstance().timeInMillis.toString()
         path = Images.Media.insertImage(
             inContext.contentResolver,
             inImage,
@@ -384,11 +388,5 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         Log.d("see", root)
         val file: File = File(root, newPath + ".jpg")
         file.delete()
-        if (file.exists()) {
-            file.canonicalFile.delete()
-            if (file.exists()) {
-                applicationContext.deleteFile(file.name)
-            }
-        }
     }
 }
