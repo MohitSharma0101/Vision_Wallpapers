@@ -150,9 +150,6 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
     private fun getRecentSearches(isFull: Boolean = false) {
         recentSearchList.clear()
         loadRecentList()
-        if (recentSearchList.isEmpty()) {
-            recentSearchList = arrayListOf("Thriller", "Comedy", "Adventure")
-        }
         val recent = recentSearchList.asReversed()
         binding.chipGroup2.removeAllViews()
         var size = recent.size
@@ -313,7 +310,8 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
         chip.text = text
         chip.maxEms = 7
         chip.setOnClickListener {
-            searchAlpha((it as Chip).text.toString())
+            binding.searchBar.setText((it as Chip).text.toString())
+            searchAlpha(it.text.toString())
             binding.recentCard.visibility = View.GONE
             binding.recentText.visibility = View.GONE
             binding.colorText.visibility = View.GONE

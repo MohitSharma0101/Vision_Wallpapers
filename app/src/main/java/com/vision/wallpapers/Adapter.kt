@@ -22,8 +22,11 @@ import kotlinx.coroutines.launch
 class Adapter(private val viewModel: WallpaperViewModel):RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     class ViewHolder(var binding: PictureCardBinding) : RecyclerView.ViewHolder(binding.root)
+
     private var onItemClickListener: ((View, String, AlphaPhotoResponseItem) -> Unit)? = null
     private var onSaveClickListener: ((AlphaPhotoResponseItem) -> Unit)? = null
+
+    var count = 0
 
     fun setOnItemClickListener(listener: (View, String, AlphaPhotoResponseItem) -> Unit) {
         onItemClickListener = listener

@@ -82,7 +82,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         MaterialAlertDialogBuilder(requireContext(), R.style.CustomMaterialDialog)
             .setIcon(R.drawable.ic_trash)
             .setTitle("Delete Search History")
-            .setMessage("Are you sure You want to delete all Search History?")
+            .setMessage("Are you sure you want to delete all search history?")
             .setPositiveButton("Yes") { _, _ ->
                 if (deleteSearchHistory()){
                     Toast.makeText(requireContext(), "Cleared", Toast.LENGTH_LONG).show()

@@ -1,8 +1,10 @@
 package com.vision.wallpapers.ui
 
 import am.appwise.components.ni.NoInternetDialog
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import androidx.core.app.ActivityOptionsCompat
@@ -10,6 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.vision.wallpapers.Adapter
@@ -31,6 +39,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     lateinit var noInternetDialog: NoInternetDialog
     var isLoading = false
     var isScrolling = false
+    var mInterstitialAd: InterstitialAd? = null
 
 
 
@@ -56,8 +65,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             viewModel.getAlphaPhotos()
         }
 
+        loadInterstitial(activity)
 
         adapter.setOnItemClickListener { image, url, photo ->
+            if (viewModel.counter == 5) {
+                viewModel.counter = 0
+                loadInterstitial(activity)
+                Log.d("Add", "entered${mInterstitialAd.toString()}")
+            }
             val intent = Intent(context, FullImageActivity::class.java)
             intent.putExtra("photo", photo)
             val bundle = ActivityOptionsCompat.makeCustomAnimation(
@@ -66,8 +81,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 android.R.anim.fade_out
             ).toBundle()
             startActivity(intent, bundle)
+            viewModel.counter++
+            Log.d("Add", viewModel.counter.toString())
         }
-
         adapter.setSaveOnClickListener {
             viewModel.saveWallpaper(it)
         }
@@ -93,6 +109,39 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     fun isConnected(): Boolean {
         val command = "ping -c 1 google.com"
         return Runtime.getRuntime().exec(command).waitFor() == 0
+    }
+
+    private fun loadInterstitial(activity: Activity) {
+
+        val adRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(
+            activity,
+            "ca-app-pub-3940256099942544/1033173712",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                }
+            })
+
+        mInterstitialAd?.show(activity)
+
+        mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+            }
+
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                mInterstitialAd = null
+            }
+        }
     }
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
@@ -149,11 +198,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                 }
                 is Resources.Loading -> {
-                    binding.loading.visibility = View.VISIBLE
                     if (!isConnected()) {
+                        binding.loading.visibility = View.VISIBLE
                         binding.retryBtn.visibility = View.VISIBLE
                         binding.progressBar.visibility = View.GONE
                     } else {
+                        binding.loading.visibility = View.VISIBLE
                         isLoading = true
                         binding.progressBar.visibility = View.VISIBLE
                     }
@@ -162,7 +212,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     binding.retryBtn.visibility = View.VISIBLE
                     binding.loading.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
-
                 }
             }
         })

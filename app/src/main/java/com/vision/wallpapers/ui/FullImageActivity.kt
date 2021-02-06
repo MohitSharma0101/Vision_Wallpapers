@@ -1,6 +1,7 @@
 package com.vision.wallpapers.ui
 
 import android.Manifest
+import android.app.Activity
 import android.app.DownloadManager
 import android.app.WallpaperManager
 import android.content.Context
@@ -28,6 +29,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textview.MaterialTextView
 import com.ramotion.circlemenu.CircleMenuView
@@ -56,6 +63,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
     lateinit var type: String
     lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     lateinit var photo: AlphaPhotoResponseItem
+    private var mInterstitialAd: InterstitialAd? = null
     var uri: Uri? = null
     lateinit var newPath: String
     lateinit var path: String
@@ -88,6 +96,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         url = photo.url_image
         type = photo.file_type
         requestPermission()
+
         binding.apply {
 
             scaleBtn.setOnClickListener {
@@ -101,6 +110,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             }
         }
 
+        loadInterstitial(this)
 
         val menu = binding.circle
         menu.eventListener = object : CircleMenuView.EventListener() {
@@ -127,7 +137,10 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
                 when (index) {
                     0 -> {
-                        if (hasStoragePermission()) downloadImageNew()
+                        if (hasStoragePermission()) {
+                            loadInterstitial(this@FullImageActivity)
+                            downloadImageNew()
+                        }
                     }
                     1 -> {
                         val size = findViewById<MaterialTextView>(R.id.size)
@@ -155,7 +168,40 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
         }
     }
 
-    private fun loadImage(){
+    private fun loadInterstitial(activity: Activity) {
+
+        val adRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(
+            activity,
+            "ca-app-pub-3940256099942544/1033173712",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                }
+            })
+
+        mInterstitialAd?.show(activity)
+
+        mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+            }
+
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                mInterstitialAd = null
+            }
+        }
+    }
+
+    private fun loadImage() {
         Log.d("seen", url)
         Glide.with(applicationContext)
             .asBitmap()
@@ -334,6 +380,9 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
             val wallpaperManager = WallpaperManager.getInstance(applicationContext)
             wallpaperManager.setBitmap(bitmap)
+            loadInterstitial(this)
+            Toast.makeText(applicationContext, "Wallpaper set successfully", Toast.LENGTH_SHORT)
+                .show()
         } else if (resultCode == UCrop.RESULT_ERROR) {
             val cropError = data?.let { UCrop.getError(it) }
             Toast.makeText(applicationContext, "Something went wrong.", Toast.LENGTH_SHORT).show()
@@ -357,7 +406,7 @@ class FullImageActivity : AppCompatActivity(), EasyPermissions.PermissionCallbac
             share.putExtra(Intent.EXTRA_STREAM, uri)
             share.putExtra(
                 Intent.EXTRA_TEXT,
-                "I got this cool wallpaper from Vision Wallpapers go to this link to find more:- \n https://github.com/lalit0111/Vision_Wallpapers"
+                "Click the link below to explore more wallpapers:- \n https://github.com/lalit0111/Vision_Wallpapers"
             )
             startActivity(Intent.createChooser(share, "Share via"))
         } else {

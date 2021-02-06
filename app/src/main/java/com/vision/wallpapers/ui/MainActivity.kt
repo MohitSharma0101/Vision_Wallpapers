@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         val byRating = findViewById<MaterialTextView>(R.id.byRating)
         val byPopularity = findViewById<MaterialTextView>(R.id.byPopularity)
 
-
         byViews.setOnClickListener {
             viewModel.alphaPhotoResponse = null
             viewModel.getAlphaPhotos("by_views")
@@ -126,7 +125,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     override fun onBackPressed() {
         if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -134,6 +132,7 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
     private fun noInternetAlert() = NoInternetDialog.Builder(this)
         .setCancelable(false)
         .setDialogRadius(50f)
