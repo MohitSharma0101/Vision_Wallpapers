@@ -24,24 +24,54 @@ object Constants {
 
     val Categories = mutableListOf<AlphaCategoryResponseItem>(
 
-            AlphaCategoryResponseItem(1, "Anime", R.drawable.anime, "https://images3.alphacoders.com/473/47399.png"),
-            AlphaCategoryResponseItem(
-                    2,
-                    "Abstract",
-                    R.drawable.resource_abstract,
-                    "https://images.alphacoders.com/724/724313.jpg"
-            ),
-            AlphaCategoryResponseItem(4, "Game", R.drawable.game, "https://images6.alphacoders.com/846/846781.jpg"),
-            AlphaCategoryResponseItem(5, "Cars", R.drawable.cars, "https://images4.alphacoders.com/222/222694.jpg"),
-            AlphaCategoryResponseItem(6, "Sci-Fi", R.drawable.sci_fi, "https://images6.alphacoders.com/948/948308.jpg"),
-            AlphaCategoryResponseItem(7, "Nature", R.drawable.nature, "https://images2.alphacoders.com/521/521718.jpg"),
+        AlphaCategoryResponseItem(
+            1,
+            "Anime",
+            R.drawable.anime,
+            "https://images3.alphacoders.com/473/47399.png"
+        ),
+        AlphaCategoryResponseItem(
+            2,
+            "Abstract",
+            R.drawable.resource_abstract,
+            "https://images.alphacoders.com/724/724313.jpg"
+        ),
+        AlphaCategoryResponseItem(
+            4,
+            "Game",
+            R.drawable.game,
+            "https://images6.alphacoders.com/846/846781.jpg"
+        ),
+        AlphaCategoryResponseItem(
+            5,
+            "Car",
+            R.drawable.cars,
+            "https://images4.alphacoders.com/222/222694.jpg"
+        ),
+        AlphaCategoryResponseItem(
+            6,
+            "Sci-Fi",
+            R.drawable.sci_fi,
+            "https://images6.alphacoders.com/948/948308.jpg"
+        ),
+        AlphaCategoryResponseItem(
+            7,
+            "Nature",
+            R.drawable.nature,
+            "https://images2.alphacoders.com/521/521718.jpg"
+        ),
 
-            AlphaCategoryResponseItem(
-                    8,
-                    "Photography",
-                    R.drawable.photogrphy,
-                    "https://images3.alphacoders.com/853/85305.jpg"
-            ),
-            AlphaCategoryResponseItem(3, "Dark", R.drawable.dark, "https://images2.alphacoders.com/557/55730.jpg")
+        AlphaCategoryResponseItem(
+            8,
+            "Photography",
+            R.drawable.photogrphy,
+            "https://images3.alphacoders.com/853/85305.jpg"
+        ),
+        AlphaCategoryResponseItem(
+            3,
+            "Dark",
+            R.drawable.dark,
+            "https://images2.alphacoders.com/557/55730.jpg"
+        )
     )
 }
