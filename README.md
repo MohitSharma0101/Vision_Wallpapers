@@ -11,7 +11,7 @@ A Wallpaper App powered by Wallpaper Abyss' API.
 <img src="previews/image5.jpeg" width=200/>
 
 
-### [Demo Video] (https://drive.google.com/file/d/1JVuNiaICMBu9lxqNDkMHBmRqsJQqZxkc/view?usp=drivesdk)
+### [Demo Video](https://drive.google.com/file/d/1JVuNiaICMBu9lxqNDkMHBmRqsJQqZxkc/view?usp=drivesdk)
 
 ### Tech Stack
 * MVVM Architecture
