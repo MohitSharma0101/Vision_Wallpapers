@@ -4,11 +4,8 @@ A Wallpaper App powered by Wallpaper Abyss' API.
 
 ### Preview
 
-<img src="previews/image1.jpeg" width=200/> 
-<img src="previews/image2.jpeg" width=200/> 
-<img src="previews/image3.jpeg" width=200/> 
-<img src="previews/image4.jpeg" width=200/>
-<img src="previews/image5.jpeg" width=200/>
+<img src="Previews/image1.jpeg" width=150/> <img src="Previews/image2.jpeg" width=150/> 
+<img src="Previews/image3.jpeg" width=150/> <img src="Previews/image4.jpeg" width=150/> <img src="Previews/image5.jpeg" width=150/>
 
 
 ### [Demo Video](https://drive.google.com/file/d/1JVuNiaICMBu9lxqNDkMHBmRqsJQqZxkc/view?usp=drivesdk)
